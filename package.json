@@ -1,0 +1,22 @@
+{
+  "name": "refenerence-net-editor",
+  "version": "0.1.0",
+  "description": "Web editor for reference nets",
+  "main": "index.js",
+  "author": {
+    "name": "Tim Kilian",
+    "email": "mail@timkilian.pl"
+  },
+  "license": "MIT",
+  "repository": "github:5kilian/reference-net-editor",
+  "dependencies": {
+    "latest-createjs": "^1.0.24",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "nodemon": "^1.17.5"
+  }
+}
