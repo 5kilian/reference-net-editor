@@ -1,8 +1,7 @@
 {
-  "name": "refenerence-net-editor",
-  "version": "0.1.0",
+  "name": "reference-net-editor",
+  "version": "0.1.7",
   "description": "Web editor for reference nets",
-  "main": "index.js",
   "author": {
     "name": "Tim Kilian",
     "email": "mail@timkilian.pl"
@@ -15,8 +14,14 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "nodemon": "^1.17.5"
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.12.1",
+    "webpack-command": "^0.3.0"
+  },
+  "scripts": {
+    "start": "php -S localhost:8090 -t lib",
+    "build": "babel src -d lib && webpack"
   }
 }

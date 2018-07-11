@@ -11,11 +11,11 @@ let drawing = null;
 
 class Drawing {
 
-    constructor () {
-        let self = this;
-    }
+    constructor () { }
 
     initialize (id, configuration) {
+        let self = this;
+
         this.view = new createjs.Stage(id);
         this.view.on('stagemousedown', (event) => self.onMouseDown(event));
         this.view.on('stagemousemove', (event) => self.onMouseMove(event));
@@ -25,8 +25,8 @@ class Drawing {
         this.selection = new DrawingSelection();
 
         new Connection(
-            new Place(100, document.getElementById('drawing-view').height / 2),
-            new Transition(200, document.getElementById('drawing-view').height / 3));
+            new Place(100, document.getElementById(id).height / 2),
+            new Transition(200, document.getElementById(id).height / 3));
 
         this.objects.forEach((object) => object.draw());
         this.objects.forEach((object) => object.type === 'handle' ? this.top(object.shape) : null);

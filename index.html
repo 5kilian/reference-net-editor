@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <!-- Encoding -->
+    <meta charset="UTF-8">
+
+    <!-- Title -->
+    <title>Reference-Net-Editor</title>
+
+    <!-- Libraries -->
+    <script src="/lib/ref-net.js"></script>
+
+    <!-- JS -->
+    <script defer>
+        window.onload = () => {
+            new window.drawing.Canvas('drawing');
+        };
+    </script>
+
+    <!-- CSS -->
+    <style>
+      #drawing {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="drawing" width="800" height="600"></canvas>
+  </body>
+</html>

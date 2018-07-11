@@ -1,33 +1,37 @@
 import { KEYCODE_DOWN, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP } from './constants/KeyCodes';
 import Drawing from './Drawing';
 
-module.exports = class DrawingCanvas {
+require('latest-createjs/lib/easeljs/easeljs');
+
+export class Canvas {
 
     constructor (id, configuration = {}) {
+        this.id = id;
+        this.configuration = configuration;
         Drawing().initialize(id, configuration);
-        DrawingCanvas.addListeners();
+        Canvas.addListeners();
     }
 
     static addListeners () {
-        window.addEventListener('resize', DrawingCanvas.onResize);
+        window.addEventListener('resize', Canvas.onResize);
 
-        document.addEventListener('keydown', DrawingCanvas.handleKeyDown);
-        document.addEventListener('keyup', DrawingCanvas.handleKeyUp);
+        document.addEventListener('keydown', Canvas.handleKeyDown);
+        document.addEventListener('keyup', Canvas.handleKeyUp);
 
-        createjs.Ticker.addEventListener('tick', DrawingCanvas.handleTick);
+        createjs.Ticker.addEventListener('tick', Canvas.handleTick);
     }
 
     static removeListeners () {
-        window.removeEventListener('resize', DrawingCanvas.onResize);
+        window.removeEventListener('resize', Canvas.onResize);
 
-        document.removeEventListener('keydown', DrawingCanvas.handleKeyDown);
-        document.removeEventListener('keyup', DrawingCanvas.handleKeyUp);
+        document.removeEventListener('keydown', Canvas.handleKeyDown);
+        document.removeEventListener('keyup', Canvas.handleKeyUp);
 
-        createjs.Ticker.removeEventListener('tick', DrawingCanvas.handleTick);
+        createjs.Ticker.removeEventListener('tick', Canvas.handleTick);
     }
 
     static onResize (event) {
-        let drawing = document.getElementById('drawing-view');
+        let drawing = document.getElementById(this.id);
         drawing.width = document.body.clientWidth;
         Drawing().onResize(event);
     }
@@ -52,4 +56,4 @@ module.exports = class DrawingCanvas {
         }
     }
 
-};
+}

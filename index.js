@@ -1,2 +1,3 @@
-require('latest-createjs/lib/easeljs/easeljs');
-module.exports = require('./src/core/DrawingCanvas');
+'use strict';
+
+module.exports = require('./lib/core/Canvas');

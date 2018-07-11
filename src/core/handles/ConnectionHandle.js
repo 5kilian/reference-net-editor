@@ -6,8 +6,8 @@ import Place from '../figures/Place';
 
 export default class ConnectionHandle extends Handle {
 
-    x = () => this.parent.x + this.parent.width / 2;
-    y = () => this.parent.y + this.parent.height / 2;
+    x () { return this.parent.x + this.parent.width / 2 };
+    y () { return this.parent.y + this.parent.height / 2 };
 
     draw () {
         this.shape.visible = this.visible;
