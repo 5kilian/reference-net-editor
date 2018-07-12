@@ -8,23 +8,35 @@
     <title>Reference-Net-Editor</title>
 
     <!-- Libraries -->
-    <script src="/lib/ref-net.js"></script>
+    <script src="/easeljs.min.js"></script>
+    <script src="/ref-net.min.js"></script>
 
     <!-- JS -->
     <script defer>
         window.onload = () => {
+            let canvas = document.getElementById('drawing');
+            canvas.width = document.body.clientWidth;
+            canvas.height = document.body.clientHeight;
+
             new window.drawing.Canvas('drawing');
         };
     </script>
 
     <!-- CSS -->
     <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+      }
       #drawing {
         border: 1px solid black;
+        width: 100%;
+        height: 100%;
       }
     </style>
   </head>
   <body>
-    <canvas id="drawing" width="800" height="600"></canvas>
+    <canvas id="drawing"></canvas>
   </body>
 </html>

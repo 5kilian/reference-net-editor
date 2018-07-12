@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = require('./lib/core/Canvas');
+module.exports = require('./src/core/Canvas');

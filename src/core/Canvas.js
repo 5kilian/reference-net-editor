@@ -1,53 +1,54 @@
 import { KEYCODE_DOWN, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP } from './constants/KeyCodes';
 import Drawing from './Drawing';
 
-require('latest-createjs/lib/easeljs/easeljs');
+let config;
 
 export class Canvas {
 
     constructor (id, configuration = {}) {
-        this.id = id;
-        this.configuration = configuration;
+        config = configuration;
+        config.id = id;
         Drawing().initialize(id, configuration);
-        Canvas.addListeners();
+        this.addListeners();
     }
 
-    static addListeners () {
-        window.addEventListener('resize', Canvas.onResize);
+    addListeners () {
+        window.addEventListener('resize', this.onResize);
 
-        document.addEventListener('keydown', Canvas.handleKeyDown);
-        document.addEventListener('keyup', Canvas.handleKeyUp);
+        document.addEventListener('keydown', this.handleKeyDown);
+        document.addEventListener('keyup', this.handleKeyUp);
 
-        createjs.Ticker.addEventListener('tick', Canvas.handleTick);
+        createjs.Ticker.addEventListener('tick', this.handleTick);
     }
 
-    static removeListeners () {
-        window.removeEventListener('resize', Canvas.onResize);
+    removeListeners () {
+        window.removeEventListener('resize', this.onResize);
 
-        document.removeEventListener('keydown', Canvas.handleKeyDown);
-        document.removeEventListener('keyup', Canvas.handleKeyUp);
+        document.removeEventListener('keydown', this.handleKeyDown);
+        document.removeEventListener('keyup', this.handleKeyUp);
 
-        createjs.Ticker.removeEventListener('tick', Canvas.handleTick);
+        createjs.Ticker.removeEventListener('tick', this.handleTick);
     }
 
-    static onResize (event) {
-        let drawing = document.getElementById(this.id);
+    onResize (event) {
+        let drawing = document.getElementById(config.id);
         drawing.width = document.body.clientWidth;
+        drawing.height = document.body.clientHeight;
         Drawing().onResize(event);
     }
 
-    static handleKeyDown (event) {
-        if ([KEYCODE_UP, KEYCODE_DOWN, KEYCODE_LEFT, KEYCODE_RIGHT].indexOf(event.keyCode) > -1) {
+    handleKeyDown (event) {
+        if ([ KEYCODE_UP, KEYCODE_DOWN, KEYCODE_LEFT, KEYCODE_RIGHT ].indexOf(event.keyCode) > -1) {
             event.preventDefault();
         }
         Drawing().onKeyDown(event);
     }
 
-    static handleKeyUp (event) {
+    handleKeyUp (event) {
         Drawing().onKeyUp(event);
     }
 
-    static handleTick (event) {
+    handleTick (event) {
         Drawing().update(event);
 
         if (Drawing().keyChanged) {

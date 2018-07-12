@@ -5,7 +5,7 @@ module.exports = config = {
     mode: 'production',
     output: {
         path: path.resolve(__dirname, 'lib'),
-        filename: 'ref-net.js',
+        filename: 'ref-net.min.js',
         library: 'drawing',
         libraryTarget: 'umd'
     },
@@ -13,7 +13,7 @@ module.exports = config = {
         rules: [
             {
                 test: /\.js$/,
-                exclude: /(node_modules)/,
+                exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
                     options: {
@@ -22,5 +22,8 @@ module.exports = config = {
                 }
             }
         ]
+    },
+    devServer: {
+        contentBase: "lib"
     }
 };

@@ -1,6 +1,6 @@
 {
   "name": "reference-net-editor",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Web editor for reference nets",
   "author": {
     "name": "Tim Kilian",
@@ -18,10 +18,19 @@
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.7.0",
     "webpack": "^4.12.1",
-    "webpack-command": "^0.3.0"
+    "webpack-cli": "^3.0.8",
+    "webpack-command": "^0.4.1",
+    "webpack-dev-server": "^3.1.4"
   },
   "scripts": {
-    "start": "php -S localhost:8090 -t lib",
-    "build": "babel src -d lib && webpack"
+    "start": "webpack-dev-server --open --port 4000",
+    "watch": "webpack --progress --watch",
+    "build": "webpack --mode production",
+    "text": "exit 1"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
   }
 }

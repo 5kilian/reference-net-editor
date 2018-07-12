@@ -11,7 +11,7 @@ export default class ConnectionHandle extends Handle {
 
     draw () {
         this.shape.visible = this.visible;
-        this.shape.graphics.clear().s('blue').f('white').drawCircle(this.x(), this.y(), 4);
+        this.shape.graphics.clear().s('black').f('white').drawCircle(this.x(), this.y(), 4);
     }
 
     onMouseDown (event) {
@@ -21,7 +21,7 @@ export default class ConnectionHandle extends Handle {
     }
 
     onPressMove (event) {
-        this.line.graphics.clear().beginStroke('blue').moveTo(this.x(), this.y()).lineTo(event.stageX, event.stageY);
+        this.line.graphics.clear().beginStroke('black').moveTo(this.x(), this.y()).lineTo(event.stageX, event.stageY);
     }
 
     onPressUp (event) {

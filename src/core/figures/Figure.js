@@ -11,7 +11,7 @@ export default class Figure extends DrawingObject {
         this.updatePosition(x, y);
         this.width = 1;
         this.height = 1;
-        this.lineColor = 'gray';
+        this.lineColor = 'black';
         this.fillColor = 'white';
     }
 

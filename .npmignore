@@ -3,3 +3,5 @@ node_modules
 .idea
 
 src
+webpack.config.js
+lib/index.html
