@@ -1,10 +1,6 @@
 import DrawingSelection from './Selection';
-
-import Place from './figures/Place';
-import Transition from './figures/Transition';
-import Connection from './connections/Connection';
-import Rubberband from './Rubberband';
-import ToolBar from './tools/ToolBar';
+import Palette from './tools/Palette';
+import SelectionTool from './tools/general/SelectionTool';
 import Grid from './Grid';
 
 let drawing = null;
@@ -20,19 +16,16 @@ class Drawing {
         this.view.on('stagemousedown', (event) => self.onMouseDown(event));
         this.view.on('stagemousemove', (event) => self.onMouseMove(event));
         this.view.on('stagemouseup', (event) => self.onMouseUp(event));
+
         this.objects = [];
+
         this.activeKeys = [];
+        this.activeTool = new SelectionTool();
+
         this.selection = new DrawingSelection();
 
-        new Connection(
-            new Place(100, document.getElementById(id).height / 2),
-            new Transition(200, document.getElementById(id).height / 3));
+        this.toolbar = new Palette().draw();
 
-        this.objects.forEach((object) => object.draw());
-        this.objects.forEach((object) => object.type === 'handle' ? this.top(object.shape) : null);
-        this.objects.forEach((object) => object.type === 'connection' ? this.bottom(object.shape) : null);
-
-        this.toolbar = new ToolBar().draw();
         this.grid = new Grid().draw();
     }
 
@@ -100,31 +93,15 @@ class Drawing {
     }
 
     onMouseDown (event) {
-        if (event.relatedTarget === null) {
-            this.selection.clear();
-            this.rubberband = new Rubberband(event.stageX, event.stageY);
-            this.draw(this.rubberband.shape);
-        }
+        this.activeTool.onMouseDown(event);
     }
 
     onMouseMove (event) {
-        if (this.rubberband !== undefined) {
-            this.rubberband.draw(event.stageX, event.stageY);
-        }
+        this.activeTool.onMouseMove(event);
     }
 
     onMouseUp (event) {
-        if (this.rubberband !== undefined) {
-            this.objects.forEach((object) => {
-                let o = new createjs.Rectangle(object.x, object.y, object.width, object.height);
-                let r = this.rubberband.rect();
-                if (r.contains(o.x, o.y) && r.contains(o.x + o.width, o.y + o.height)) {
-                    this.selection.add(object);
-                }
-            });
-            this.erase(this.rubberband.shape);
-            delete this.rubberband;
-        }
+        this.activeTool.onMouseUp(event);
     }
 
     onKeyDown (event) {

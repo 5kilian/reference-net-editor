@@ -1,4 +1,4 @@
-export default class Rubberband {
+export default class RubberBand {
 
     constructor (x, y) {
         this.shape = new createjs.Shape();
