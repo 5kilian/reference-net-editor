@@ -1,16 +1,16 @@
 import Tool from '../Tool';
-import Place from '../../figures/Place';
+import Line from '../../figures/Line';
 
-export default class PlaceTool extends Tool {
+export default class LineTool extends Tool {
 
     constructor () {
         super();
         this.icon = '';
-        this.name = 'Place Tool';
+        this.name = 'Line Tool';
     }
 
     onMouseDown (event) {
-        new Place(event.stageX, event.stageY).draw();
+        new Line(event.stageX, event.stageY).draw();
     }
 
     onMouseMove (event) {
@@ -20,4 +20,5 @@ export default class PlaceTool extends Tool {
     onMouseUp (event) {
 
     }
+
 }

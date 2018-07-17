@@ -1,7 +1,10 @@
-import DrawingSelection from './Selection';
-import Palette from './tools/Palette';
+import DrawingSelection from './util/Selection';
 import SelectionTool from './tools/general/SelectionTool';
-import Grid from './Grid';
+import PlaceTool from './tools/net/PlaceTool';
+import TransitionTool from './tools/net/TransitionTool';
+import Grid from './util/Grid';
+import RectangleTool from './tools/figure/RectangleTool';
+import CircleTool from './tools/figure/CircleTool';
 
 let drawing = null;
 
@@ -23,8 +26,6 @@ class Drawing {
         this.activeTool = new SelectionTool();
 
         this.selection = new DrawingSelection();
-
-        this.toolbar = new Palette().draw();
 
         this.grid = new Grid().draw();
     }
@@ -88,8 +89,32 @@ class Drawing {
 
     }
 
+    change (tool) {
+        this.activeTool = tool;
+
+    }
+
     handleKeyEvent (event) {
         this.selection.handleKeyEvent(this.activeKeys, event);
+
+        switch (this.activeKeys[this.activeKeys.length-1]) {
+            case 80:
+                this.activeTool = new PlaceTool();
+                break;
+            case 84:
+                this.activeTool = new TransitionTool();
+                break;
+            case 86:
+                this.activeTool = new SelectionTool();
+                break;
+            case 82:
+                this.activeTool = new RectangleTool();
+                break;
+            case 67:
+                this.activeTool = new CircleTool();
+                break;
+            default:
+        }
     }
 
     onMouseDown (event) {
@@ -117,7 +142,7 @@ class Drawing {
     }
 
     onResize (event) {
-        this.toolbar.draw();
+
     }
 
 }

@@ -1,5 +1,5 @@
-import { KEYCODE_DOWN, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP } from './constants/KeyCodes';
-import Drawing from './Drawing';
+import { KEYCODE_DOWN, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP } from '../constants/KeyCodes';
+import Drawing from '../Drawing';
 
 let config;
 

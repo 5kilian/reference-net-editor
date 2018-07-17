@@ -1,4 +1,4 @@
-import { KEYCODE_DEL } from './constants/KeyCodes';
+import { KEYCODE_DEL } from '../constants/KeyCodes';
 
 export default class Selection {
 

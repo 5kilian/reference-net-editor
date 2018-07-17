@@ -1,16 +1,16 @@
 import Tool from '../Tool';
-import Place from '../../figures/Place';
+import Circle from '../../figures/Circle';
 
-export default class PlaceTool extends Tool {
+export default class CircleTool extends Tool {
 
     constructor () {
         super();
         this.icon = '';
-        this.name = 'Place Tool';
+        this.name = 'Circle Tool';
     }
 
     onMouseDown (event) {
-        new Place(event.stageX, event.stageY).draw();
+        new Circle(event.stageX, event.stageY).draw();
     }
 
     onMouseMove (event) {

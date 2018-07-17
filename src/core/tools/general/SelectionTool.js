@@ -1,6 +1,6 @@
 import Tool from '../Tool';
 import Drawing from '../../Drawing';
-import RubberBand from '../../RubberBand';
+import RubberBand from '../../util/RubberBand';
 
 export default class SelectionTool extends Tool {
 
