@@ -1,5 +1,5 @@
 import DrawingObject from '../DrawingObject';
-import Drawing from "../Drawing";
+import Canvas from "../Canvas";
 
 export default class Connection extends DrawingObject {
 
@@ -8,7 +8,7 @@ export default class Connection extends DrawingObject {
         this.type = 'connection';
         this.points = [];
         this.bind(src, dest);
-        Drawing().bottom(this.shape);
+        Canvas().bottom(this.shape);
     }
 
     draw () {
@@ -29,7 +29,7 @@ export default class Connection extends DrawingObject {
     remove () {
         this.src.connections.splice(this.src.connections.indexOf(this), 1);
         this.dest.connections.splice(this.dest.connections.indexOf(this), 1);
-        Drawing().remove(this);
+        Canvas().remove(this);
     }
 
 }

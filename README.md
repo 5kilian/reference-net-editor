@@ -3,11 +3,22 @@ Web based reference net editor.
 
 # Instructions
 
+## Usage
+
 ```
-window.onload = () => {
-    let drawing = new window.drawing.Canvas(canvasid);
-};
+window.onload = () => new window.drawing(canvasId);
 ```
+
+## Hotkeys
+
+| Key   | Action          |
+| :---: | :-------------- |
+|  v    | Selection Tool  |
+|  r    | Rectangle Tool  |
+|  c    | Circle Tool     |
+|  p    | Place Tool      |
+|  t    | Transition Tool |
+
 
 # Licence
 MIT

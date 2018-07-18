@@ -18,7 +18,7 @@ export default class Line extends Figure {
 
     draw () {
         this.shape.graphics.clear().s(this.lineColor).f(this.fillColor)
-            .drawEllipse(0, 0, this.width, this.height);
+            .drawEllipse(0, 0, this.rect.width, this.rect.height);
     }
 
 }

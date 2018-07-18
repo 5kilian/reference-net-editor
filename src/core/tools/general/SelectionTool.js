@@ -1,5 +1,5 @@
 import Tool from '../Tool';
-import Drawing from '../../Drawing';
+import Canvas from '../../Canvas';
 import RubberBand from '../../util/RubberBand';
 
 export default class SelectionTool extends Tool {
@@ -12,9 +12,9 @@ export default class SelectionTool extends Tool {
 
     onMouseDown (event) {
         if (event.relatedTarget === null) {
-            Drawing().selection.clear();
+            Canvas().selection.clear();
             this.rubberband = new RubberBand(event.stageX, event.stageY);
-            Drawing().draw(this.rubberband.shape);
+            Canvas().draw(this.rubberband.shape);
         }
     }
 
@@ -26,14 +26,14 @@ export default class SelectionTool extends Tool {
 
     onMouseUp (event) {
         if (this.rubberband !== undefined) {
-            Drawing().objects.forEach((object) => {
+            Canvas().objects.forEach((object) => {
                 let o = new createjs.Rectangle(object.x, object.y, object.width, object.height);
                 let r = this.rubberband.rect();
                 if (r.contains(o.x, o.y) && r.contains(o.x + o.width, o.y + o.height)) {
-                    Drawing().selection.add(object);
+                    Canvas().selection.add(object);
                 }
             });
-            Drawing().erase(this.rubberband.shape);
+            Canvas().erase(this.rubberband.shape);
             delete this.rubberband;
         }
     }

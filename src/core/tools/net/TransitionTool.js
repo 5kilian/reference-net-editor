@@ -1,4 +1,5 @@
 import Tool from '../Tool';
+import Transition from '../../figures/Transition';
 
 export default class TransitionTool extends Tool {
 
@@ -8,4 +9,13 @@ export default class TransitionTool extends Tool {
         this.name = 'Transition Tool';
     }
 
+    onMouseDown (event) {
+        new Transition(event.stageX, event.stageY).draw();
+    }
+
+    onMouseMove (event) {
+    }
+
+    onMouseUp (event) {
+    }
 }

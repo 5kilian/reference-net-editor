@@ -1,4 +1,4 @@
-import Drawing from '../Drawing';
+import Drawing from '../Canvas';
 
 export default class Grid {
 
@@ -17,7 +17,6 @@ export default class Grid {
             for (let i = 0; i < x; i++) {
                 for (let j = 0; j < y; j++) {
                     this.shape.graphics.f('gray').s('gray').drawCircle(i * 20, j * 20, 1);
-                    console.log(i * 10, j * 10);
                 }
             }
         }

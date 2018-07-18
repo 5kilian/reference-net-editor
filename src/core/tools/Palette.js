@@ -1,5 +1,5 @@
 import DrawingObject from '../DrawingObject';
-import Drawing from '../Drawing';
+import Canvas from '../Canvas';
 
 import PlaceTool from './net/PlaceTool';
 import TransitionTool from './net/TransitionTool';
@@ -16,7 +16,7 @@ export default class Palette extends DrawingObject {
     }
 
     draw () {
-        this.shape.graphics.clear().s('gray').f('white').drawRect(0, 0, Drawing().view.canvas.width, 32);
+        this.shape.graphics.clear().s('gray').f('white').drawRect(0, 0, Canvas().view.canvas.width, 32);
 
         this.tools.forEach(tool => tool.draw());
 

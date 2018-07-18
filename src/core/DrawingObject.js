@@ -1,4 +1,4 @@
-import Drawing from "./Drawing";
+import Canvas from "./Canvas";
 
 /**
  * abstract
@@ -8,7 +8,7 @@ export default class DrawingObject {
     constructor () {
         this.type = 'object';
         this.shape = new createjs.Shape();
-        Drawing().add(this);
+        Canvas().add(this);
 
         let self = this;
         this.shape.on('click', function (event) { self.onClick(event); });

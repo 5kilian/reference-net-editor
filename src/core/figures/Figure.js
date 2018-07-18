@@ -1,4 +1,4 @@
-import Drawing from '../Drawing';
+import Canvas from '../Canvas';
 import DrawingObject from '../DrawingObject';
 
 export default class Figure extends DrawingObject {
@@ -8,11 +8,18 @@ export default class Figure extends DrawingObject {
         this.handles = [];
         this.connections = [];
 
-        this.updatePosition(x, y);
+        this.x = 0;
+        this.y = 0;
         this.width = 1;
         this.height = 1;
         this.lineColor = 'black';
         this.fillColor = 'white';
+
+        this.updatePosition(x, y);
+    }
+
+    rect () {
+        return new createjs.Rectangle(this.x, this.y, this.width, this.height);
     }
 
     remove () {
@@ -20,7 +27,7 @@ export default class Figure extends DrawingObject {
         for (let $i=0; $i<n; $i++) {
             this.connections[0].remove();
         }
-        Drawing().remove(this);
+        Canvas().remove(this);
     }
 
     move (dx, dy) {
@@ -49,24 +56,24 @@ export default class Figure extends DrawingObject {
     }
 
     onPressMove (event) {
-        Drawing().selection.move(event.stageX - this.mx, event.stageY - this.my);
+        Canvas().selection.move(event.stageX - this.mx, event.stageY - this.my);
         this.mx = event.stageX;
         this.my = event.stageY;
         // this.updatePosition(event.stageX - this.width / 2, event.stageY - this.height / 2);
     }
 
     onPressUp (event) {
-        // Drawing().grid.hide();
+        Canvas().grid.hide();
     }
 
     onMouseDown (event) {
-        if (!Drawing().selection.contains(this)) {
-            Drawing().selection.clear();
-            Drawing().selection.add(this);
+        if (!Canvas().selection.contains(this)) {
+            Canvas().selection.clear();
+            Canvas().selection.add(this);
         }
         this.mx = event.stageX;
         this.my = event.stageY;
-        // Drawing().grid.show();
+        Canvas().grid.show();
     }
 
     onSelect () {

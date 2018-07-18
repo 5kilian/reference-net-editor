@@ -1,4 +1,4 @@
-import Drawing from '../Drawing';
+import Canvas from '../Canvas';
 import Handle from './Handle';
 import Connection from '../connections/Connection';
 import Transition from '../figures/Transition';
@@ -16,8 +16,8 @@ export default class ConnectionHandle extends Handle {
 
     onMouseDown (event) {
         this.line = new createjs.Shape();
-        Drawing().draw(this.line);
-        Drawing().top(this.shape);
+        Canvas().draw(this.line);
+        Canvas().top(this.shape);
     }
 
     onPressMove (event) {
@@ -25,8 +25,8 @@ export default class ConnectionHandle extends Handle {
     }
 
     onPressUp (event) {
-        Drawing().erase(this.line);
-        let dest = Drawing().figureAt(event.stageX, event.stageY);
+        Canvas().erase(this.line);
+        let dest = Canvas().figureAt(event.stageX, event.stageY);
         if (dest === null) {
             switch (this.parent.type) {
                 case 'place':
