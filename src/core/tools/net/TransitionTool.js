@@ -10,7 +10,7 @@ export default class TransitionTool extends Tool {
     }
 
     onMouseDown (event) {
-        new Transition(event.stageX, event.stageY).draw();
+        new Transition(event.stageX, event.stageY).repaint();
     }
 
     onMouseMove (event) {

@@ -1,40 +1,41 @@
 import Tool from '../Tool';
-import Canvas from '../../Canvas';
 import RubberBand from '../../util/RubberBand';
+import DrawingEvent from '../../Dispatcher';
 
 export default class SelectionTool extends Tool {
 
-    constructor () {
+    constructor (selection) {
         super();
+        this.type = 'selection';
         this.icon = '';
         this.name = 'Selection Tool';
+        this.selection = selection;
     }
 
     onMouseDown (event) {
         if (event.relatedTarget === null) {
-            Canvas().selection.clear();
+            DrawingEvent().emit('clear selection');
             this.rubberband = new RubberBand(event.stageX, event.stageY);
-            Canvas().draw(this.rubberband.shape);
+            DrawingEvent().emit('add', this.rubberband);
+        } else {
+            DrawingEvent().emit('add to selection', event.relatedTarget);
+            DrawingEvent().emit('show grid');
         }
     }
 
     onMouseMove (event) {
         if (this.rubberband !== undefined) {
-            this.rubberband.draw(event.stageX, event.stageY);
+            this.rubberband.repaint(event.stageX, event.stageY);
         }
     }
 
     onMouseUp (event) {
         if (this.rubberband !== undefined) {
-            Canvas().objects.forEach((object) => {
-                let o = new createjs.Rectangle(object.x, object.y, object.width, object.height);
-                let r = this.rubberband.rect();
-                if (r.contains(o.x, o.y) && r.contains(o.x + o.width, o.y + o.height)) {
-                    Canvas().selection.add(object);
-                }
-            });
-            Canvas().erase(this.rubberband.shape);
+            DrawingEvent().emit('add all to selection', this.rubberband.rect());
+            DrawingEvent().emit('remove', this.rubberband);
             delete this.rubberband;
+        } else {
+            DrawingEvent().emit('hide grid');
         }
     }
 }

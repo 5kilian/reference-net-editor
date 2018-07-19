@@ -1,5 +1,5 @@
-import Figure from "./Figure";
-import ConnectionHandle from "../handles/ConnectionHandle";
+import Figure from './Figure';
+import ConnectionHandle from '../handles/ConnectionHandle';
 
 export default class Place extends Figure {
 
@@ -8,17 +8,19 @@ export default class Place extends Figure {
         this.type = 'place';
         this.width = 20;
         this.height = 20;
-
-        this.handles.push(new ConnectionHandle(this));
     }
 
     update () {
 
     }
 
-    draw () {
-        this.shape.graphics.clear().s(this.lineColor).f(this.fillColor)
+    repaint () {
+        this.graphics.clear().s(this.lineColor).f(this.fillColor)
             .drawEllipse(0, 0, this.width, this.height);
+    }
+
+    handles () {
+        return [ new ConnectionHandle(this, this.width / 2, this.height / 2) ];
     }
 
 }

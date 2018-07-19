@@ -1,5 +1,4 @@
 import Tool from '../Tool';
-import Place from '../../figures/Place';
 import Rectangle from '../../figures/Rectangle';
 
 export default class RectangleTool extends Tool {
@@ -11,7 +10,7 @@ export default class RectangleTool extends Tool {
     }
 
     onMouseDown (event) {
-        new Rectangle(event.stageX, event.stageY).draw();
+        new Rectangle(event.stageX, event.stageY).repaint();
     }
 
     onMouseMove (event) {

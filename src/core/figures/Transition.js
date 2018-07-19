@@ -8,17 +8,19 @@ export default class Transition extends Figure {
         this.type = 'transition';
         this.width = 24;
         this.height = 16;
-
-        this.handles.push(new ConnectionHandle(this));
     }
 
     update () {
 
     }
 
-    draw () {
-        this.shape.graphics.clear().s(this.lineColor).f(this.fillColor)
+    repaint () {
+        this.graphics.clear().s(this.lineColor).f(this.fillColor)
             .drawRect(0, 0, this.width, this.height);
+    }
+
+    handles () {
+        return [ new ConnectionHandle(this, this.width / 2, this.height / 2) ];
     }
 
 }

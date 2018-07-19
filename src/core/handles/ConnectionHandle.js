@@ -1,4 +1,4 @@
-import Canvas from '../Canvas';
+import Canvas from '../util/Canvas';
 import Handle from './Handle';
 import Connection from '../connections/Connection';
 import Transition from '../figures/Transition';
@@ -6,48 +6,48 @@ import Place from '../figures/Place';
 
 export default class ConnectionHandle extends Handle {
 
-    x () { return this.parent.x + this.parent.width / 2 };
-    y () { return this.parent.y + this.parent.height / 2 };
-
-    draw () {
-        this.shape.visible = this.visible;
-        this.shape.graphics.clear().s('black').f('white').drawCircle(this.x(), this.y(), 4);
+    repaint () {
+        this.graphics.clear().s('black').f('white').drawCircle(0, 0, 4);
     }
 
     onMouseDown (event) {
         this.line = new createjs.Shape();
-        Canvas().draw(this.line);
-        Canvas().top(this.shape);
+        // Canvas().draw(this.line);
+        // Canvas().top(this);
     }
 
     onPressMove (event) {
-        this.line.graphics.clear().beginStroke('black').moveTo(this.x(), this.y()).lineTo(event.stageX, event.stageY);
+        this.x = this.parent.x + this.parent.width / 2;
+        this.y = this.parent.y + this.parent.height / 2;
+
+        this.line.graphics.clear().beginStroke('black').moveTo(this.x, this.y).lineTo(event.stageX, event.stageY);
     }
 
     onPressUp (event) {
-        Canvas().erase(this.line);
-        let dest = Canvas().figureAt(event.stageX, event.stageY);
+        // Canvas().erase(this.line);
+        // let dest = Canvas().figureAt(event.stageX, event.stageY);
+        let dest = null;
         if (dest === null) {
             switch (this.parent.type) {
                 case 'place':
                     let transition = new Transition(event.stageX, event.stageY);
                     transition.move(-transition.width/2, -transition.height/2);
-                    transition.draw();
+                    transition.repaint();
                     let pt = new Connection(this.parent, transition);
-                    pt.draw();
+                    pt.repaint();
                     break;
                 case 'transition':
                     let place = new Place(event.stageX, event.stageY);
                     place.move(-place.width/2, -place.height/2);
-                    place.draw();
+                    place.repaint();
                     let tp = new Connection(this.parent, place);
-                    tp.draw();
+                    tp.repaint();
                     break;
                 default:
             }
         } else {
             if (dest.type !== this.parent.type) {
-                new Connection(this.parent, dest).draw();
+                new Connection(this.parent, dest).repaint();
             }
         }
     }

@@ -1,20 +1,23 @@
-export default class RubberBand {
+export default class RubberBand extends createjs.Shape {
 
     constructor (x, y) {
-        this.shape = new createjs.Shape();
+        super();
+        this.type = 'rubberband';
         this.x = x;
         this.y = y;
         this.dx = x;
         this.dy = y;
-        this.shape.x = x;
-        this.shape.y = y;
     }
 
-    draw (x, y) {
-        let p = this.shape.globalToLocal(x, y);
-        this.shape.graphics.clear().s('gray').f('transparent').drawRect(0, 0, p.x, p.y);
+    update () {
+
+    }
+
+    repaint (x, y) {
         this.dx = x;
         this.dy = y;
+        let p = this.globalToLocal(this.dx, this.dy);
+        this.graphics.clear().s('gray').f('transparent').drawRect(0, 0, p.x, p.y);
     }
 
     rect () {
@@ -35,5 +38,4 @@ export default class RubberBand {
 
         return new createjs.Rectangle(x, y, w, h);
     }
-
 }

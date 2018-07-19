@@ -10,7 +10,7 @@ export default class PlaceTool extends Tool {
     }
 
     onMouseDown (event) {
-        new Place(event.stageX, event.stageY).draw();
+        new Place(event.stageX, event.stageY).repaint();
     }
 
     onMouseMove (event) {

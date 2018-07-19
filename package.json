@@ -23,8 +23,8 @@
     "webpack-dev-server": "^3.1.4"
   },
   "scripts": {
-    "start": "webpack-dev-server --open --port 4000",
-    "watch": "webpack --progress --watch",
+    "start": "webpack-dev-server --open --port 4000 -p",
+    "watch": "webpack --progress --watch -p",
     "build": "webpack --mode production"
   },
   "babel": {

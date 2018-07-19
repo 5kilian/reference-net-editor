@@ -10,7 +10,7 @@ export default class CircleTool extends Tool {
     }
 
     onMouseDown (event) {
-        new Circle(event.stageX, event.stageY).draw();
+        new Circle(event.stageX, event.stageY).repaint();
     }
 
     onMouseMove (event) {

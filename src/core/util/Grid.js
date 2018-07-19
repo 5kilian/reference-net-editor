@@ -1,22 +1,23 @@
-import Drawing from '../Canvas';
+import Drawing from './Canvas';
+import DrawingEvent from '../Dispatcher';
 
-export default class Grid {
+export default class Grid extends createjs.Shape {
 
     constructor () {
-        this.shape = new createjs.Shape();
+        super();
         this.visible = false;
-        Drawing().draw(this.shape);
-        Drawing().bottom(this.shape);
+        // Drawing().draw(this);
+        // Drawing().bottom(this);
     }
 
-    draw () {
-        this.shape.graphics.clear();
+    repaint (width, height) {
+        this.graphics.clear();
         if (this.visible) {
-            let x = Math.ceil(Drawing().view.canvas.width / 20) + 1;
-            let y = Math.ceil(Drawing().view.canvas.height / 20) + 1;
+            let x = Math.ceil(width / 20) + 1;
+            let y = Math.ceil(height / 20) + 1;
             for (let i = 0; i < x; i++) {
                 for (let j = 0; j < y; j++) {
-                    this.shape.graphics.f('gray').s('gray').drawCircle(i * 20, j * 20, 1);
+                    this.graphics.f('gray').s('gray').drawCircle(i * 20, j * 20, 1);
                 }
             }
         }
@@ -25,12 +26,10 @@ export default class Grid {
 
     show () {
         this.visible = true;
-        this.draw();
     }
 
     hide () {
         this.visible = false;
-        this.draw();
     }
 
 }

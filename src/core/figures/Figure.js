@@ -1,10 +1,12 @@
-import Canvas from '../Canvas';
-import DrawingObject from '../DrawingObject';
+import DrawingEvent from '../Dispatcher';
+import DrawingObject from '../util/DrawingObject';
 
 export default class Figure extends DrawingObject {
 
     constructor (x, y) {
         super();
+        DrawingEvent().emit('add', this);
+
         this.handles = [];
         this.connections = [];
 
@@ -24,10 +26,10 @@ export default class Figure extends DrawingObject {
 
     remove () {
         let n = this.connections.length;
-        for (let $i=0; $i<n; $i++) {
-            this.connections[0].remove();
+        for (let $i = 0; $i < n; $i++) {
+            this.connections[ 0 ].remove();
         }
-        Canvas().remove(this);
+        DrawingEvent().emit('remove', this);
     }
 
     move (dx, dy) {
@@ -35,45 +37,25 @@ export default class Figure extends DrawingObject {
     }
 
     updatePosition (x, y) {
-        this.x = x;
-        this.y = y;
-        this.shape.x = x;
-        this.shape.y = y;
+        super.updatePosition(x, y);
         this.updateConnections();
         this.updateHandles();
     }
 
     updateConnections () {
-        this.connections.forEach((connection) => connection.draw());
+        this.connections.forEach((connection) => connection.repaint());
     }
 
     updateHandles () {
-        this.handles.forEach((handle) => handle.draw());
+        this.handles.forEach((handle) => handle.repaint());
     }
 
-    onClick (event) {
-
+    showHandles () {
+        this.handles.forEach((handle) => handle.show());
     }
 
-    onPressMove (event) {
-        Canvas().selection.move(event.stageX - this.mx, event.stageY - this.my);
-        this.mx = event.stageX;
-        this.my = event.stageY;
-        // this.updatePosition(event.stageX - this.width / 2, event.stageY - this.height / 2);
-    }
-
-    onPressUp (event) {
-        Canvas().grid.hide();
-    }
-
-    onMouseDown (event) {
-        if (!Canvas().selection.contains(this)) {
-            Canvas().selection.clear();
-            Canvas().selection.add(this);
-        }
-        this.mx = event.stageX;
-        this.my = event.stageY;
-        Canvas().grid.show();
+    hideHandles () {
+        this.handles.forEach((handle) => handle.hide());
     }
 
     onSelect () {
@@ -84,12 +66,23 @@ export default class Figure extends DrawingObject {
         this.hideHandles();
     }
 
-    showHandles () {
-        this.handles.forEach((handle) => handle.show());
+    onClick (event) {
+
     }
 
-    hideHandles () {
-        this.handles.forEach((handle) => handle.hide());
+    onMouseDown (event) {
+        this.mx = event.stageX;
+        this.my = event.stageY;
+    }
+
+    onPressMove (event) {
+        DrawingEvent().emit('move selection', { dx: event.stageX - this.mx, dy: event.stageY - this.my });
+        this.mx = event.stageX;
+        this.my = event.stageY;
+    }
+
+    onPressUp (event) {
+
     }
 
 }

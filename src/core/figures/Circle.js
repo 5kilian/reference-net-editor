@@ -1,5 +1,4 @@
 import Figure from "./Figure";
-import ConnectionHandle from "../handles/ConnectionHandle";
 
 export default class Circle extends Figure {
 
@@ -8,16 +7,14 @@ export default class Circle extends Figure {
         this.type = 'circle';
         this.width = 20;
         this.height = 20;
-
-        this.handles.push(new ConnectionHandle(this));
     }
 
     update () {
 
     }
 
-    draw () {
-        this.shape.graphics.clear().s(this.lineColor).f(this.fillColor)
+    repaint () {
+        this.graphics.clear().s(this.lineColor).f(this.fillColor)
             .drawEllipse(0, 0, this.width, this.height);
     }
 

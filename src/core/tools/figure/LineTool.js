@@ -10,7 +10,7 @@ export default class LineTool extends Tool {
     }
 
     onMouseDown (event) {
-        new Line(event.stageX, event.stageY).draw();
+        new Line(event.stageX, event.stageY).repaint();
     }
 
     onMouseMove (event) {

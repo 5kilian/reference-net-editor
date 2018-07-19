@@ -1,5 +1,4 @@
-import DrawingObject from '../DrawingObject';
-import Canvas from "../Canvas";
+import DrawingObject from '../util/DrawingObject';
 
 export default class Connection extends DrawingObject {
 
@@ -8,15 +7,14 @@ export default class Connection extends DrawingObject {
         this.type = 'connection';
         this.points = [];
         this.bind(src, dest);
-        Canvas().bottom(this.shape);
+        // Canvas().bottom(this.shape);
     }
 
     draw () {
-        this.shape.graphics.clear().beginStroke('red');
-        this.shape.graphics.moveTo(this.src.x + this.src.width / 2, this.src.y + this.src.height / 2);
-        this.points.forEach((point) => this.shape.graphics.lineTo(point.x, point.y));
-        this.shape.graphics.lineTo(this.dest.x + this.src.width / 2, this.dest.y + this.dest.height / 2);
-        // this.shape.graphics.();
+        this.graphics.clear().beginStroke('red');
+        this.graphics.moveTo(this.src.x + this.src.width / 2, this.src.y + this.src.height / 2);
+        this.points.forEach((point) => this.graphics.lineTo(point.x, point.y));
+        this.graphics.lineTo(this.dest.x + this.src.width / 2, this.dest.y + this.dest.height / 2);
     }
 
     bind (src, dest) {
@@ -29,7 +27,7 @@ export default class Connection extends DrawingObject {
     remove () {
         this.src.connections.splice(this.src.connections.indexOf(this), 1);
         this.dest.connections.splice(this.dest.connections.indexOf(this), 1);
-        Canvas().remove(this);
+        // Canvas().remove(this);
     }
 
 }
