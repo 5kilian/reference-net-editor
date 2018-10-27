@@ -29,11 +29,10 @@ export default class Selection extends createjs.Shape {
 
     add (object) {
         if (!this.contains(object)) {
-            this.clear();
+            this.objects.push(object);
+            object.onSelect();
+            this.onChange();
         }
-        this.objects.push(object);
-        object.onSelect();
-        this.onChange();
     }
 
     move (dx, dy) {
@@ -63,13 +62,15 @@ export default class Selection extends createjs.Shape {
     }
 
     rect () {
+        let rect = new createjs.Rectangle();
         if (this.objects.length === 0) {
-            return new createjs.Rectangle(0, 0, 0, 0);
+            return rect;
         }
 
-        let rect = this.objects[ 0 ].rect();
+        rect.copy(this.objects[ 0 ].rect());
         for (let i = 1; i < this.objects.length; i++) {
-            // rect
+            let o = this.objects[i].rect();
+            rect.extend(o.x, o.y, o.width, o.height);
         }
         return rect;
     }

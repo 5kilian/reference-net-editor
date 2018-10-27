@@ -75,9 +75,10 @@ export default class Canvas extends createjs.Stage {
 
     addAllToSelection (rect) {
         this.children.forEach((object) => {
-            let o = new createjs.Rectangle(object.x, object.y, object.width, object.height);
-            if (rect !== rect && rect.contains(o.x, o.y) && rect.contains(o.x + o.width, o.y + o.height)) {
-                this.selection.add(object);
+            if (object.type !== 'rubberband') {
+                if (rect.contains(object.x, object.y, object.width, object.height)) {
+                    this.selection.add(object);
+                }
             }
         });
     }
