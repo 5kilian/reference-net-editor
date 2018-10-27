@@ -54,4 +54,4 @@ class Drawing {
     }
 }
 
-module.exports = Drawing;
+export default Drawing;

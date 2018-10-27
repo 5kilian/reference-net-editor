@@ -1,35 +1,34 @@
 {
-  "name": "reference-net-editor",
-  "version": "0.1.8",
-  "description": "Web editor for reference nets",
-  "author": {
-    "name": "Tim Kilian",
-    "email": "mail@timkilian.pl"
-  },
-  "license": "MIT",
-  "repository": "github:5kilian/reference-net-editor",
-  "dependencies": {
-    "latest-createjs": "^1.0.24",
-    "socket.io": "^2.1.1"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.4",
-    "babel-preset-env": "^1.7.0",
-    "webpack": "^4.12.1",
-    "webpack-cli": "^3.0.8",
-    "webpack-command": "^0.4.1",
-    "webpack-dev-server": "^3.1.4"
-  },
-  "scripts": {
-    "start": "webpack-dev-server --open --port 4000 -p",
-    "watch": "webpack --progress --watch -p",
-    "build": "webpack --mode production"
-  },
-  "babel": {
-    "presets": [
-      "env"
-    ]
-  }
+    "name": "reference-net-editor",
+    "version": "0.1.8",
+    "description": "Web editor for reference nets",
+    "author": {
+        "name": "Tim Kilian",
+        "email": "mail@timkilian.pl"
+    },
+    "license": "MIT",
+    "repository": "github:5kilian/reference-net-editor",
+    "dependencies": {
+        "latest-createjs": "^1.0.24",
+        "socket.io": "^2.1.1"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.1.2",
+        "@babel/preset-env": "^7.1.0",
+        "babel-loader": "^8.0.4",
+        "uglifyjs-webpack-plugin": "^2.0.1",
+        "webpack": "^4.20.2",
+        "webpack-cli": "^3.1.2",
+        "webpack-dev-server": "^3.1.10"
+    },
+    "scripts": {
+        "start": "webpack-dev-server --open --port 4001 -p",
+        "watch": "webpack --progress --watch -p",
+        "build": "webpack --mode production"
+    },
+    "babel": {
+        "presets": [
+            "@babel/preset-env"
+        ]
+    }
 }

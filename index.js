@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = require('./src/core/Drawing');
+module.exports = require('./src/core/Drawing').default;

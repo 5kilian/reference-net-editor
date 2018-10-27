@@ -1,11 +1,16 @@
+const webpack = require('webpack');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const path = require('path');
 
 module.exports = config = {
-    entry: './index.js',
     mode: 'production',
+    entry: {
+        'ref-net': './index.js',
+        'ref-net.min': './index.js',
+    },
     output: {
-        path: path.resolve(__dirname, 'lib'),
-        filename: 'ref-net.min.js',
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].js',
         library: 'drawing',
         libraryTarget: 'umd'
     },
@@ -17,13 +22,20 @@ module.exports = config = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['babel-preset-env']
+                        presets: [ '@babel/preset-env' ]
                     }
                 }
             }
         ]
     },
+    optimization: {
+        minimize: true,
+        minimizer: [ new UglifyJsPlugin({ include: /\.min\.js$/ }) ]
+    },
     devServer: {
-        contentBase: "lib"
+        contentBase: path.join(__dirname, 'example'),
+        filename: 'ref-net.js',
+        compress: true,
+        port: 4000
     }
 };
