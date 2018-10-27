@@ -6,6 +6,7 @@ import TransitionTool from '../tools/net/TransitionTool';
 import Grid from './Grid';
 import RectangleTool from '../tools/figure/RectangleTool';
 import CircleTool from '../tools/figure/CircleTool';
+import ZoomTool from "../tools/general/ZoomTool";
 
 export default class Canvas extends createjs.Stage {
 
@@ -102,6 +103,10 @@ export default class Canvas extends createjs.Stage {
                 break;
             case 67:
                 this.activeTool = new CircleTool();
+                break;
+            case 90:
+                console.log(this);
+                this.activeTool = new ZoomTool(this);
                 break;
             default:
         }
