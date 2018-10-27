@@ -18,7 +18,8 @@ export default class SelectionTool extends Tool {
             this.rubberband = new RubberBand(event.stageX, event.stageY);
             DrawingEvent().emit('add', this.rubberband);
         } else {
-            DrawingEvent().emit('add to selection', event.relatedTarget);
+            DrawingEvent().emit('select', event.relatedTarget);
+            // DrawingEvent().emit('add to selection', event.relatedTarget);
             DrawingEvent().emit('show grid');
         }
     }

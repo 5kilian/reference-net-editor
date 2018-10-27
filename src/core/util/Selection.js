@@ -11,6 +11,7 @@ export default class Selection extends createjs.Shape {
 
         this.changed = false;
 
+        DrawingEvent().addEventListener('select', this.select.bind(this));
         DrawingEvent().addEventListener('add to selection', this.add.bind(this));
         DrawingEvent().addEventListener('clear selection', this.clear.bind(this));
         DrawingEvent().addEventListener('move selection', this.onMoveSelection.bind(this));
@@ -23,6 +24,13 @@ export default class Selection extends createjs.Shape {
         if (this.contains(object)) {
             this.remove(object);
         } else {
+            this.add(object);
+        }
+    }
+
+    select (object) {
+        if (!this.contains(object)) {
+            this.clear();
             this.add(object);
         }
     }
@@ -81,11 +89,12 @@ export default class Selection extends createjs.Shape {
         this.x = rect.x;
         this.y = rect.y;
         this.graphics.clear().s('#939393').f('transparent')
-            .drawRect(-3, -3, rect.width + 6, rect.height + 6);
+            .drawRect(-10, -10, rect.width + 20, rect.height + 20);
     }
 
     onMoveSelection (event) {
         this.move(event.dx, event.dy);
+        this.repaint();
     }
 
     onKeyEvent (event) {
