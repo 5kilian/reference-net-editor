@@ -1,6 +1,8 @@
 import { KEYCODE_DOWN, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP } from './constants/KeyCodes';
 import Canvas from './util/Canvas';
 
+import DrawingEvent from './Dispatcher';
+
 class Drawing {
 
     constructor (id, configuration = {}) {
@@ -51,6 +53,14 @@ class Drawing {
             this.canvas.onKeyEvent(event);
             this.canvas.keyChanged = false;
         }
+    }
+
+    emit (event, payload) {
+        DrawingEvent().emit(event, payload);
+    }
+
+    on (event, callback) {
+        DrawingEvent().addEventListener(event, callback);
     }
 }
 

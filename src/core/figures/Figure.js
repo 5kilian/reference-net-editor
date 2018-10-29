@@ -1,6 +1,9 @@
 import DrawingEvent from '../Dispatcher';
 import DrawingObject from '../util/DrawingObject';
 
+/**
+ * @abstract
+ */
 export default class Figure extends DrawingObject {
 
     constructor (x, y) {

@@ -35,6 +35,10 @@ export default class Selection extends createjs.Shape {
         }
     }
 
+    addAll (objects) {
+        objects.forEach(object => this.add(object));
+    }
+
     add (object) {
         if (!this.contains(object)) {
             this.objects.push(object);

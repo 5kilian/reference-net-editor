@@ -18,8 +18,23 @@
             canvas.width = document.body.clientWidth;
             canvas.height = document.body.clientHeight;
 
-            new window.drawing('drawing');
+            window.sketch = new window.drawing('drawing');
+
+            window.sketch.on('use tool', onChangeTool);
         };
+
+        function changeTool (element) {
+            window.sketch.emit('use tool', element.id);
+        }
+
+        function onChangeTool (tool) {
+            document.getElementById('action-bar').childNodes.forEach(node => {
+                if (node.className) {
+                    node.className = 'action-item';
+                }
+            });
+            document.getElementById(tool).className = 'action-item active';
+        }
     </script>
 
     <!-- CSS -->
@@ -28,14 +43,49 @@
         height: 100%;
         margin: 0;
         overflow: hidden;
+        font-family: Sans-Serif;
       }
       #drawing {
         width: 100%;
         height: 100%;
       }
+      #action-bar {
+        height: 40px;
+        border-bottom: 1px solid #939393;
+      }
+      .action-item {
+        width: 50px;
+        height: 20px;
+        padding: 5px;
+        margin: 5px;
+        border: 1px solid ;
+        text-align: center;
+        float: left;
+        cursor: pointer;
+      }
+      .action-item.active {
+        background-color: #939393;
+      }
     </style>
   </head>
   <body>
+    <div id="action-bar">
+      <div id="selection" class="action-item" onclick="changeTool(this)">
+        Pointer
+      </div>
+      <div id="zoom" class="action-item" onclick="changeTool(this)">
+        Zoom
+      </div>
+      <div id="circle" class="action-item" onclick="changeTool(this)">
+        Circle
+      </div>
+      <div id="rectangle" class="action-item" onclick="changeTool(this)">
+        Rect
+      </div>
+      <div id="line" class="action-item" onclick="changeTool(this)">
+        Line
+      </div>
+    </div>
     <canvas id="drawing"></canvas>
   </body>
 </html>

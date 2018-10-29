@@ -1,8 +1,6 @@
 import DrawingEvent from '../Dispatcher';
 import Selection from './Selection';
 import SelectionTool from '../tools/general/SelectionTool';
-import PlaceTool from '../tools/net/PlaceTool';
-import TransitionTool from '../tools/net/TransitionTool';
 import Grid from './Grid';
 import RectangleTool from '../tools/figure/RectangleTool';
 import CircleTool from '../tools/figure/CircleTool';
@@ -23,12 +21,14 @@ export default class Canvas extends createjs.Stage {
         DrawingEvent().addEventListener('show grid', this.showGrid.bind(this));
         DrawingEvent().addEventListener('hide grid', this.hideGrid.bind(this));
         DrawingEvent().addEventListener('add all to selection', this.addAllToSelection.bind(this));
+        DrawingEvent().addEventListener('use tool', this.useTool.bind(this));
 
         this.selection = new Selection();
         this.grid = new Grid();
 
         this.activeKeys = [];
-        this.activeTool = new SelectionTool(this.selection);
+
+        setTimeout(() => DrawingEvent().emit('use tool', 'selection'), 0);
     }
 
     update (event) {
@@ -60,10 +60,6 @@ export default class Canvas extends createjs.Stage {
         }
     }
 
-    change (tool) {
-        this.activeTool = tool;
-    }
-
     showGrid () {
         this.grid.show();
         this.grid.repaint(this.canvas.width, this.canvas.height);
@@ -75,13 +71,31 @@ export default class Canvas extends createjs.Stage {
     }
 
     addAllToSelection (rect) {
-        this.children.forEach((object) => {
-            if (object.type !== 'rubberband') {
-                if (rect.contains(object.x, object.y, object.width, object.height)) {
-                    this.selection.add(object);
-                }
-            }
-        });
+        this.selection.addAll(this.children.filter(child => {
+            return child.type !== 'rubberband' && rect.contains(child.x, child.y, child.width, child.height);
+        }));
+    }
+
+    useTool (tool) {
+        switch (tool) {
+            case 'selection':
+                this.changeActiveTool(new SelectionTool());
+                break;
+            case 'rectangle':
+                this.changeActiveTool(new RectangleTool());
+                break;
+            case 'circle':
+                this.changeActiveTool(new CircleTool());
+                break;
+            case 'zoom':
+                this.changeActiveTool(new ZoomTool(this));
+                break;
+        }
+    }
+
+    changeActiveTool (tool) {
+        delete this.activeTool;
+        this.activeTool = tool;
     }
 
     onKeyEvent (event) {
@@ -89,24 +103,17 @@ export default class Canvas extends createjs.Stage {
         this.selection.onKeyEvent(event);
 
         switch (this.activeKeys[ this.activeKeys.length - 1 ]) {
-            case 80:
-                this.activeTool = new PlaceTool();
-                break;
-            case 84:
-                this.activeTool = new TransitionTool();
-                break;
             case 86:
-                this.activeTool = new SelectionTool();
+                DrawingEvent().emit('use tool', 'selection');
                 break;
             case 82:
-                this.activeTool = new RectangleTool();
+                DrawingEvent().emit('use tool', 'rectangle');
                 break;
             case 67:
-                this.activeTool = new CircleTool();
+                DrawingEvent().emit('use tool', 'circle');
                 break;
             case 90:
-                console.log(this);
-                this.activeTool = new ZoomTool(this);
+                DrawingEvent().emit('use tool', 'zoom');
                 break;
             default:
         }
