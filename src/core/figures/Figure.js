@@ -45,6 +45,12 @@ export default class Figure extends DrawingObject {
         this.updateHandles();
     }
 
+    adjustScale (dx, dy) {
+        this.width = Math.max(0, this.width + dx);
+        this.height = Math.max(0, this.height + dy);
+        this.repaint();
+    }
+
     updateConnections () {
         this.connections.forEach((connection) => connection.repaint());
     }

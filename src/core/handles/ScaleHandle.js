@@ -2,15 +2,14 @@ import Handle from './Handle';
 
 export default class ScaleHandle extends Handle {
 
-    constructor (parent) {
-        super(parent);
-        this.x = parent.x + parent.width;
-        this.y = parent.y + parent.height;
+    constructor (parent, orientation, direction) {
+        super(parent, orientation);
+        this.direction = direction;
     }
 
     repaint () {
         this.graphics.clear().s('#939393').f('white')
-            .drawRect(0, 0, 5, 5);
+            .drawRect(-3, -3, 6, 6);
     }
 
     onMouseDown (event) {
@@ -19,12 +18,28 @@ export default class ScaleHandle extends Handle {
     }
 
     onPressMove (event) {
-        parent.scale(event.stageX - this.mx, event.stageY - this.my);
+        let dx = (this.direction & ScaleHandle.AXIS_X) > 0;
+        let dy = (this.direction & ScaleHandle.AXIS_Y) > 0;
+        this.owner.adjustScale(dx * (event.stageX - this.mx), dy * (event.stageY - this.my));
+        this.mx = event.stageX;
+        this.my = event.stageY;
     }
 
     onPressUp (event) {
         this.mx = event.stageX;
         this.my = event.stageY;
+    }
+
+    static get AXIS_X () {
+        return 1;
+    }
+
+    static get AXIS_Y () {
+        return 2;
+    }
+
+    static get AXIS_XY () {
+        return 3;
     }
 
 }

@@ -28,6 +28,8 @@ export default class DrawingObject extends createjs.Shape {
         this.y = y;
     }
 
+    adjustScale (dx, dy) { }
+
     /**
      * @abstract
      */

@@ -1,13 +1,24 @@
 import { KEYCODE_DEL } from '../constants/KeyCodes';
 import ScaleHandle from '../handles/ScaleHandle';
 import DrawingEvent from '../Dispatcher';
+import CardinalOrientation from '../orientations/CardinalOrientation';
 
 export default class Selection extends createjs.Shape {
 
     constructor () {
         super();
         this.objects = [];
-        this.handles = [ new ScaleHandle(this) ];
+        this.type = 'selection';
+        this.handles = [
+            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.NORTH), ScaleHandle.AXIS_Y),
+            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.NORTH_EAST), ScaleHandle.AXIS_XY),
+            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.EAST), ScaleHandle.AXIS_X),
+            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.SOUTH_EAST), ScaleHandle.AXIS_XY),
+            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.SOUTH), ScaleHandle.AXIS_Y),
+            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.SOUTH_WEST), ScaleHandle.AXIS_XY),
+            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.WEST), ScaleHandle.AXIS_X),
+            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.NORTH_WEST), ScaleHandle.AXIS_XY),
+        ];
 
         this.changed = false;
 
@@ -29,7 +40,7 @@ export default class Selection extends createjs.Shape {
     }
 
     select (object) {
-        if (!this.contains(object)) {
+        if (!this.contains(object) && object.type !== 'handle') {
             this.clear();
             this.add(object);
         }
@@ -84,7 +95,7 @@ export default class Selection extends createjs.Shape {
             let o = this.objects[i].rect();
             rect.extend(o.x, o.y, o.width, o.height);
         }
-        return rect;
+        return rect.setValues(rect.x -10, rect.y -10, rect.width +20, rect.height +20);
     }
 
     repaint () {
@@ -93,7 +104,18 @@ export default class Selection extends createjs.Shape {
         this.x = rect.x;
         this.y = rect.y;
         this.graphics.clear().s('#939393').f('transparent')
-            .drawRect(-10, -10, rect.width + 20, rect.height + 20);
+            .drawRect(0, 0, rect.width, rect.height);
+
+        this.updateHandles();
+    }
+
+    adjustScale (dx, dy) {
+        this.objects.forEach(object => object.adjustScale(dx, dy));
+        this.repaint();
+    }
+
+    updateHandles () {
+        this.handles.forEach(handle => handle.updatePosition());
     }
 
     onMoveSelection (event) {

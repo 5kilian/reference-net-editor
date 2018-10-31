@@ -1,13 +1,16 @@
 import DrawingObject from "../util/DrawingObject";
+import DrawingEvent from '../Dispatcher';
 
+/**
+ * @abstract
+ */
 export default class Handle extends DrawingObject {
 
-    constructor (parent, dx, dy) {
+    constructor (owner, orientation) {
         super();
         this.type = 'handle';
-        this.parent = parent;
-        this.visible = false;
-        this.updatePosition(parent.x + dx, parent.y + dy);
+        this.owner = owner;
+        this.orientation = orientation;
     }
 
     /**
@@ -15,15 +18,18 @@ export default class Handle extends DrawingObject {
      */
     repaint () { }
 
+    updatePosition () {
+        let position = this.orientation.position();
+        super.updatePosition(position.x, position.y);
+    }
+
     show () {
-        this.visible = true;
-        // Canvas().add(this);
+        DrawingEvent().emit('add', this);
         this.repaint();
     }
 
     hide () {
-        this.visible = false;
-        // Canvas().remove(this);
+        DrawingEvent().emit('remove', this);
     }
 
 }
