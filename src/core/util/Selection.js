@@ -115,6 +115,12 @@ export default class Selection extends createjs.Shape {
         this.updateHandles();
     }
 
+    stretch (east, south, west, north) {
+        this.objects.forEach(object => object.stretch(east, south, west, north));
+        this.repaint();
+        this.updateHandles();
+    }
+
     updateHandles () {
         this.handles.forEach(handle => handle.updatePosition());
         this.objects.forEach(object => object.updateHandles());
