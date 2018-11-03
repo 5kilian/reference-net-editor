@@ -1,10 +1,14 @@
 import DrawingEvent from '../Dispatcher';
 import Selection from './Selection';
-import SelectionTool from '../tools/general/SelectionTool';
 import Grid from './Grid';
+import SelectionTool from '../tools/general/SelectionTool';
 import RectangleTool from '../tools/figure/RectangleTool';
 import CircleTool from '../tools/figure/CircleTool';
 import ZoomTool from "../tools/general/ZoomTool";
+import LineTool from '../tools/figure/LineTool';
+import { KEYCODE_C, KEYCODE_L, KEYCODE_R, KEYCODE_V, KEYCODE_Z } from '../constants/KeyCodes';
+import RubberBand from './RubberBand';
+import Figure from '../figures/Figure';
 
 export default class Canvas extends createjs.Stage {
 
@@ -70,9 +74,10 @@ export default class Canvas extends createjs.Stage {
         this.grid.repaint(this.canvas.width, this.canvas.height);
     }
 
-    addAllToSelection (rect) {
-        this.selection.addAll(this.children.filter(child => {
-            return child.type !== 'rubberband' && rect.contains(child.x, child.y, child.width, child.height);
+    addAllToSelection (rubberband) {
+        this.selection.addAll(this.children.filter(child => (child instanceof Figure)).filter(child => {
+            let rect = child.rect();
+            return rubberband.contains(rect.x, rect.y, rect.width, rect.height);
         }));
     }
 
@@ -87,6 +92,9 @@ export default class Canvas extends createjs.Stage {
             case 'circle':
                 this.changeActiveTool(new CircleTool());
                 break;
+            case 'line':
+                this.changeActiveTool(new LineTool());
+                break;
             case 'zoom':
                 this.changeActiveTool(new ZoomTool(this));
                 break;
@@ -96,6 +104,7 @@ export default class Canvas extends createjs.Stage {
     changeActiveTool (tool) {
         delete this.activeTool;
         this.activeTool = tool;
+        this.selection.clear();
     }
 
     onKeyEvent (event) {
@@ -103,16 +112,19 @@ export default class Canvas extends createjs.Stage {
         this.selection.onKeyEvent(event);
 
         switch (this.activeKeys[ this.activeKeys.length - 1 ]) {
-            case 86:
+            case KEYCODE_V:
                 DrawingEvent().emit('use tool', 'selection');
                 break;
-            case 82:
+            case KEYCODE_R:
                 DrawingEvent().emit('use tool', 'rectangle');
                 break;
-            case 67:
+            case KEYCODE_L:
+                DrawingEvent().emit('use tool', 'line');
+                break;
+            case KEYCODE_C:
                 DrawingEvent().emit('use tool', 'circle');
                 break;
-            case 90:
+            case KEYCODE_Z:
                 DrawingEvent().emit('use tool', 'zoom');
                 break;
             default:

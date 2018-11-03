@@ -7,18 +7,23 @@ export default class LineTool extends Tool {
         super();
         this.icon = '';
         this.name = 'Line Tool';
+        this.line = null;
     }
 
     onMouseDown (event) {
-        new Line(event.stageX, event.stageY).repaint();
+        let point = new createjs.Point(event.stageX, event.stageY);
+        this.line = new Line(point, point);
     }
 
     onMouseMove (event) {
-
+        if (this.line) {
+            this.line.setDest(new createjs.Point(event.stageX, event.stageY));
+            this.line.repaint();
+        }
     }
 
     onMouseUp (event) {
-
+        this.line = null;
     }
 
 }

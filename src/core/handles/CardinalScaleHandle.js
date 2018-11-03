@@ -1,10 +1,10 @@
 import Handle from './Handle';
+import CardinalOrientation from '../orientations/CardinalOrientation';
 
-export default class ScaleHandle extends Handle {
+export default class CardinalScaleHandle extends Handle {
 
-    constructor (parent, orientation, direction) {
-        super(parent, orientation);
-        this.direction = direction;
+    constructor (parent, orientation) {
+        super(parent, new CardinalOrientation(parent, orientation));
     }
 
     repaint () {
@@ -18,8 +18,8 @@ export default class ScaleHandle extends Handle {
     }
 
     onPressMove (event) {
-        let dx = (this.direction & ScaleHandle.AXIS_X) > 0;
-        let dy = (this.direction & ScaleHandle.AXIS_Y) > 0;
+        let dx = Math.min((this.orientation.direction & CardinalOrientation.EAST)  || (this.orientation.direction & CardinalOrientation.WEST), 1);
+        let dy = Math.min((this.orientation.direction & CardinalOrientation.NORTH) || (this.orientation.direction & CardinalOrientation.SOUTH), 1);
         this.owner.adjustScale(dx * (event.stageX - this.mx), dy * (event.stageY - this.my));
         this.mx = event.stageX;
         this.my = event.stageY;
@@ -28,18 +28,6 @@ export default class ScaleHandle extends Handle {
     onPressUp (event) {
         this.mx = event.stageX;
         this.my = event.stageY;
-    }
-
-    static get AXIS_X () {
-        return 1;
-    }
-
-    static get AXIS_Y () {
-        return 2;
-    }
-
-    static get AXIS_XY () {
-        return 3;
     }
 
 }

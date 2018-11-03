@@ -1,5 +1,5 @@
 import { KEYCODE_DEL } from '../constants/KeyCodes';
-import ScaleHandle from '../handles/ScaleHandle';
+import CardinalScaleHandle from '../handles/CardinalScaleHandle';
 import DrawingEvent from '../Dispatcher';
 import CardinalOrientation from '../orientations/CardinalOrientation';
 
@@ -10,14 +10,14 @@ export default class Selection extends createjs.Shape {
         this.objects = [];
         this.type = 'selection';
         this.handles = [
-            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.NORTH), ScaleHandle.AXIS_Y),
-            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.NORTH_EAST), ScaleHandle.AXIS_XY),
-            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.EAST), ScaleHandle.AXIS_X),
-            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.SOUTH_EAST), ScaleHandle.AXIS_XY),
-            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.SOUTH), ScaleHandle.AXIS_Y),
-            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.SOUTH_WEST), ScaleHandle.AXIS_XY),
-            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.WEST), ScaleHandle.AXIS_X),
-            new ScaleHandle(this, new CardinalOrientation(this, CardinalOrientation.NORTH_WEST), ScaleHandle.AXIS_XY),
+            new CardinalScaleHandle(this, CardinalOrientation.NORTH),
+            new CardinalScaleHandle(this, CardinalOrientation.NORTH_EAST),
+            new CardinalScaleHandle(this, CardinalOrientation.EAST),
+            new CardinalScaleHandle(this, CardinalOrientation.SOUTH_EAST),
+            new CardinalScaleHandle(this, CardinalOrientation.SOUTH),
+            new CardinalScaleHandle(this, CardinalOrientation.SOUTH_WEST),
+            new CardinalScaleHandle(this, CardinalOrientation.WEST),
+            new CardinalScaleHandle(this, CardinalOrientation.NORTH_WEST),
         ];
 
         this.changed = false;
@@ -26,9 +26,11 @@ export default class Selection extends createjs.Shape {
         DrawingEvent().addEventListener('add to selection', this.add.bind(this));
         DrawingEvent().addEventListener('clear selection', this.clear.bind(this));
         DrawingEvent().addEventListener('move selection', this.onMoveSelection.bind(this));
+        DrawingEvent().addEventListener('change selection', this.onChange.bind(this));
     }
 
     update () {
+
     }
 
     toggle (object) {
@@ -40,7 +42,7 @@ export default class Selection extends createjs.Shape {
     }
 
     select (object) {
-        if (!this.contains(object) && object.type !== 'handle') {
+        if (!this.contains(object)) {
             this.clear();
             this.add(object);
         }
@@ -105,22 +107,23 @@ export default class Selection extends createjs.Shape {
         this.y = rect.y;
         this.graphics.clear().s('#939393').f('transparent')
             .drawRect(0, 0, rect.width, rect.height);
-
-        this.updateHandles();
     }
 
     adjustScale (dx, dy) {
         this.objects.forEach(object => object.adjustScale(dx, dy));
         this.repaint();
+        this.updateHandles();
     }
 
     updateHandles () {
         this.handles.forEach(handle => handle.updatePosition());
+        this.objects.forEach(object => object.updateHandles());
     }
 
     onMoveSelection (event) {
         this.move(event.dx, event.dy);
         this.repaint();
+        this.updateHandles();
     }
 
     onKeyEvent (event) {
@@ -135,8 +138,9 @@ export default class Selection extends createjs.Shape {
 
     onChange () {
         if (this.objects.length > 0) {
-            this.repaint();
             DrawingEvent().emit('add', this);
+            this.repaint();
+            this.updateHandles();
             this.handles.forEach(handle => handle.show());
         } else {
             DrawingEvent().emit('remove', this);

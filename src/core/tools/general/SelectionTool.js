@@ -1,6 +1,7 @@
 import Tool from '../Tool';
 import RubberBand from '../../util/RubberBand';
 import DrawingEvent from '../../Dispatcher';
+import Figure from '../../figures/Figure';
 
 export default class SelectionTool extends Tool {
 
@@ -17,7 +18,7 @@ export default class SelectionTool extends Tool {
             DrawingEvent().emit('clear selection');
             this.rubberband = new RubberBand(event.stageX, event.stageY);
             DrawingEvent().emit('add', this.rubberband);
-        } else {
+        } else if (event.relatedTarget instanceof Figure) {
             DrawingEvent().emit('select', event.relatedTarget);
             // DrawingEvent().emit('add to selection', event.relatedTarget);
             DrawingEvent().emit('show grid');

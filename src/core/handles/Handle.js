@@ -8,9 +8,10 @@ export default class Handle extends DrawingObject {
 
     constructor (owner, orientation) {
         super();
-        this.type = 'handle';
+        this.type = 'Handle';
         this.owner = owner;
         this.orientation = orientation;
+        this.updatePosition();
     }
 
     /**

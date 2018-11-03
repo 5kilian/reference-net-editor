@@ -41,8 +41,6 @@ export default class Figure extends DrawingObject {
 
     updatePosition (x, y) {
         super.updatePosition(x, y);
-        this.updateConnections();
-        this.updateHandles();
     }
 
     adjustScale (dx, dy) {

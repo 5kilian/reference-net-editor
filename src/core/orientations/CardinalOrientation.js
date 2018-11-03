@@ -5,6 +5,7 @@ export default class CardinalOrientation extends Orientation {
 
     constructor (owner, direction) {
         super(owner);
+        this.type = 'CardinalOrientation';
         this.direction = direction;
     }
 
