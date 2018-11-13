@@ -10,7 +10,9 @@ export default class CircleTool extends Tool {
     }
 
     onMouseDown (event) {
-        new Circle(event.stageX, event.stageY).repaint();
+        let circle = new Circle(event.stageX, event.stageY);
+        circle.move(-circle.width/2, -circle.height/2);
+        circle.repaint();
     }
 
     onMouseMove (event) {

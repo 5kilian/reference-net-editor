@@ -10,7 +10,9 @@ export default class RectangleTool extends Tool {
     }
 
     onMouseDown (event) {
-        new Rectangle(event.stageX, event.stageY).repaint();
+        let rectangle = new Rectangle(event.stageX, event.stageY);
+        rectangle.move(-rectangle.width/2, -rectangle.height/2);
+        rectangle.repaint();
     }
 
     onMouseMove (event) {

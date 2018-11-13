@@ -5,8 +5,8 @@ export default class Rectangle extends Figure {
     constructor (x, y) {
         super(x, y);
         this.type = 'rectangle';
-        this.width = 20;
-        this.height = 20;
+        this.width = 42;
+        this.height = 28;
     }
 
     update () {
