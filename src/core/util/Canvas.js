@@ -6,6 +6,7 @@ import RectangleTool from '../tools/figure/RectangleTool';
 import CircleTool from '../tools/figure/CircleTool';
 import ZoomTool from "../tools/general/ZoomTool";
 import LineTool from '../tools/figure/LineTool';
+import ConnectionTool from '../tools/figure/ConnectionTool';
 import { KEYCODE_C, KEYCODE_L, KEYCODE_R, KEYCODE_V, KEYCODE_Z } from '../constants/KeyCodes';
 import RubberBand from './RubberBand';
 import Figure from '../figures/Figure';
@@ -94,6 +95,9 @@ export default class Canvas extends createjs.Stage {
                 break;
             case 'line':
                 this.changeActiveTool(new LineTool());
+                break;
+            case 'connection':
+                this.changeActiveTool(new ConnectionTool());
                 break;
             case 'zoom':
                 this.changeActiveTool(new ZoomTool(this));

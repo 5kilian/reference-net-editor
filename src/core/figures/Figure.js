@@ -23,6 +23,14 @@ export default class Figure extends DrawingObject {
         this.updatePosition(x, y);
     }
 
+    destroy () {
+        DrawingEvent().emit('remove', this);
+    }
+
+    pos () {
+        return new createjs.Point(this.x + this.width/2, this.y + this.height/2);
+    }
+
     rect () {
         return new createjs.Rectangle(this.x, this.y, this.width, this.height);
     }
@@ -41,6 +49,7 @@ export default class Figure extends DrawingObject {
 
     updatePosition (x, y) {
         super.updatePosition(x, y);
+        this.connections.forEach(connection => connection.repaint());
     }
 
     adjustScale (dx, dy) {

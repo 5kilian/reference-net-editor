@@ -33,6 +33,10 @@ export default class Line extends Figure {
 
     }
 
+    pos () {
+        return this.src();
+    }
+
     move (dx, dy) {
         this.points.forEach(point => point.move(dx, dy));
         this.repaint();
