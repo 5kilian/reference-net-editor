@@ -8,7 +8,6 @@ import ZoomTool from "../tools/general/ZoomTool";
 import LineTool from '../tools/figure/LineTool';
 import ConnectionTool from '../tools/figure/ConnectionTool';
 import { KEYCODE_C, KEYCODE_L, KEYCODE_R, KEYCODE_V, KEYCODE_Z } from '../constants/KeyCodes';
-import RubberBand from './RubberBand';
 import Figure from '../figures/Figure';
 
 export default class Canvas extends createjs.Stage {
