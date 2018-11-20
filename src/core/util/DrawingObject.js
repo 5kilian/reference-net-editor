@@ -19,10 +19,6 @@ export default class DrawingObject extends createjs.Shape {
         this.on('mouseout', event => self.onMouseOut(event));
     }
 
-    draw (context) {
-        super.draw(context);
-    }
-
     updatePosition (x, y) {
         this.x = x;
         this.y = y;
@@ -34,6 +30,11 @@ export default class DrawingObject extends createjs.Shape {
      * @abstract
      */
     update () { }
+
+    /**
+     * @abstract
+     */
+    repaint () { }
 
     /**
      * @abstract

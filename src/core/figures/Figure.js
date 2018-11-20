@@ -49,7 +49,6 @@ export default class Figure extends DrawingObject {
 
     updatePosition (x, y) {
         super.updatePosition(x, y);
-        this.connections.forEach(connection => connection.repaint());
     }
 
     adjustScale (dx, dy) {
@@ -72,7 +71,7 @@ export default class Figure extends DrawingObject {
     }
 
     updateHandles () {
-        this.handles.forEach((handle) => handle.repaint());
+        this.handles.forEach(handle => handle.updatePosition());
     }
 
     showHandles () {
@@ -108,6 +107,15 @@ export default class Figure extends DrawingObject {
 
     onPressUp (event) {
 
+    }
+
+    onDoubleClick(event) {
+    }
+
+    onMouseOut(event) {
+    }
+
+    onMouseOver(event) {
     }
 
 }

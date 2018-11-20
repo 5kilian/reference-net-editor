@@ -1,5 +1,5 @@
 import Tool from '../Tool';
-import Line from '../../figures/Line';
+import Line from '../../connections/Line';
 
 export default class LineTool extends Tool {
 

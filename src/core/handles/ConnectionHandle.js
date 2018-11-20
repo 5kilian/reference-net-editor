@@ -2,6 +2,10 @@ import Handle from './Handle';
 
 export default class ConnectionHandle extends Handle {
 
+    constructor (owner, orientation) {
+        super(owner, orientation);
+    }
+
     update() {
     }
 

@@ -1,4 +1,4 @@
-import Line from "./Line";
+import Line from "../connections/Line";
 
 export default class Connection extends Line {
 

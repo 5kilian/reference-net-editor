@@ -1,4 +1,4 @@
-import Figure from "./Figure";
+import Figure from "../figures/Figure";
 import LinePointHandle from '../handles/LinePointHandle';
 
 class LinePoint {
