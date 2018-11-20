@@ -1,5 +1,3 @@
-import Canvas from "./Canvas";
-
 /**
  * abstract
  */

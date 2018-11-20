@@ -1,6 +1,8 @@
+import CenterConnectionHandle from '../handles/CenterConnectionHandle';
 import Figure from "./Figure";
 import RadialConnectionHandle from "../handles/RadialConnectionHandle";
 import RadialOrientation from "../orientations/RadialOrientation";
+
 
 export default class Circle extends Figure {
 
@@ -19,6 +21,7 @@ export default class Circle extends Figure {
             new RadialConnectionHandle(this, RadialOrientation.SOUTH_WEST),
             new RadialConnectionHandle(this, RadialOrientation.WEST),
             new RadialConnectionHandle(this, RadialOrientation.NORTH_WEST),
+            new CenterConnectionHandle(this),
         ]
     }
 

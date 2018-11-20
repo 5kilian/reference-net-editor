@@ -16,6 +16,8 @@ export default class Canvas extends createjs.Stage {
         super(id);
         this.id = id;
 
+        this.enableMouseOver(20);
+
         this.on('stagemousedown', this.onMouseDown.bind(this));
         this.on('stagemousemove', this.onMouseMove.bind(this));
         this.on('stagemouseup', this.onMouseUp.bind(this));
