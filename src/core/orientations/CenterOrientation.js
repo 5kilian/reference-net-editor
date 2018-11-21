@@ -1,7 +1,7 @@
-import Orientation from './Orientation';
+import { Orientation } from './Orientation';
 
 
-export default class CenterOrientation extends Orientation {
+export class CenterOrientation extends Orientation {
 
     constructor (owner) {
         super(owner);
@@ -9,7 +9,7 @@ export default class CenterOrientation extends Orientation {
     }
 
     position () {
-        return this.owner.pos();
+        return this.owner.center();
     }
 
 }

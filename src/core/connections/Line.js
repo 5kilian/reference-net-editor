@@ -1,5 +1,5 @@
-import Figure from "../figures/Figure";
-import LinePointHandle from '../handles/LinePointHandle';
+import { Figure } from "../figures/Figure";
+import { LinePointHandle } from '../handles/LinePointHandle';
 
 class LinePoint {
 
@@ -20,7 +20,7 @@ class LinePoint {
 
 }
 
-export default class Line extends Figure {
+export class Line extends Figure {
 
     constructor (src, dest) {
         super(0, 0);
@@ -33,13 +33,13 @@ export default class Line extends Figure {
 
     }
 
-    pos () {
+    position () {
         return this.src();
     }
 
     move (dx, dy) {
         this.points.forEach(point => point.move(dx, dy));
-        this.repaint();
+        this.redraw();
         this.updateHandles();
     }
 
@@ -83,7 +83,7 @@ export default class Line extends Figure {
         return new createjs.Rectangle(min.x, min.y, max.x - min.x, max.y - min.y);
     }
 
-    repaint () {
+    redraw () {
         let src = this.src();
         this.graphics.clear().s(this.lineColor).moveTo(src.x, src.y);
         for (let i=1; i<this.points.length; i++) {

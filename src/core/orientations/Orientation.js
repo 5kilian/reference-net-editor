@@ -1,7 +1,7 @@
 /**
  * @abstract
  */
-export default class Orientation {
+export class Orientation {
 
     constructor (owner) {
         this.type = 'orientation';

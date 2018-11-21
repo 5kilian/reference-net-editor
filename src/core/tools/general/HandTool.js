@@ -1,6 +1,6 @@
-import Tool from '../Tool';
+import { Tool } from '../Tool';
 
-export default class HandTool extends Tool {
+export class HandTool extends Tool {
 
     constructor () {
         super();

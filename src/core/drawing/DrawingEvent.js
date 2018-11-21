@@ -1,18 +1,18 @@
 
-class Dispatcher {
+class DrawingEvent {
 
     constructor () {
         this.events = {};
     }
 
-    addEventListener (name, callback) {
+    on (name, callback) {
         if (!this.events[name]) {
             this.events[name] = [];
         }
         this.events[name].push(callback);
     }
 
-    removeEventListener (name, callback) {
+    off (name, callback) {
         this.events[name].remove(callback);
     }
 
@@ -24,11 +24,4 @@ class Dispatcher {
 
 }
 
-let dispatcher = null;
-
-export default function DrawingEvent() {
-    if (dispatcher === null) {
-        dispatcher = new Dispatcher();
-    }
-    return dispatcher;
-}
+export default new DrawingEvent();

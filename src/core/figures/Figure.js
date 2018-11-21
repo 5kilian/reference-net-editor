@@ -1,14 +1,15 @@
-import DrawingEvent from '../Dispatcher';
-import DrawingObject from '../util/DrawingObject';
+import { DrawingShape } from '../drawing/DrawingShape';
+import { ConnectionHandle } from '../handles/ConnectionHandle';
+import { SelectionTool } from '../tools/general/SelectionTool';
+
 
 /**
  * @abstract
  */
-export default class Figure extends DrawingObject {
+export class Figure extends DrawingShape {
 
     constructor (x, y) {
         super();
-        DrawingEvent().emit('add', this);
 
         this.handles = [];
         this.connections = [];
@@ -23,24 +24,10 @@ export default class Figure extends DrawingObject {
         this.updatePosition(x, y);
     }
 
-    destroy () {
-        DrawingEvent().emit('remove', this);
-    }
-
-    pos () {
-        return new createjs.Point(this.x + this.width/2, this.y + this.height/2);
-    }
-
-    rect () {
-        return new createjs.Rectangle(this.x, this.y, this.width, this.height);
-    }
-
-    remove () {
-        let n = this.connections.length;
-        for (let $i = 0; $i < n; $i++) {
-            this.connections[ 0 ].remove();
-        }
-        DrawingEvent().emit('remove', this);
+    destructor () {
+        this.handles.forEach(handle => handle.destructor());
+        this.connections.forEach(connection => connection.destructor());
+        super.destructor();
     }
 
     move (dx, dy) {
@@ -49,12 +36,13 @@ export default class Figure extends DrawingObject {
 
     updatePosition (x, y) {
         super.updatePosition(x, y);
+        this.updateHandles();
     }
 
     adjustScale (dx, dy) {
         this.width = Math.max(0, this.width + dx);
         this.height = Math.max(0, this.height + dy);
-        this.repaint();
+        this.redraw();
     }
 
     stretch (east, south, west, north) {
@@ -63,11 +51,27 @@ export default class Figure extends DrawingObject {
         this.width = Math.max(0, this.width + east - west);
         this.height = Math.max(0, this.height + south - north);
 
-        this.repaint();
+        this.redraw();
     }
 
     updateConnections () {
-        this.connections.forEach((connection) => connection.repaint());
+        this.connections.forEach((connection) => connection.redraw());
+    }
+
+    showConnectionHandles () {
+        this.handles.forEach((handle) => {
+            if (handle instanceof ConnectionHandle) {
+                handle.show();
+            }
+        });
+    }
+
+    hideConnectionHandles () {
+        this.handles.forEach((handle) => {
+            if (handle instanceof ConnectionHandle) {
+                handle.show();
+            }
+        });
     }
 
     updateHandles () {
@@ -90,32 +94,32 @@ export default class Figure extends DrawingObject {
         this.hideHandles();
     }
 
-    onClick (event) {
-
-    }
+    onClick (event) { }
 
     onMouseDown (event) {
         this.mx = event.stageX;
         this.my = event.stageY;
     }
 
+    onMouseMove (event) { }
+
     onPressMove (event) {
-        DrawingEvent().emit('move selection', { dx: event.stageX - this.mx, dy: event.stageY - this.my });
+        if (this.parent.activeTool instanceof SelectionTool) {
+            this.parent.activeTool.selection.move(event.stageX - this.mx, event.stageY - this.my);
+        }
         this.mx = event.stageX;
         this.my = event.stageY;
     }
 
-    onPressUp (event) {
+    onPressUp (event) { }
 
-    }
+    onDoubleClick (event) { }
 
-    onDoubleClick(event) {
-    }
+    onMouseOut (event) { }
 
-    onMouseOut(event) {
-    }
+    onMouseOver (event) { }
 
-    onMouseOver(event) {
-    }
+    onShow () { }
 
+    onHide () { }
 }

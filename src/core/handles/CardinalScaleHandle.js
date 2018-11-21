@@ -1,13 +1,13 @@
-import Handle from './Handle';
-import CardinalOrientation from '../orientations/CardinalOrientation';
+import { Handle } from './Handle';
+import { CardinalOrientation } from '../orientations/CardinalOrientation';
 
-export default class CardinalScaleHandle extends Handle {
+export class CardinalScaleHandle extends Handle {
 
     constructor (parent, orientation) {
         super(parent, new CardinalOrientation(parent, orientation));
     }
 
-    repaint () {
+    redraw () {
         this.graphics.clear().s('#939393').f('white')
             .drawRect(-3, -3, 6, 6);
     }
@@ -33,4 +33,27 @@ export default class CardinalScaleHandle extends Handle {
         this.my = event.stageY;
     }
 
+    onClick (event) {
+    }
+
+    onDoubleClick (event) {
+    }
+
+    onHide () {
+    }
+
+    onMouseMove (event) {
+    }
+
+    onMouseOut (event) {
+    }
+
+    onMouseOver (event) {
+    }
+
+    onShow () {
+    }
+
+    update () {
+    }
 }

@@ -1,7 +1,7 @@
-import Tool from '../Tool';
-import Line from '../../connections/Line';
+import { Tool } from '../Tool';
+import { Line } from '../../connections/Line';
 
-export default class LineTool extends Tool {
+export class LineTool extends Tool {
 
     constructor () {
         super();
@@ -18,7 +18,7 @@ export default class LineTool extends Tool {
     onMouseMove (event) {
         if (this.line) {
             this.line.setDest(new createjs.Point(event.stageX, event.stageY));
-            this.line.repaint();
+            this.line.redraw();
         }
     }
 

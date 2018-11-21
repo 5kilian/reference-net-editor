@@ -1,36 +1,51 @@
-import DrawingObject from "../util/DrawingObject";
-import DrawingEvent from '../Dispatcher';
+import DrawingEvent from '../drawing/DrawingEvent';
+import { DrawingShape } from '../drawing/DrawingShape';
+
 
 /**
  * @abstract
  */
-export default class Handle extends DrawingObject {
+export class Handle extends DrawingShape {
 
     constructor (owner, orientation) {
         super();
-        this.type = 'Handle';
         this.owner = owner;
         this.orientation = orientation;
         this.updatePosition();
+        this.redraw();
     }
 
-    /**
-     * @abstract
-     */
-    repaint () { }
+    update () { }
+
+    redraw () { }
 
     updatePosition () {
         let position = this.orientation.position();
         super.updatePosition(position.x, position.y);
     }
 
-    show () {
-        DrawingEvent().emit('add', this);
-        this.repaint();
+    onClick (event) { }
+
+    onDoubleClick (event) { }
+
+    onShow () {
+        DrawingEvent.emit('add', this);
     }
 
-    hide () {
-        DrawingEvent().emit('remove', this);
+    onHide () {
+        DrawingEvent.emit('remove', this);
     }
+
+    onMouseDown (event) { }
+
+    onMouseMove (event) { }
+
+    onMouseOut (event) { }
+
+    onMouseOver (event) { }
+
+    onPressMove (event) { }
+
+    onPressUp (event) { }
 
 }

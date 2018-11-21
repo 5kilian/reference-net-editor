@@ -1,7 +1,7 @@
-import Orientation from './Orientation';
+import { Orientation } from './Orientation';
 
 
-export default class PointOrientation extends Orientation {
+export class PointOrientation extends Orientation {
 
     constructor (owner, point) {
         super(owner);

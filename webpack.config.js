@@ -11,7 +11,7 @@ module.exports = config = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].js',
-        library: 'drawing',
+        library: 'Drawing',
         libraryTarget: 'umd'
     },
     module: {

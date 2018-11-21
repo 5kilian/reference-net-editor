@@ -1,41 +1,66 @@
-export default class RubberBand extends createjs.Shape {
+import DrawingEvent from '../drawing/DrawingEvent';
+import { DrawingShape } from '../drawing/DrawingShape';
 
-    constructor (x, y) {
+
+export class RubberBand extends DrawingShape {
+
+    constructor () {
         super();
         this.type = 'rubberband';
-        this.x = x;
-        this.y = y;
-        this.dx = x;
-        this.dy = y;
+        this.src = new createjs.Point();
+        this.dest = new createjs.Point();
+        this.hide();
     }
 
     update () {
 
     }
 
-    repaint (x, y) {
-        this.dx = x;
-        this.dy = y;
-        let p = this.globalToLocal(this.dx, this.dy);
-        this.graphics.clear().s('gray').f('transparent').drawRect(0, 0, p.x, p.y);
+    updatePosition () {
+        super.updatePosition(Math.min(this.src.x, this.dest.x), Math.min(this.src.y, this.dest.y));
+        this.width = Math.abs(this.src.x - this.dest.x);
+        this.height = Math.abs(this.src.y - this.dest.y);
+    }
+
+    setSrc (x, y) {
+        this.src.setValues(x, y);
+        this.dest.setValues(x, y);
+        this.updatePosition();
+    }
+
+    setDest (x, y) {
+        this.dest.setValues(x, y);
+        this.updatePosition();
+    }
+
+    redraw () {
+        this.graphics.clear().s('gray').f('transparent').drawRect(0, 0, this.width, this.height);
     }
 
     rect () {
-        let x, y, w, h;
-
-        w = Math.abs(this.x - this.dx);
-        if (this.x < this.dx) {
-            x = this.x;
-        } else {
-            x = this.dx;
-        }
-        h = Math.abs(this.y - this.dy);
-        if (this.y < this.dy) {
-            y = this.y;
-        } else {
-            y = this.dy;
-        }
-
-        return new createjs.Rectangle(x, y, w, h);
+        return this.boundingBox.setValues(this.x, this.y, this.width, this.height);
     }
+
+    onClick (event) { }
+
+    onDoubleClick (event) { }
+
+    onHide () { }
+
+    onMouseDown (event) { }
+
+    onMouseMove (event) { }
+
+    onMouseOut (event) { }
+
+    onMouseOver (event) { }
+
+    onPressMove (event) { }
+
+    onPressUp (event) { }
+
+    onShow () {
+        DrawingEvent.emit('top', this);
+    }
+
 }

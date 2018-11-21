@@ -1,14 +1,14 @@
 import { KEYCODE_DEL } from '../constants/KeyCodes';
-import CardinalScaleHandle from '../handles/CardinalScaleHandle';
-import DrawingEvent from '../Dispatcher';
-import CardinalOrientation from '../orientations/CardinalOrientation';
+import DrawingEvent from '../drawing/DrawingEvent';
+import { DrawingShape } from '../drawing/DrawingShape';
+import { CardinalScaleHandle } from '../handles/CardinalScaleHandle';
+import { CardinalOrientation } from '../orientations/CardinalOrientation';
 
-export default class Selection extends createjs.Shape {
+export class Selection extends DrawingShape {
 
     constructor () {
         super();
         this.objects = [];
-        this.type = 'selection';
         this.handles = [
             new CardinalScaleHandle(this, CardinalOrientation.NORTH),
             new CardinalScaleHandle(this, CardinalOrientation.NORTH_EAST),
@@ -20,13 +20,10 @@ export default class Selection extends createjs.Shape {
             new CardinalScaleHandle(this, CardinalOrientation.NORTH_WEST),
         ];
 
-        this.changed = false;
+        this.hitArea = new createjs.Shape();
 
-        DrawingEvent().addEventListener('select', this.select.bind(this));
-        DrawingEvent().addEventListener('add to selection', this.add.bind(this));
-        DrawingEvent().addEventListener('clear selection', this.clear.bind(this));
-        DrawingEvent().addEventListener('move selection', this.onMoveSelection.bind(this));
-        DrawingEvent().addEventListener('change selection', this.onChange.bind(this));
+        this.hide();
+        DrawingEvent.on('selection move', this.onPressMove.bind(this));
     }
 
     update () {
@@ -56,12 +53,13 @@ export default class Selection extends createjs.Shape {
         if (!this.contains(object)) {
             this.objects.push(object);
             object.onSelect();
-            this.onChange();
+            this.onSelectionChanged();
         }
     }
 
     move (dx, dy) {
         this.objects.forEach((object) => object.move(dx, dy));
+        this.onMoveSelection();
     }
 
     remove (object) {
@@ -69,13 +67,17 @@ export default class Selection extends createjs.Shape {
             this.objects.splice(this.objects.indexOf(object), 1);
             object.onDeselect();
         }
-        this.onChange();
+        this.onSelectionChanged();
     }
 
     clear () {
         this.objects.forEach((object) => object.onDeselect());
         this.objects = [];
-        this.onChange();
+        this.onSelectionChanged();
+    }
+
+    empty () {
+        return this.count() === 0;
     }
 
     count () {
@@ -87,37 +89,37 @@ export default class Selection extends createjs.Shape {
     }
 
     rect () {
-        let rect = new createjs.Rectangle();
         if (this.objects.length === 0) {
-            return rect;
+            return this.boundingBox.setValues();
         }
 
-        rect.copy(this.objects[ 0 ].rect());
+        this.boundingBox.copy(this.objects[ 0 ].rect());
         for (let i = 1; i < this.objects.length; i++) {
             let o = this.objects[i].rect();
-            rect.extend(o.x, o.y, o.width, o.height);
+            this.boundingBox.extend(o.x, o.y, o.width, o.height);
         }
-        return rect.setValues(rect.x -10, rect.y -10, rect.width +20, rect.height +20);
+        return this.boundingBox.pad(10, 10, 10, 10);
     }
 
-    repaint () {
-        let rect = this.rect();
-
-        this.x = rect.x;
-        this.y = rect.y;
+    redraw () {
+        this.rect();
+        this.x = this.boundingBox.x;
+        this.y = this.boundingBox.y;
         this.graphics.clear().s('#939393').f('transparent')
-            .drawRect(0, 0, rect.width, rect.height);
+            .drawRect(0, 0, this.boundingBox.width, this.boundingBox.height);
+        this.hitArea.graphics.clear().s('#000').f('transparent').ss(4)
+            .drawRect(0, 0, this.boundingBox.width, this.boundingBox.height);
     }
 
     adjustScale (dx, dy) {
         this.objects.forEach(object => object.adjustScale(dx, dy));
-        this.repaint();
+        this.redraw();
         this.updateHandles();
     }
 
     stretch (east, south, west, north) {
         this.objects.forEach(object => object.stretch(east, south, west, north));
-        this.repaint();
+        this.redraw();
         this.updateHandles();
     }
 
@@ -126,31 +128,64 @@ export default class Selection extends createjs.Shape {
         this.objects.forEach(object => object.updateHandles());
     }
 
-    onMoveSelection (event) {
-        this.move(event.dx, event.dy);
-        this.repaint();
-        this.updateHandles();
-    }
-
     onKeyEvent (event) {
         switch (event.keys[ event.keys.length - 1 ]) {
             case KEYCODE_DEL:
-                this.objects.forEach((object) => object.remove());
+                this.objects.forEach((object) => object.destructor());
                 this.clear();
                 break;
             default:
         }
     }
 
-    onChange () {
+    onClick (event) { }
+
+    onDoubleClick (event) { }
+
+    onMouseDown (event) {
+        this.mx = event.stageX;
+        this.my = event.stageY;
+    }
+
+    onMouseMove (event) { }
+
+    onMouseOut (event) { }
+
+    onMouseOver (event) { }
+
+    onPressMove (event) {
+        this.move(event.stageX - this.mx, event.stageY - this.my);
+        this.mx = event.stageX;
+        this.my = event.stageY;
+    }
+
+    onPressUp (event) {
+        this.mx = event.stageX;
+        this.my = event.stageY;
+    }
+
+    onMoveSelection () {
+        this.redraw();
+        this.updateHandles();
+    }
+
+    onSelectionChanged () {
         if (this.objects.length > 0) {
-            DrawingEvent().emit('add', this);
-            this.repaint();
+            this.redraw();
             this.updateHandles();
-            this.handles.forEach(handle => handle.show());
+            this.show();
         } else {
-            DrawingEvent().emit('remove', this);
-            this.handles.forEach(handle => handle.hide());
+            this.hide();
         }
     }
+
+    onHide () {
+        this.handles.forEach(handle => handle.hide());
+    }
+
+    onShow () {
+        this.redraw();
+        this.handles.forEach(handle => handle.show());
+    }
+
 }

@@ -1,7 +1,7 @@
-import ConnectionHandle from "./ConnectionHandle";
-import RelativeOrientation from "../orientations/RelativeOrientation";
+import { ConnectionHandle } from "./ConnectionHandle";
+import { RelativeOrientation } from "../orientations/RelativeOrientation";
 
-export default class RelativeConnectionHandle extends ConnectionHandle {
+export class RelativeConnectionHandle extends ConnectionHandle {
 
     constructor (owner, dx, dy) {
         super(owner, new RelativeOrientation(owner, dx, dy));

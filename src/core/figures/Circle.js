@@ -1,10 +1,10 @@
-import CenterConnectionHandle from '../handles/CenterConnectionHandle';
-import Figure from "./Figure";
-import RadialConnectionHandle from "../handles/RadialConnectionHandle";
-import RadialOrientation from "../orientations/RadialOrientation";
+import { CenterConnectionHandle } from '../handles/CenterConnectionHandle';
+import { Figure } from "./Figure";
+import { RadialConnectionHandle } from "../handles/RadialConnectionHandle";
+import { RadialOrientation } from "../orientations/RadialOrientation";
 
 
-export default class Circle extends Figure {
+export class Circle extends Figure {
 
     constructor (x, y) {
         super(x, y);
@@ -29,7 +29,7 @@ export default class Circle extends Figure {
 
     }
 
-    repaint () {
+    redraw () {
         this.graphics.clear().s(this.lineColor).f(this.fillColor)
             .drawEllipse(0, 0, this.width, this.height);
     }

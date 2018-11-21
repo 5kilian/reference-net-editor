@@ -1,7 +1,5 @@
-import Drawing from './Canvas';
-import DrawingEvent from '../Dispatcher';
 
-export default class Grid extends createjs.Shape {
+export class Grid extends createjs.Shape {
 
     constructor () {
         super();
@@ -10,7 +8,7 @@ export default class Grid extends createjs.Shape {
         // Drawing().bottom(this);
     }
 
-    repaint (width, height) {
+    redraw (width, height) {
         this.graphics.clear();
         if (this.visible) {
             let x = Math.ceil(width / 20) + 1;

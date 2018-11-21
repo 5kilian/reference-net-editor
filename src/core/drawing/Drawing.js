@@ -1,12 +1,11 @@
-import { KEYCODE_DOWN, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP } from './constants/KeyCodes';
-import Canvas from './util/Canvas';
+import { KEYCODE_DOWN, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP } from '../constants/KeyCodes';
+import { DrawingCanvas } from './DrawingCanvas';
+import DrawingEvent from './DrawingEvent';
 
-import DrawingEvent from './Dispatcher';
-
-class Drawing {
+export default class Drawing {
 
     constructor (id, configuration = {}) {
-        this.canvas = new Canvas(id, configuration);
+        this.canvas = new DrawingCanvas(id, configuration);
         this.addListeners();
     }
 
@@ -56,12 +55,10 @@ class Drawing {
     }
 
     emit (event, payload) {
-        DrawingEvent().emit(event, payload);
+        DrawingEvent.emit(event, payload);
     }
 
     on (event, callback) {
-        DrawingEvent().addEventListener(event, callback);
+        DrawingEvent.on(event, callback);
     }
 }
-
-export default Drawing;

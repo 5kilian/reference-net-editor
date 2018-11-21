@@ -1,6 +1,6 @@
 
 
-export default class Tool {
+export class Tool {
 
     constructor () {
         this.type = 'tool';
@@ -8,9 +8,15 @@ export default class Tool {
         this.name = '';
     }
 
-    draw () {
+    /**
+     * @abstract
+     */
+    onToolEnable (event) { }
 
-    }
+    /**
+     * @abstract
+     */
+    onToolDisable (event) { }
 
     /**
      * @abstract

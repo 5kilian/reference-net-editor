@@ -1,6 +1,6 @@
-import Tool from '../Tool';
+import { Tool } from '../Tool';
 
-export default class ZoomTool extends Tool {
+export class ZoomTool extends Tool {
 
     constructor (stage) {
         super();

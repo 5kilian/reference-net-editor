@@ -20,11 +20,11 @@
 
             window.sketch = new window.drawing('drawing');
 
-            window.sketch.on('use tool', onChangeTool);
+            window.sketch.on('use', onChangeTool);
         };
 
         function changeTool (element) {
-            window.sketch.emit('use tool', element.id);
+            window.sketch.emit('use', element.id);
         }
 
         function onChangeTool (tool) {
@@ -54,7 +54,7 @@
         border-bottom: 1px solid #939393;
       }
       .action-item {
-        width: 50px;
+        width: 100px;
         height: 20px;
         padding: 5px;
         margin: 5px;
@@ -70,23 +70,23 @@
   </head>
   <body>
     <div id="action-bar">
-      <div id="selection" class="action-item" onclick="changeTool(this)">
+      <div id="SelectionTool" class="action-item" onclick="changeTool(this)">
         Pointer
       </div>
-      <div id="zoom" class="action-item" onclick="changeTool(this)">
+      <div id="ConnectionTool" class="action-item" onclick="changeTool(this)">
+        Connection
+      </div>
+      <div id="ZoomTool" class="action-item" onclick="changeTool(this)">
         Zoom
       </div>
-      <div id="circle" class="action-item" onclick="changeTool(this)">
+      <div id="CircleTool" class="action-item" onclick="changeTool(this)">
         Circle
       </div>
-      <div id="rectangle" class="action-item" onclick="changeTool(this)">
+      <div id="RectangleTool" class="action-item" onclick="changeTool(this)">
         Rect
       </div>
-      <div id="line" class="action-item" onclick="changeTool(this)">
+      <div id="LineTool" class="action-item" onclick="changeTool(this)">
         Line
-      </div>
-      <div id="connection" class="action-item" onclick="changeTool(this)">
-        Connection
       </div>
     </div>
     <canvas id="drawing"></canvas>

@@ -1,7 +1,7 @@
-import Orientation from './Orientation';
+import { Orientation } from './Orientation';
 
 
-export default class CardinalOrientation extends Orientation {
+export class CardinalOrientation extends Orientation {
 
     constructor (owner, direction) {
         super(owner);
