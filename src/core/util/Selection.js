@@ -1,7 +1,7 @@
 import { KEYCODE_DEL } from '../constants/KeyCodes';
 import DrawingEvent from '../drawing/DrawingEvent';
 import { DrawingShape } from '../drawing/DrawingShape';
-import { CardinalScaler } from '../handles/scalers/CardinalScaler';
+import { CardinalScaleHandle } from '../handles/scalers/CardinalScaleHandle';
 import { CardinalOrientation } from '../orientations/CardinalOrientation';
 
 export class Selection extends DrawingShape {
@@ -10,14 +10,14 @@ export class Selection extends DrawingShape {
         super();
         this.objects = [];
         this.handles = [
-            new CardinalScaler(this, CardinalOrientation.NORTH),
-            new CardinalScaler(this, CardinalOrientation.NORTH_EAST),
-            new CardinalScaler(this, CardinalOrientation.EAST),
-            new CardinalScaler(this, CardinalOrientation.SOUTH_EAST),
-            new CardinalScaler(this, CardinalOrientation.SOUTH),
-            new CardinalScaler(this, CardinalOrientation.SOUTH_WEST),
-            new CardinalScaler(this, CardinalOrientation.WEST),
-            new CardinalScaler(this, CardinalOrientation.NORTH_WEST),
+            new CardinalScaleHandle(this, CardinalOrientation.NORTH),
+            new CardinalScaleHandle(this, CardinalOrientation.NORTH_EAST),
+            new CardinalScaleHandle(this, CardinalOrientation.EAST),
+            new CardinalScaleHandle(this, CardinalOrientation.SOUTH_EAST),
+            new CardinalScaleHandle(this, CardinalOrientation.SOUTH),
+            new CardinalScaleHandle(this, CardinalOrientation.SOUTH_WEST),
+            new CardinalScaleHandle(this, CardinalOrientation.WEST),
+            new CardinalScaleHandle(this, CardinalOrientation.NORTH_WEST),
         ];
 
         this.hitArea = new createjs.Shape();
@@ -154,7 +154,9 @@ export class Selection extends DrawingShape {
     onMouseOver (event) { }
 
     onPressMove (event) {
-        this.move(event.stageX - this.mx, event.stageY - this.my);
+        let dx = (event.stageX - this.mx) / this.parent.scaleX;
+        let dy = (event.stageY - this.my) / this.parent.scaleY;
+        this.move(dx, dy);
         this.mx = event.stageX;
         this.my = event.stageY;
     }

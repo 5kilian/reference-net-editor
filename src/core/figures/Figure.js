@@ -114,7 +114,9 @@ export class Figure extends DrawingShape {
 
     onPressMove (event) {
         if (this.parent.activeTool instanceof SelectionTool) {
-            this.parent.activeTool.selection.move(event.stageX - this.mx, event.stageY - this.my);
+            let dx = (event.stageX - this.mx) / this.parent.scaleX;
+            let dy = (event.stageY - this.my) / this.parent.scaleY;
+            this.parent.activeTool.selection.move(dx, dy);
         }
         this.mx = event.stageX;
         this.my = event.stageY;

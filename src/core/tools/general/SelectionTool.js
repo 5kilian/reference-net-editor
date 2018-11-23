@@ -18,7 +18,9 @@ export class SelectionTool extends Tool {
         } else if (event.relatedTarget === null) {
             this.selection.clear();
 
-            this.rubberband.setSrc(event.stageX, event.stageY);
+            let dx = event.stageX / this.rubberband.parent.scaleX;
+            let dy = event.stageY / this.rubberband.parent.scaleY;
+            this.rubberband.setSrc(dx, dy);
             this.rubberband.redraw();
             this.rubberband.show();
         }
@@ -26,7 +28,9 @@ export class SelectionTool extends Tool {
 
     onMouseMove (event) {
         if (this.rubberband.visible) {
-            this.rubberband.setDest(event.stageX, event.stageY);
+            let dx = event.stageX / this.rubberband.parent.scaleX;
+            let dy = event.stageY / this.rubberband.parent.scaleY;
+            this.rubberband.setDest(dx, dy);
             this.rubberband.redraw();
         }
     }

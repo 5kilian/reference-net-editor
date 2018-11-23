@@ -1,7 +1,7 @@
 import { Handle } from '../Handle';
 import { CardinalOrientation } from '../../orientations/CardinalOrientation';
 
-export class CardinalScaler extends Handle {
+export class CardinalScaleHandle extends Handle {
 
     constructor (parent, orientation) {
         super(parent, new CardinalOrientation(parent, orientation));
@@ -19,10 +19,10 @@ export class CardinalScaler extends Handle {
 
     onPressMove (event) {
         this.owner.stretch(
-            ((this.orientation.direction & CardinalOrientation.EAST) > 0) * (event.stageX - this.mx),
-            ((this.orientation.direction & CardinalOrientation.SOUTH) > 0) * (event.stageY - this.my),
-            ((this.orientation.direction & CardinalOrientation.WEST) > 0) * (event.stageX - this.mx),
-            ((this.orientation.direction & CardinalOrientation.NORTH) > 0) * (event.stageY - this.my),
+            ((this.orientation.direction & CardinalOrientation.EAST) > 0) * (event.stageX - this.mx) / this.parent.scaleX,
+            ((this.orientation.direction & CardinalOrientation.SOUTH) > 0) * (event.stageY - this.my) / this.parent.scaleY,
+            ((this.orientation.direction & CardinalOrientation.WEST) > 0) * (event.stageX - this.mx) / this.parent.scaleX,
+            ((this.orientation.direction & CardinalOrientation.NORTH) > 0) * (event.stageY - this.my) / this.parent.scaleY,
         );
         this.mx = event.stageX;
         this.my = event.stageY;
