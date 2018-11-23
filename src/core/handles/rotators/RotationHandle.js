@@ -1,4 +1,4 @@
-import { Handle } from './Handle';
+import { Handle } from '../Handle';
 
 export class RotationHandle extends Handle {
 

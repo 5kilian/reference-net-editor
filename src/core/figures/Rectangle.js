@@ -1,6 +1,6 @@
-import { CardinalConnectionHandle } from '../handles/CardinalConnectionHandle';
-import { CenterConnectionHandle } from '../handles/CenterConnectionHandle';
-import { FigureConnectionHandle } from '../handles/FigureConnectionHandle';
+import { CardinalConnector } from '../handles/connectors/CardinalConnector';
+import { CenterConnector } from '../handles/connectors/CenterConnector';
+import { FigureConnector } from '../handles/connectors/FigureConnector';
 import { CardinalOrientation } from '../orientations/CardinalOrientation';
 import { Figure } from "./Figure";
 
@@ -11,13 +11,13 @@ export class Rectangle extends Figure {
         this.width = 42;
         this.height = 28;
 
-        this.handles = [
-            new FigureConnectionHandle(this),
-            new CardinalConnectionHandle(this, CardinalOrientation.NORTH),
-            new CardinalConnectionHandle(this, CardinalOrientation.EAST),
-            new CardinalConnectionHandle(this, CardinalOrientation.SOUTH),
-            new CardinalConnectionHandle(this, CardinalOrientation.WEST),
-            new CenterConnectionHandle(this),
+        this.connectors = [
+            new FigureConnector(this),
+            new CardinalConnector(this, CardinalOrientation.NORTH),
+            new CardinalConnector(this, CardinalOrientation.EAST),
+            new CardinalConnector(this, CardinalOrientation.SOUTH),
+            new CardinalConnector(this, CardinalOrientation.WEST),
+            new CenterConnector(this),
         ]
     }
 

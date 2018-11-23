@@ -11,6 +11,7 @@ export class Handle extends DrawingShape {
         super();
         this.owner = owner;
         this.orientation = orientation;
+        this.hitArea = new createjs.Shape();
         this.updatePosition();
         this.redraw();
     }
@@ -29,6 +30,7 @@ export class Handle extends DrawingShape {
     onDoubleClick (event) { }
 
     onShow () {
+        this.updatePosition();
         DrawingEvent.emit('add', this);
     }
 

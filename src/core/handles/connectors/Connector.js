@@ -1,12 +1,13 @@
-// import { ConnectionTool } from '../tools/general/ConnectionTool';
-import { Handle } from './Handle';
+import { Handle } from '../Handle';
 
-export class ConnectionHandle extends Handle {
+export class Connector extends Handle {
 
     constructor (owner, orientation) {
         super(owner, orientation);
         this.hitArea = new createjs.Shape(new createjs.Graphics().clear().f('#000').drawRect(-5, -5, 10, 10));
         this.alpha = 0;
+
+        this.hide();
     }
 
     update() {
@@ -21,10 +22,7 @@ export class ConnectionHandle extends Handle {
     }
 
     onMouseOver(event) {
-        console.log(this.parent);
-        // if (this.parent.activeTool instanceof ConnectionTool) {
-            this.alpha = 1;
-        // }
+        this.alpha = 1;
     }
 
 }

@@ -1,3 +1,4 @@
+import DrawingEvent from '../../drawing/DrawingEvent';
 import { Connection } from '../../figures/Connection';
 import { Figure } from '../../figures/Figure';
 import { Tool } from '../Tool';
@@ -41,11 +42,11 @@ export class ConnectionTool extends Tool {
     }
 
     onToolEnable (event) {
-
+        DrawingEvent.emit('enable connectors');
     }
 
     onToolDisable (event) {
-
+        DrawingEvent.emit('disable connectors');
     }
 
 }

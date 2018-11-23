@@ -1,5 +1,6 @@
+import DrawingEvent from '../drawing/DrawingEvent';
 import { DrawingShape } from '../drawing/DrawingShape';
-import { ConnectionHandle } from '../handles/ConnectionHandle';
+import { FigureSelector } from '../handles/selectors/FigureSelector';
 import { SelectionTool } from '../tools/general/SelectionTool';
 
 
@@ -12,6 +13,8 @@ export class Figure extends DrawingShape {
         super();
 
         this.handles = [];
+        this.selector = new FigureSelector(this);
+        this.connectors = [];
         this.connections = [];
 
         this.x = 0;
@@ -22,21 +25,21 @@ export class Figure extends DrawingShape {
         this.fillColor = 'white';
 
         this.updatePosition(x, y);
+
+        DrawingEvent.on('enable connectors', this.enableConnectors.bind(this));
+        DrawingEvent.on('disable connectors', this.disableConnectors.bind(this));
     }
 
     destructor () {
         this.handles.forEach(handle => handle.destructor());
+        this.connectors.forEach(handle => handle.destructor());
         this.connections.forEach(connection => connection.destructor());
         super.destructor();
     }
 
     move (dx, dy) {
         this.updatePosition(this.x + dx, this.y + dy);
-    }
-
-    updatePosition (x, y) {
-        super.updatePosition(x, y);
-        this.updateHandles();
+        this.onMove();
     }
 
     adjustScale (dx, dy) {
@@ -58,20 +61,16 @@ export class Figure extends DrawingShape {
         this.connections.forEach((connection) => connection.redraw());
     }
 
-    showConnectionHandles () {
-        this.handles.forEach((handle) => {
-            if (handle instanceof ConnectionHandle) {
-                handle.show();
-            }
-        });
+    updateConnectors () {
+        this.connectors.forEach(connector => connector.updatePosition());
     }
 
-    hideConnectionHandles () {
-        this.handles.forEach((handle) => {
-            if (handle instanceof ConnectionHandle) {
-                handle.show();
-            }
-        });
+    enableConnectors () {
+        this.connectors.forEach(connector => connector.show());
+    }
+
+    disableConnectors () {
+        this.connectors.forEach(connector => connector.hide());
     }
 
     updateHandles () {
@@ -88,10 +87,19 @@ export class Figure extends DrawingShape {
 
     onSelect () {
         this.showHandles();
+        this.selector.show();
+    }
+
+    onMove () {
+        this.updateHandles();
+        this.updateConnectors();
+        this.updateConnections();
+        this.selector.updatePosition();
     }
 
     onDeselect () {
         this.hideHandles();
+        this.selector.hide();
     }
 
     onClick (event) { }

@@ -42,12 +42,10 @@ export class SelectionTool extends Tool {
     }
 
     onToolDisable (event) {
-        this.selection.hide();
+
     }
 
     onToolEnable (event) {
-        if (!this.selection.empty()) {
-            this.selection.show();
-        }
+
     }
 }

@@ -1,6 +1,7 @@
-import { CenterConnectionHandle } from '../handles/CenterConnectionHandle';
+import { CenterConnector } from '../handles/connectors/CenterConnector';
+import { FigureConnector } from '../handles/connectors/FigureConnector';
 import { Figure } from "./Figure";
-import { RadialConnectionHandle } from "../handles/RadialConnectionHandle";
+import { RadialConnector } from "../handles/connectors/RadialConnector";
 import { RadialOrientation } from "../orientations/RadialOrientation";
 
 
@@ -12,16 +13,17 @@ export class Circle extends Figure {
         this.width = 40;
         this.height = 40;
 
-        this.handles = [
-            new RadialConnectionHandle(this, RadialOrientation.NORTH),
-            new RadialConnectionHandle(this, RadialOrientation.NORTH_EAST),
-            new RadialConnectionHandle(this, RadialOrientation.EAST),
-            new RadialConnectionHandle(this, RadialOrientation.SOUTH_EAST),
-            new RadialConnectionHandle(this, RadialOrientation.SOUTH),
-            new RadialConnectionHandle(this, RadialOrientation.SOUTH_WEST),
-            new RadialConnectionHandle(this, RadialOrientation.WEST),
-            new RadialConnectionHandle(this, RadialOrientation.NORTH_WEST),
-            new CenterConnectionHandle(this),
+        this.connectors = [
+            new FigureConnector(this),
+            new RadialConnector(this, RadialOrientation.NORTH),
+            new RadialConnector(this, RadialOrientation.NORTH_EAST),
+            new RadialConnector(this, RadialOrientation.EAST),
+            new RadialConnector(this, RadialOrientation.SOUTH_EAST),
+            new RadialConnector(this, RadialOrientation.SOUTH),
+            new RadialConnector(this, RadialOrientation.SOUTH_WEST),
+            new RadialConnector(this, RadialOrientation.WEST),
+            new RadialConnector(this, RadialOrientation.NORTH_WEST),
+            new CenterConnector(this),
         ]
     }
 

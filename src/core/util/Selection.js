@@ -1,7 +1,7 @@
 import { KEYCODE_DEL } from '../constants/KeyCodes';
 import DrawingEvent from '../drawing/DrawingEvent';
 import { DrawingShape } from '../drawing/DrawingShape';
-import { CardinalScaleHandle } from '../handles/CardinalScaleHandle';
+import { CardinalScaler } from '../handles/scalers/CardinalScaler';
 import { CardinalOrientation } from '../orientations/CardinalOrientation';
 
 export class Selection extends DrawingShape {
@@ -10,14 +10,14 @@ export class Selection extends DrawingShape {
         super();
         this.objects = [];
         this.handles = [
-            new CardinalScaleHandle(this, CardinalOrientation.NORTH),
-            new CardinalScaleHandle(this, CardinalOrientation.NORTH_EAST),
-            new CardinalScaleHandle(this, CardinalOrientation.EAST),
-            new CardinalScaleHandle(this, CardinalOrientation.SOUTH_EAST),
-            new CardinalScaleHandle(this, CardinalOrientation.SOUTH),
-            new CardinalScaleHandle(this, CardinalOrientation.SOUTH_WEST),
-            new CardinalScaleHandle(this, CardinalOrientation.WEST),
-            new CardinalScaleHandle(this, CardinalOrientation.NORTH_WEST),
+            new CardinalScaler(this, CardinalOrientation.NORTH),
+            new CardinalScaler(this, CardinalOrientation.NORTH_EAST),
+            new CardinalScaler(this, CardinalOrientation.EAST),
+            new CardinalScaler(this, CardinalOrientation.SOUTH_EAST),
+            new CardinalScaler(this, CardinalOrientation.SOUTH),
+            new CardinalScaler(this, CardinalOrientation.SOUTH_WEST),
+            new CardinalScaler(this, CardinalOrientation.WEST),
+            new CardinalScaler(this, CardinalOrientation.NORTH_WEST),
         ];
 
         this.hitArea = new createjs.Shape();
