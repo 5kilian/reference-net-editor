@@ -185,6 +185,7 @@ export class Selection extends DrawingShape {
 
     onShow () {
         this.redraw();
+        DrawingEvent.emit('top', this);
         this.handles.forEach(handle => handle.show());
     }
 

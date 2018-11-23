@@ -39,9 +39,6 @@ export class CardinalScaler extends Handle {
     onDoubleClick (event) {
     }
 
-    onHide () {
-    }
-
     onMouseMove (event) {
     }
 
@@ -49,9 +46,6 @@ export class CardinalScaler extends Handle {
     }
 
     onMouseOver (event) {
-    }
-
-    onShow () {
     }
 
     update () {

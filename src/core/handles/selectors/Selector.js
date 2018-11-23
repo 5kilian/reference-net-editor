@@ -15,9 +15,4 @@ export class Selector extends Handle {
         this.graphics.clear().s('#0952e6').f('transparent').ss(3).drawRect(-4, -4, 8, 8);
     }
 
-    hide () {
-        super.hide();
-    }
-
-
 }
