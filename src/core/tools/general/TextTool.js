@@ -8,4 +8,14 @@ export class TextTool extends Tool {
         this.name = 'Text Tool';
     }
 
+    onMouseDown (event) { }
+
+    onMouseMove (event) { }
+
+    onMouseUp (event) { }
+
+    onToolDisable (event) { }
+
+    onToolEnable (event) { }
+
 }

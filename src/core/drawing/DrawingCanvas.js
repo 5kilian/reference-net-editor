@@ -2,7 +2,7 @@ import DrawingEvent from './DrawingEvent';
 import { Grid } from '../util/Grid';
 import { SelectionTool } from '../tools/general/SelectionTool';
 import { RectangleTool } from '../tools/figure/RectangleTool';
-import { CircleTool } from '../tools/figure/CircleTool';
+import { EllipseTool } from '../tools/figure/EllipseTool';
 import { ZoomTool } from "../tools/general/ZoomTool";
 import { LineTool } from '../tools/figure/LineTool';
 import { ConnectionTool } from '../tools/general/ConnectionTool';
@@ -29,7 +29,7 @@ export class DrawingCanvas extends createjs.Stage {
         this.tools = [
             new SelectionTool(),
             new RectangleTool(),
-            new CircleTool(),
+            new EllipseTool(),
             new LineTool(),
             new ConnectionTool(),
             new ZoomTool(this),

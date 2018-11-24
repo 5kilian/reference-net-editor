@@ -10,15 +10,11 @@ export class ConnectionTool extends Tool {
         super();
         this.icon = '';
         this.name = 'Connection Tool';
-        this.connection = null;
     }
 
     onMouseDown (event) {
-        this.start = event.relatedTarget;
-        if (this.start && this.start instanceof Figure) {
-            let point = new createjs.Point(event.stageX, event.stageY);
-            this.connection = new Connection(this.start.position(), point);
-        }
+        let point = new createjs.Point(event.stageX, event.stageY);
+        this.connection = new Connection(point, point);
     }
 
     onMouseMove (event) {

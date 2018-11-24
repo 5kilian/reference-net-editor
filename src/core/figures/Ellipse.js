@@ -5,7 +5,7 @@ import { RadialConnector } from "../handles/connectors/RadialConnector";
 import { RadialOrientation } from "../orientations/RadialOrientation";
 
 
-export class Circle extends Figure {
+export class Ellipse extends Figure {
 
     constructor (x, y) {
         super(x, y);
