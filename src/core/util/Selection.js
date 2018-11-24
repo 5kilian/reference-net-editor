@@ -107,7 +107,7 @@ export class Selection extends DrawingShape {
         this.y = this.boundingBox.y;
         this.graphics.clear().s('#939393').f('transparent')
             .drawRect(0, 0, this.boundingBox.width, this.boundingBox.height);
-        this.hitArea.graphics.clear().s('#000').f('transparent').ss(4)
+        this.hitArea.graphics.clear().s('#000').f('transparent').ss(8)
             .drawRect(0, 0, this.boundingBox.width, this.boundingBox.height);
     }
 

@@ -140,7 +140,7 @@ export class DrawingCanvas extends createjs.Stage {
     }
 
     onResize (event) {
-        this.grid.repaint(this.canvas.width, this.canvas.height);
+        this.grid.redraw(this.canvas.width, this.canvas.height);
     }
 
 }
