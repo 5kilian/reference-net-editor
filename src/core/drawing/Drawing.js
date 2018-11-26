@@ -1,9 +1,8 @@
-import KEYCODE_ARROWS from '../constants/KeyCodes';
+import { KEYCODE_ARROWS } from '../constants/KeyCodes';
 import { EllipseTool } from '../tools/figure/EllipseTool';
 import { LineTool } from '../tools/figure/LineTool';
 import { RectangleTool } from '../tools/figure/RectangleTool';
 import { ConnectionTool } from '../tools/general/ConnectionTool';
-import { SelectionTool } from '../tools/general/SelectionTool';
 import { ZoomTool } from '../tools/general/ZoomTool';
 import { DrawingCanvas } from './DrawingCanvas';
 import DrawingEvent from './DrawingEvent';

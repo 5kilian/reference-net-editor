@@ -1,5 +1,7 @@
 import DrawingEvent from '../../drawing/DrawingEvent';
 import { Connection } from '../../connections/Connection';
+import { Connector } from '../../handles/connectors/Connector';
+import { FigureConnector } from '../../handles/connectors/FigureConnector';
 import { Tool } from '../Tool';
 
 
@@ -23,15 +25,20 @@ export class ConnectionTool extends Tool {
     }
 
     onMouseMove (event) {
-        if (event.relatedTarget) {
-            console.log(event.relatedTarget);
-        }
         if (this.connection) {
-            if (event.relatedTarget) {
-                this.dest.setValues(event.relatedTarget.x, event.relatedTarget.y);
-            } else {
-                this.dest.setValues(event.stageX, event.stageY);
+            let objects = this.stage.getObjectsUnderPoint(event.stageX, event.stageY);
+            let connector = objects.find(object => object instanceof Connector);
+            let dx = event.stageX;
+            let dy = event.stageY;
+
+            if (connector) {
+                if (connector instanceof FigureConnector) {
+                    connector = connector.owner.nearestConnector(event.stageX, event.stageY);
+                }
+                dx = connector.x;
+                dy = connector.y;
             }
+            this.dest.setValues(dx, dy);
             this.connection.setDest(this.dest);
             this.connection.redraw();
         }

@@ -1,5 +1,8 @@
 import { Handle } from '../Handle';
 
+/**
+ * @abstract
+ */
 export class Connector extends Handle {
 
     constructor (owner, orientation) {

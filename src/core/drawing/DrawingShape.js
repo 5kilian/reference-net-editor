@@ -38,14 +38,8 @@ export class DrawingShape extends createjs.Shape {
         this.y = y;
     }
 
-    show () {
-        this.visible = true;
-        this.onShow();
-    }
-
-    hide () {
-        this.visible = false;
-        this.onHide();
+    distanceTo (x, y) {
+        return Math.sqrt(Math.pow(x - this.x, 2) + Math.pow((y - this.y), 2));
     }
 
     center () {
@@ -54,6 +48,16 @@ export class DrawingShape extends createjs.Shape {
 
     rect () {
         return this.boundingBox.setValues(this.x, this.y, this.width, this.height);
+    }
+
+    show () {
+        this.visible = true;
+        this.onShow();
+    }
+
+    hide () {
+        this.visible = false;
+        this.onHide();
     }
 
     /**

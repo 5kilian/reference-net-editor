@@ -1,4 +1,4 @@
-import { Figure } from "../figures/Figure";
+import { Figure } from "./Figure";
 import { LinePointHandle } from '../handles/LinePointHandle';
 
 class LinePoint {
@@ -96,7 +96,7 @@ export class Line extends Figure {
             if (point.x > max.x) max.x = point.x;
             if (point.y > max.y) max.y = point.y;
         });
-        return new createjs.Rectangle(min.x, min.y, max.x - min.x, max.y - min.y);
+        return this.boundingBox.setValues(min.x, min.y, max.x - min.x, max.y - min.y);
     }
 
     redraw () {
@@ -105,6 +105,7 @@ export class Line extends Figure {
         for (let i=1; i<this.points.length; i++) {
             this.graphics.lineTo(this.points[i].x, this.points[i].y);
         }
+        this.rect();
     }
 
 }

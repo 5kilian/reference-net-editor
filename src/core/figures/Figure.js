@@ -1,5 +1,7 @@
 import DrawingEvent from '../drawing/DrawingEvent';
 import { DrawingShape } from '../drawing/DrawingShape';
+import { CenterConnector } from '../handles/connectors/CenterConnector';
+import { FigureConnector } from '../handles/connectors/FigureConnector';
 import { FigureSelector } from '../handles/selectors/FigureSelector';
 import { SelectionTool } from '../tools/general/SelectionTool';
 
@@ -72,6 +74,18 @@ export class Figure extends DrawingShape {
 
     disableConnectors () {
         this.connectors.forEach(connector => connector.hide());
+    }
+
+    nearestConnector (x, y) {
+        let connectors = this.connectors.filter(connector => {
+            return !(connector instanceof FigureConnector) && !(connector instanceof CenterConnector)
+        });
+        if (connectors.length === 0) {
+            return null;
+        }
+        return connectors.reduce((nearest, connector) => {
+            return nearest.distanceTo(x, y) <= connector.distanceTo(x, y) ? nearest : connector;
+        });
     }
 
     updateHandles () {

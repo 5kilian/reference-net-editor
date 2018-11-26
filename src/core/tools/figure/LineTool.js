@@ -1,5 +1,5 @@
 import { Tool } from '../Tool';
-import { Line } from '../../connections/Line';
+import { Line } from '../../figures/Line';
 
 export class LineTool extends Tool {
 

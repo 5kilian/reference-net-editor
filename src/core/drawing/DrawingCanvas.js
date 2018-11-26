@@ -1,11 +1,8 @@
+import { Figure } from '../figures/Figure';
+import { Handle } from '../handles/Handle';
 import DrawingEvent from './DrawingEvent';
 import { Grid } from '../util/Grid';
 import { SelectionTool } from '../tools/general/SelectionTool';
-import { RectangleTool } from '../tools/figure/RectangleTool';
-import { EllipseTool } from '../tools/figure/EllipseTool';
-import { ZoomTool } from "../tools/general/ZoomTool";
-import { LineTool } from '../tools/figure/LineTool';
-import { KEYCODE_C, KEYCODE_L, KEYCODE_R, KEYCODE_V, KEYCODE_Z } from '../constants/KeyCodes';
 
 export class DrawingCanvas extends createjs.Stage {
 
@@ -23,9 +20,13 @@ export class DrawingCanvas extends createjs.Stage {
         DrawingEvent.on('remove', this.remove.bind(this));
         DrawingEvent.on('use', this.useTool.bind(this));
         DrawingEvent.on('top', this.top.bind(this));
+        DrawingEvent.on('bottom', this.bottom.bind(this));
 
         this.grid = new Grid();
         this.tools = [ ];
+
+        this.figures = [ ];
+        this.handles = [ ];
 
         this.activeKeys = [ ];
         this.register(SelectionTool);
@@ -43,13 +44,30 @@ export class DrawingCanvas extends createjs.Stage {
 
     add (shape) {
         if (!this.contains(shape)) {
-            this.addChildAt(shape, this.numChildren);
+            let insertPosition = this.numChildren;
+
+            if (shape instanceof Selection) {
+                insertPosition = this.figures.length
+            } else if (shape instanceof Figure) {
+                this.figures.push(shape);
+                insertPosition = this.figures.length;
+            } else if (shape instanceof Handle) {
+                this.handles.push(shape);
+                insertPosition = this.figures.length + this.handles.length;
+            }
+
+            this.addChildAt(shape, insertPosition);
         }
     }
 
     remove (shape) {
         if (this.contains(shape)) {
             this.removeChild(shape);
+            if (shape instanceof Figure) {
+                this.figures.splice(this.figures.indexOf(shape), 1);
+            } else if (shape instanceof Handle) {
+                this.handles.splice(this.handles.indexOf(shape), 1);
+            }
         }
     }
 
@@ -91,25 +109,13 @@ export class DrawingCanvas extends createjs.Stage {
 
     onKeyEvent (event) {
         event.keys = this.activeKeys;
+        let lastKey = this.activeKeys[ this.activeKeys.length - 1 ];
 
-        switch (this.activeKeys[ this.activeKeys.length - 1 ]) {
-            case KEYCODE_V:
-                DrawingEvent.emit('use tool', SelectionTool);
-                break;
-            case KEYCODE_R:
-                DrawingEvent.emit('use tool', RectangleTool);
-                break;
-            case KEYCODE_L:
-                DrawingEvent.emit('use tool', LineTool);
-                break;
-            case KEYCODE_C:
-                DrawingEvent.emit('use tool', EllipseTool);
-                break;
-            case KEYCODE_Z:
-                DrawingEvent.emit('use tool', ZoomTool);
-                break;
-            default:
-        }
+        this.tools.forEach(tool => {
+            if (tool.keyCode === lastKey) {
+                this.changeActiveTool(tool);
+            }
+        });
     }
 
     onMouseDown (event) {
