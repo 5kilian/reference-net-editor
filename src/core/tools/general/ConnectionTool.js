@@ -1,6 +1,5 @@
 import DrawingEvent from '../../drawing/DrawingEvent';
-import { Connection } from '../../figures/Connection';
-import { Figure } from '../../figures/Figure';
+import { Connection } from '../../connections/Connection';
 import { Tool } from '../Tool';
 
 
@@ -10,31 +9,28 @@ export class ConnectionTool extends Tool {
         super();
         this.icon = '';
         this.name = 'Connection Tool';
+        this.src = new createjs.Point();
+        this.dest = new createjs.Point();
     }
 
     onMouseDown (event) {
-        let point = new createjs.Point(event.stageX, event.stageY);
-        this.connection = new Connection(point, point);
+        this.src.setValues(event.stageX, event.stageY);
+        this.connection = new Connection(this.src, this.src);
     }
 
     onMouseMove (event) {
+        this.dest.setValues(event.stageX, event.stageY);
         if (this.connection) {
-            this.connection.setDest(new createjs.Point(event.stageX, event.stageY));
+            this.connection.setDest(this.dest);
             this.connection.redraw();
         }
     }
 
     onMouseUp (event) {
-        let end = event.relatedTarget;
-        if (end && end instanceof Figure) {
-            this.connection.connect(this.start);
-            this.connection.connect(end);
-            this.connection.setDest(end.center());
-            this.connection.redraw();
-        } else if (this.connection) {
-            this.connection.destroy();
+        if (this.connection) {
+            this.connection.destructor();
+            this.connection = null;
         }
-        this.connection = null;
     }
 
     onToolEnable (event) {

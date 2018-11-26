@@ -29,6 +29,8 @@ export class Line extends Figure {
         this.handles = this.points.map(point => point.handle);
     }
 
+
+
     update () {
 
     }
@@ -55,6 +57,10 @@ export class Line extends Figure {
         return this.points[index];
     }
 
+    setSrc (point) {
+        this.setPointAt(0, point)
+    }
+
     setDest (point) {
         this.setPointAt(this.points.length-1, point)
     }
@@ -65,10 +71,20 @@ export class Line extends Figure {
 
     insertPointAt (index, point) {
         this.points.splice(index, 0, new LinePoint(this, point));
+        this.handles = this.points.map(point => point.handle);
     }
 
     removePointAt (index) {
         this.points.splice(index, 1);
+    }
+
+    containsPoint (point) {
+        for (let p in this.points) {
+            if (p.x === point.x && p.y === point.y) {
+                return true;
+            }
+        }
+        return false;
     }
 
     rect () {
