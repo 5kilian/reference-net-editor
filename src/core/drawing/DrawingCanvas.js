@@ -138,7 +138,9 @@ export class DrawingCanvas extends createjs.Stage {
     }
 
     onKeyUp (event) {
-        this.activeKeys = this.activeKeys.filter(keyCode => keyCode !== event.keyCode);
+        this.activeKeys = this.activeKeys.filter(keyCode => {
+            return keyCode !== event.keyCode
+        });
         this.keyChanged = true;
     }
 

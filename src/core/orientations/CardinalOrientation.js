@@ -25,7 +25,10 @@ export class CardinalOrientation extends Orientation {
             dx = 0;
         }
 
-        return new createjs.Point(rect.x + dx * rect.width, rect.y + dy * rect.height);
+        return new createjs.Point(
+            rect.x + dx * rect.width,
+            rect.y + dy * rect.height
+        );
     }
 
     static get NORTH () {

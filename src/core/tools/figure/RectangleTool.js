@@ -18,8 +18,10 @@ export class RectangleTool extends Tool {
 
     onMouseMove (event) {
         if (this.rectangle) {
-            this.rectangle.x = (event.stageX - this.onset.x) < 0 ? event.stageX : this.onset.x;
-            this.rectangle.y = (event.stageY - this.onset.y) < 0 ? event.stageY : this.onset.y;
+            let leftOf = (event.stageX - this.onset.x) < 0;
+            let topOf = (event.stageY - this.onset.y) < 0;
+            this.rectangle.x = leftOf ? event.stageX : this.onset.x;
+            this.rectangle.y = topOf ? event.stageY : this.onset.y;
             this.rectangle.width = Math.abs(this.onset.x - event.stageX);
             this.rectangle.height = Math.abs(this.onset.y - event.stageY);
             this.rectangle.redraw();

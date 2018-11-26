@@ -78,13 +78,16 @@ export class Figure extends DrawingShape {
 
     nearestConnector (x, y) {
         let connectors = this.connectors.filter(connector => {
-            return !(connector instanceof FigureConnector) && !(connector instanceof CenterConnector)
+            return !(connector instanceof FigureConnector)
+                && !(connector instanceof CenterConnector)
         });
         if (connectors.length === 0) {
             return null;
         }
         return connectors.reduce((nearest, connector) => {
-            return nearest.distanceTo(x, y) <= connector.distanceTo(x, y) ? nearest : connector;
+            let nearestDistance = nearest.distanceTo(x, y);
+            let connectorDistance = connector.distanceTo(x, y);
+            return nearestDistance <= connectorDistance ? nearest : connector;
         });
     }
 

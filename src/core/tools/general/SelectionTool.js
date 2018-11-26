@@ -37,9 +37,16 @@ export class SelectionTool extends Tool {
 
     onMouseUp (event) {
         if (this.rubberband.visible) {
-            this.selection.addAll(event.target.children.filter(child => (child instanceof Figure)).filter(child => {
+            this.selection.addAll(event.target.children.filter(child => {
+                return child instanceof Figure
+            }).filter(child => {
                 let rect = child.rect();
-                return this.rubberband.rect().contains(rect.x, rect.y, rect.width, rect.height);
+                return this.rubberband.rect().contains(
+                    rect.x,
+                    rect.y,
+                    rect.width,
+                    rect.height
+                );
             }));
             this.rubberband.hide();
         }

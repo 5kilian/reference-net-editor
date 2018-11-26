@@ -43,11 +43,19 @@ export class DrawingShape extends createjs.Shape {
     }
 
     center () {
-        return this.centerPoint.setValues(this.x + this.width / 2, this.y + this.height / 2);
+        return this.centerPoint.setValues(
+            this.x + this.width / 2,
+            this.y + this.height / 2
+        );
     }
 
     rect () {
-        return this.boundingBox.setValues(this.x, this.y, this.width, this.height);
+        return this.boundingBox.setValues(
+            this.x,
+            this.y,
+            this.width,
+            this.height
+        );
     }
 
     show () {

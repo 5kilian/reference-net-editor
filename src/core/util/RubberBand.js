@@ -17,7 +17,10 @@ export class RubberBand extends DrawingShape {
     }
 
     updatePosition () {
-        super.updatePosition(Math.min(this.src.x, this.dest.x), Math.min(this.src.y, this.dest.y));
+        super.updatePosition(
+            Math.min(this.src.x, this.dest.x),
+            Math.min(this.src.y, this.dest.y)
+        );
         this.width = Math.abs(this.src.x - this.dest.x);
         this.height = Math.abs(this.src.y - this.dest.y);
     }
@@ -34,11 +37,17 @@ export class RubberBand extends DrawingShape {
     }
 
     redraw () {
-        this.graphics.clear().s('gray').f('transparent').drawRect(0, 0, this.width, this.height);
+        this.graphics.clear().s('gray').f('transparent')
+            .drawRect(0, 0, this.width, this.height);
     }
 
     rect () {
-        return this.boundingBox.setValues(this.x, this.y, this.width, this.height);
+        return this.boundingBox.setValues(
+            this.x,
+            this.y,
+            this.width,
+            this.height
+        );
     }
 
     onClick (event) { }

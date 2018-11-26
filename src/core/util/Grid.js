@@ -15,7 +15,8 @@ export class Grid extends createjs.Shape {
             let y = Math.ceil(height / 20) + 1;
             for (let i = 0; i < x; i++) {
                 for (let j = 0; j < y; j++) {
-                    this.graphics.f('gray').s('gray').drawCircle(i * 20, j * 20, 1);
+                    this.graphics.f('gray').s('gray')
+                        .drawCircle(i * 20, j * 20, 1);
                 }
             }
         }

@@ -11,7 +11,10 @@ export class RelativeOrientation extends Orientation {
 
     position () {
         let rect = this.owner.rect();
-        return new createjs.Point(rect.x + this.dx * rect.width, rect.y + this.dy * rect.height);
+        return new createjs.Point(
+            rect.x + this.dx * rect.width,
+            rect.y + this.dy * rect.height
+        );
     }
 
 }

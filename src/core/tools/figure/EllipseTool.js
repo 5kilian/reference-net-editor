@@ -18,8 +18,10 @@ export class EllipseTool extends Tool {
 
     onMouseMove (event) {
         if (this.circle) {
-            this.circle.x = (event.stageX - this.onset.x) < 0 ? event.stageX : this.onset.x;
-            this.circle.y = (event.stageY - this.onset.y) < 0 ? event.stageY : this.onset.y;
+            let leftOf = (event.stageX - this.onset.x) < 0;
+            let topOf = (event.stageY - this.onset.y) < 0;
+            this.circle.x = leftOf ? event.stageX : this.onset.x;
+            this.circle.y = topOf ? event.stageY : this.onset.y;
             this.circle.width = Math.abs(this.onset.x - event.stageX);
             this.circle.height = Math.abs(this.onset.y - event.stageY);
             this.circle.redraw();

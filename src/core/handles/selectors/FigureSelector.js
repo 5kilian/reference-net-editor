@@ -13,7 +13,8 @@ export class FigureSelector extends Selector {
     }
 
     redraw () {
-        this.graphics.clear().s('#0952e6').f('transparent').ss(3).drawRect(0, 0, this.owner.width, this.owner.height);
+        this.graphics.clear().s('#0952e6').f('transparent').ss(3)
+            .drawRect(0, 0, this.owner.width, this.owner.height);
     }
 
 }

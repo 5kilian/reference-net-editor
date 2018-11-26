@@ -12,7 +12,8 @@ export class Selector extends Handle {
     }
 
     redraw () {
-        this.graphics.clear().s('#0952e6').f('transparent').ss(3).drawRect(-4, -4, 8, 8);
+        this.graphics.clear().s('#0952e6').f('transparent').ss(3)
+            .drawRect(-4, -4, 8, 8);
     }
 
 }

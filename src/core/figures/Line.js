@@ -96,7 +96,12 @@ export class Line extends Figure {
             if (point.x > max.x) max.x = point.x;
             if (point.y > max.y) max.y = point.y;
         });
-        return this.boundingBox.setValues(min.x, min.y, max.x - min.x, max.y - min.y);
+        return this.boundingBox.setValues(
+            min.x,
+            min.y,
+            max.x - min.x,
+            max.y - min.y
+        );
     }
 
     redraw () {

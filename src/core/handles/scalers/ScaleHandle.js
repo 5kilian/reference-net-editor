@@ -15,11 +15,16 @@ export class ScaleHandle extends Handle {
     }
 
     onPressMove (event) {
+        let east = (this.orientation.direction & CardinalOrientation.EAST) > 0;
+        let south = (this.orientation.direction & CardinalOrientation.SOUTH) > 0;
+        let west = (this.orientation.direction & CardinalOrientation.WEST) > 0;
+        let north = (this.orientation.direction & CardinalOrientation.NORTH) > 0;
+
         this.owner.stretch(
-            ((this.orientation.direction & CardinalOrientation.EAST) > 0) * (event.stageX - this.mx) / this.parent.scaleX,
-            ((this.orientation.direction & CardinalOrientation.SOUTH) > 0) * (event.stageY - this.my) / this.parent.scaleY,
-            ((this.orientation.direction & CardinalOrientation.WEST) > 0) * (event.stageX - this.mx) / this.parent.scaleX,
-            ((this.orientation.direction & CardinalOrientation.NORTH) > 0) * (event.stageY - this.my) / this.parent.scaleY,
+            east * (event.stageX - this.mx) / this.parent.scaleX,
+            south * (event.stageY - this.my) / this.parent.scaleY,
+            west * (event.stageX - this.mx) / this.parent.scaleX,
+            north * (event.stageY - this.my) / this.parent.scaleY,
         );
         this.mx = event.stageX;
         this.my = event.stageY;

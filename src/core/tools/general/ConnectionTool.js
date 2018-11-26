@@ -16,32 +16,37 @@ export class ConnectionTool extends Tool {
     }
 
     onMouseDown (event) {
-        if (event.relatedTarget) {
-            this.src.setValues(event.relatedTarget.x, event.relatedTarget.y);
-        } else {
-            this.src.setValues(event.stageX, event.stageY);
-        }
+        this.setValues(this.src, event.stageX, event.stageY);
         this.connection = new Connection(this.src, this.src);
     }
 
     onMouseMove (event) {
         if (this.connection) {
-            let objects = this.stage.getObjectsUnderPoint(event.stageX, event.stageY);
-            let connector = objects.find(object => object instanceof Connector);
-            let dx = event.stageX;
-            let dy = event.stageY;
-
-            if (connector) {
-                if (connector instanceof FigureConnector) {
-                    connector = connector.owner.nearestConnector(event.stageX, event.stageY);
-                }
-                dx = connector.x;
-                dy = connector.y;
-            }
-            this.dest.setValues(dx, dy);
+            this.setValues(this.dest, event.stageX, event.stageY);
             this.connection.setDest(this.dest);
             this.connection.redraw();
         }
+    }
+
+    setValues (point, x, y) {
+        let connector = this.nearestConnector(x, y);
+        point.setValues(
+            connector ? connector.x : x,
+            connector ? connector.y : y
+        );
+    }
+
+    nearestConnector (x, y) {
+        let objects = this.stage.getObjectsUnderPoint(x, y);
+        let connector = objects.find(object => object instanceof Connector);
+
+        if (connector) {
+            if (connector instanceof FigureConnector) {
+                return connector.owner.nearestConnector(x, y);
+            }
+            return connector;
+        }
+        return false;
     }
 
     onMouseUp (event) {

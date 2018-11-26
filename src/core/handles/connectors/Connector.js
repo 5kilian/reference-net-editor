@@ -17,7 +17,8 @@ export class Connector extends Handle {
     }
 
     redraw () {
-        this.graphics.clear().s('#00e600').f('transparent').ss(3).drawRect(-4, -4, 8, 8);
+        this.graphics.clear().s('#00e600').f('transparent').ss(3)
+            .drawRect(-4, -4, 8, 8);
     }
 
     onMouseOut(event) {
