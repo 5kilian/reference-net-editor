@@ -8,17 +8,25 @@ export class EllipseTool extends Tool {
         super();
         this.icon = '';
         this.name = 'Circle Tool';
+        this.onset = new createjs.Point();
     }
 
     onMouseDown (event) {
-        let circle = new Ellipse(event.stageX, event.stageY);
-        circle.move(-circle.width / 2, -circle.height / 2);
-        circle.redraw();
+        this.onset.setValues(event.stageX, event.stageY);
+        this.circle = new Ellipse(this.onset.x, this.onset.y);
     }
 
-    onMouseMove (event) { }
+    onMouseMove (event) {
+        this.circle.x = (event.stageX - this.onset.x) < 0 ? event.stageX : this.onset.x;
+        this.circle.y = (event.stageY - this.onset.y) < 0 ? event.stageY : this.onset.y;
+        this.circle.width = Math.abs(this.onset.x - event.stageX);
+        this.circle.height = Math.abs(this.onset.y - event.stageY);
+        this.circle.redraw();
+    }
 
-    onMouseUp (event) { }
+    onMouseUp (event) {
+        this.circle = null;
+    }
 
     onToolDisable (event) { }
 

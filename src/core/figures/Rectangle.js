@@ -8,8 +8,6 @@ export class Rectangle extends Figure {
 
     constructor (x, y) {
         super(x, y);
-        this.width = 42;
-        this.height = 28;
 
         this.connectors = [
             new FigureConnector(this),

@@ -8,17 +8,25 @@ export class RectangleTool extends Tool {
         super();
         this.icon = '';
         this.name = 'Rectangle Tool';
+        this.onset = new createjs.Point();
     }
 
     onMouseDown (event) {
-        let rectangle = new Rectangle(event.stageX, event.stageY);
-        rectangle.move(-rectangle.width / 2, -rectangle.height / 2);
-        rectangle.redraw();
+        this.onset.setValues(event.stageX, event.stageY);
+        this.rectangle = new Rectangle(this.onset.x, this.onset.y);
     }
 
-    onMouseMove (event) { }
+    onMouseMove (event) {
+        this.rectangle.x = (event.stageX - this.onset.x) < 0 ? event.stageX : this.onset.x;
+        this.rectangle.y = (event.stageY - this.onset.y) < 0 ? event.stageY : this.onset.y;
+        this.rectangle.width = Math.abs(this.onset.x - event.stageX);
+        this.rectangle.height = Math.abs(this.onset.y - event.stageY);
+        this.rectangle.redraw();
+    }
 
-    onMouseUp (event) { }
+    onMouseUp (event) {
+        this.rectangle = null;
+    }
 
     onToolDisable (event) { }
 

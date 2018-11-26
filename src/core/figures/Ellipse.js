@@ -10,8 +10,6 @@ export class Ellipse extends Figure {
     constructor (x, y) {
         super(x, y);
         this.type = 'circle';
-        this.width = 40;
-        this.height = 40;
 
         this.connectors = [
             new FigureConnector(this),
