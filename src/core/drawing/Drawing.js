@@ -4,8 +4,11 @@ import DrawingEvent from './DrawingEvent';
 
 export default class Drawing {
 
-    constructor (id, configuration = {}) {
+    constructor (id, configuration = {
+        fps: 60
+    }) {
         this.canvas = new DrawingCanvas(id, configuration);
+        createjs.Ticker.framerate = configuration.fps;
         this.addListeners();
     }
 
