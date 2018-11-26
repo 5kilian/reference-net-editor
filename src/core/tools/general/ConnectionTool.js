@@ -15,6 +15,9 @@ export class ConnectionTool extends Tool {
 
     onMouseDown (event) {
         this.src.setValues(event.stageX, event.stageY);
+        if (event.relatedTarget) {
+            this.src.setValues(event.relatedTarget.x, event.relatedTarget.y);
+        }
         this.connection = new Connection(this.src, this.src);
     }
 

@@ -17,11 +17,23 @@ export class EllipseTool extends Tool {
     }
 
     onMouseMove (event) {
-        this.circle.x = (event.stageX - this.onset.x) < 0 ? event.stageX : this.onset.x;
-        this.circle.y = (event.stageY - this.onset.y) < 0 ? event.stageY : this.onset.y;
-        this.circle.width = Math.abs(this.onset.x - event.stageX);
-        this.circle.height = Math.abs(this.onset.y - event.stageY);
-        this.circle.redraw();
+        if (this.circle) {
+            this.circle.x = (event.stageX - this.onset.x) < 0 ? event.stageX : this.onset.x;
+            this.circle.y = (event.stageY - this.onset.y) < 0 ? event.stageY : this.onset.y;
+            this.circle.width = Math.abs(this.onset.x - event.stageX);
+            this.circle.height = Math.abs(this.onset.y - event.stageY);
+            this.circle.redraw();
+        }
+    }
+
+    stickToGrid (value) {
+        if ((value % 10) < 3) {
+            return Math.floor(value / 10) * 10
+        }
+        if ((value % 10) > 7) {
+            return (Math.floor(value / 10) * 10) + 10
+        }
+        return value
     }
 
     onMouseUp (event) {
