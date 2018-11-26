@@ -4,8 +4,8 @@ import { Ellipse } from '../../figures/Ellipse';
 
 export class EllipseTool extends Tool {
 
-    constructor () {
-        super();
+    constructor (stage) {
+        super(stage);
         this.icon = '';
         this.name = 'Circle Tool';
         this.onset = new createjs.Point();

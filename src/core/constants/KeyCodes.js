@@ -5,6 +5,12 @@ export const KEYCODE_LEFT = 37;
 export const KEYCODE_RIGHT = 39;
 export const KEYCODE_UP = 38;
 export const KEYCODE_DOWN = 40;
+export const KEYCODE_ARROWS = {
+    LEFT: 37,
+    UP: 38,
+    RIGHT: 39,
+    DOWN: 40,
+};
 export const KEYCODE_DEL = 46;
 export const KEYCODE_1 = 49;
 export const KEYCODE_A = 65;

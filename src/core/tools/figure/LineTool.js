@@ -3,8 +3,8 @@ import { Line } from '../../connections/Line';
 
 export class LineTool extends Tool {
 
-    constructor () {
-        super();
+    constructor (stage) {
+        super(stage);
         this.icon = '';
         this.name = 'Line Tool';
         this.line = null;

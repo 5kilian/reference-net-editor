@@ -5,8 +5,8 @@ import { Figure } from '../../figures/Figure';
 
 export class SelectionTool extends Tool {
 
-    constructor () {
-        super();
+    constructor (stage) {
+        super(stage);
         this.selection = new Selection();
         this.rubberband = new RubberBand();
         this.selection.parent.addChild(this.rubberband);

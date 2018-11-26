@@ -17,11 +17,13 @@ export class RectangleTool extends Tool {
     }
 
     onMouseMove (event) {
-        this.rectangle.x = (event.stageX - this.onset.x) < 0 ? event.stageX : this.onset.x;
-        this.rectangle.y = (event.stageY - this.onset.y) < 0 ? event.stageY : this.onset.y;
-        this.rectangle.width = Math.abs(this.onset.x - event.stageX);
-        this.rectangle.height = Math.abs(this.onset.y - event.stageY);
-        this.rectangle.redraw();
+        if (this.rectangle) {
+            this.rectangle.x = (event.stageX - this.onset.x) < 0 ? event.stageX : this.onset.x;
+            this.rectangle.y = (event.stageY - this.onset.y) < 0 ? event.stageY : this.onset.y;
+            this.rectangle.width = Math.abs(this.onset.x - event.stageX);
+            this.rectangle.height = Math.abs(this.onset.y - event.stageY);
+            this.rectangle.redraw();
+        }
     }
 
     onMouseUp (event) {

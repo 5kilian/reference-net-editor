@@ -2,7 +2,8 @@
 
 export class Tool {
 
-    constructor () {
+    constructor (stage) {
+        this.stage = stage;
         this.type = 'tool';
         this.icon = '';
         this.name = '';

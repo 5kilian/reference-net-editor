@@ -5,7 +5,6 @@ import { RectangleTool } from '../tools/figure/RectangleTool';
 import { EllipseTool } from '../tools/figure/EllipseTool';
 import { ZoomTool } from "../tools/general/ZoomTool";
 import { LineTool } from '../tools/figure/LineTool';
-import { ConnectionTool } from '../tools/general/ConnectionTool';
 import { KEYCODE_C, KEYCODE_L, KEYCODE_R, KEYCODE_V, KEYCODE_Z } from '../constants/KeyCodes';
 
 export class DrawingCanvas extends createjs.Stage {
@@ -26,17 +25,15 @@ export class DrawingCanvas extends createjs.Stage {
         DrawingEvent.on('top', this.top.bind(this));
 
         this.grid = new Grid();
-        this.tools = [
-            new SelectionTool(),
-            new RectangleTool(),
-            new EllipseTool(),
-            new LineTool(),
-            new ConnectionTool(),
-            new ZoomTool(this),
-        ];
+        this.tools = [ ];
 
-        this.activeKeys = [];
+        this.activeKeys = [ ];
+        this.register(SelectionTool);
         this.activeTool = this.tools[0];
+    }
+
+    register (tool) {
+        this.tools.push(new tool(this));
     }
 
     update (event) {
@@ -97,19 +94,19 @@ export class DrawingCanvas extends createjs.Stage {
 
         switch (this.activeKeys[ this.activeKeys.length - 1 ]) {
             case KEYCODE_V:
-                DrawingEvent.emit('use tool', 'SelectionTool');
+                DrawingEvent.emit('use tool', SelectionTool);
                 break;
             case KEYCODE_R:
-                DrawingEvent.emit('use tool', 'RectangleTool');
+                DrawingEvent.emit('use tool', RectangleTool);
                 break;
             case KEYCODE_L:
-                DrawingEvent.emit('use tool', 'LineTool');
+                DrawingEvent.emit('use tool', LineTool);
                 break;
             case KEYCODE_C:
-                DrawingEvent.emit('use tool', 'CircleTool');
+                DrawingEvent.emit('use tool', EllipseTool);
                 break;
             case KEYCODE_Z:
-                DrawingEvent.emit('use tool', 'ZoomTool');
+                DrawingEvent.emit('use tool', ZoomTool);
                 break;
             default:
         }

@@ -5,8 +5,8 @@ import { Tool } from '../Tool';
 
 export class ConnectionTool extends Tool {
 
-    constructor () {
-        super();
+    constructor (stage) {
+        super(stage);
         this.icon = '';
         this.name = 'Connection Tool';
         this.src = new createjs.Point();
@@ -14,16 +14,24 @@ export class ConnectionTool extends Tool {
     }
 
     onMouseDown (event) {
-        this.src.setValues(event.stageX, event.stageY);
         if (event.relatedTarget) {
             this.src.setValues(event.relatedTarget.x, event.relatedTarget.y);
+        } else {
+            this.src.setValues(event.stageX, event.stageY);
         }
         this.connection = new Connection(this.src, this.src);
     }
 
     onMouseMove (event) {
-        this.dest.setValues(event.stageX, event.stageY);
+        if (event.relatedTarget) {
+            console.log(event.relatedTarget);
+        }
         if (this.connection) {
+            if (event.relatedTarget) {
+                this.dest.setValues(event.relatedTarget.x, event.relatedTarget.y);
+            } else {
+                this.dest.setValues(event.stageX, event.stageY);
+            }
             this.connection.setDest(this.dest);
             this.connection.redraw();
         }

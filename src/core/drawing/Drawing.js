@@ -1,15 +1,28 @@
-import { KEYCODE_DOWN, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP } from '../constants/KeyCodes';
+import KEYCODE_ARROWS from '../constants/KeyCodes';
+import { EllipseTool } from '../tools/figure/EllipseTool';
+import { LineTool } from '../tools/figure/LineTool';
+import { RectangleTool } from '../tools/figure/RectangleTool';
+import { ConnectionTool } from '../tools/general/ConnectionTool';
+import { SelectionTool } from '../tools/general/SelectionTool';
+import { ZoomTool } from '../tools/general/ZoomTool';
 import { DrawingCanvas } from './DrawingCanvas';
 import DrawingEvent from './DrawingEvent';
+
 
 export default class Drawing {
 
     constructor (id, configuration = {
-        fps: 60
+        fps: 60,
     }) {
         this.canvas = new DrawingCanvas(id, configuration);
         createjs.Ticker.framerate = configuration.fps;
         this.addListeners();
+
+        this.register(RectangleTool);
+        this.register(EllipseTool);
+        this.register(LineTool);
+        this.register(ConnectionTool);
+        this.register(ZoomTool);
     }
 
     addListeners () {
@@ -38,7 +51,7 @@ export default class Drawing {
     }
 
     onKeyDown (event) {
-        if ([ KEYCODE_UP, KEYCODE_DOWN, KEYCODE_LEFT, KEYCODE_RIGHT ].indexOf(event.keyCode) > -1) {
+        if (KEYCODE_ARROWS.indexOf(event.keyCode) > -1) {
             event.preventDefault();
         }
         this.canvas.onKeyDown(event);
@@ -55,6 +68,10 @@ export default class Drawing {
             this.canvas.onKeyEvent(event);
             this.canvas.keyChanged = false;
         }
+    }
+
+    register (tool) {
+        this.canvas.register(tool);
     }
 
     emit (event, payload) {

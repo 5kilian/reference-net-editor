@@ -2,8 +2,8 @@ import { Tool } from '../Tool';
 
 export class TextTool extends Tool {
 
-    constructor () {
-        super();
+    constructor (stage) {
+        super(stage);
         this.icon = '';
         this.name = 'Text Tool';
     }

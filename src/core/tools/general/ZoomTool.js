@@ -3,10 +3,9 @@ import { Tool } from '../Tool';
 export class ZoomTool extends Tool {
 
     constructor (stage) {
-        super();
+        super(stage);
         this.icon = '';
         this.name = 'Zoom Tool';
-        this.stage = stage;
     }
 
     onMouseDown(event) {
