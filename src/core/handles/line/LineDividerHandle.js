@@ -1,8 +1,8 @@
-import { Handle } from './Handle';
-import { PointOrientation } from '../orientations/PointOrientation';
-import DrawingEvent from '../drawing/DrawingEvent';
+import { Handle } from '../Handle';
+import { PointOrientation } from '../../orientations/PointOrientation';
 
-export class LinePointHandle extends Handle {
+
+export class LineDividerHandle extends Handle {
 
     constructor (owner, point) {
         super(owner, new PointOrientation(owner, point));
@@ -19,9 +19,7 @@ export class LinePointHandle extends Handle {
     }
 
     onPressMove (event) {
-        this.point.setPosition(event.stageX, event.stageY);
-        this.owner.redraw();
-        DrawingEvent.emit('change selection');
+
     }
 
     onPressUp (event) {

@@ -1,46 +1,25 @@
 import { Figure } from "./Figure";
-import { LinePointHandle } from '../handles/LinePointHandle';
 
-class LinePoint {
-
-    constructor (owner, point) {
-        this.handle = new LinePointHandle(owner, this);
-        this.setPosition(point.x, point.y);
-    }
-
-    move (dx, dy) {
-        this.setPosition(this.x + dx, this.y + dy);
-    }
-
-    setPosition (x, y) {
-        this.x = x;
-        this.y = y;
-        this.handle.updatePosition();
-    }
-
-}
 
 export class Line extends Figure {
 
     constructor (src, dest) {
         super(0, 0);
         this.type = 'line';
-        this.points = [ new LinePoint(this, src), new LinePoint(this, dest) ];
-        this.handles = this.points.map(point => point.handle);
+        this.points = [ ];
+        this.handles = [ ];
     }
 
+    update () { }
 
-
-    update () {
-
-    }
-
-    position () {
-        return this.src();
+    center () {
+        // TODO
     }
 
     move (dx, dy) {
-        this.points.forEach(point => point.move(dx, dy));
+        this.points.forEach(point => {
+            point.setPosition(point.x + dx, point.y + dy);
+        });
         this.redraw();
         this.updateHandles();
     }
