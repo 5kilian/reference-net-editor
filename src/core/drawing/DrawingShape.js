@@ -9,6 +9,12 @@ export class DrawingShape extends createjs.Shape {
     constructor () {
         super();
         this.centerPoint = new createjs.Point();
+        this.cornerPoints = {
+            NORTHWEST: new createjs.Point(),
+            NORTHEAST: new createjs.Point(),
+            SOUTHWEST: new createjs.Point(),
+            SOUTHEAST: new createjs.Point(),
+        };
         this.boundingBox = new createjs.Rectangle();
 
         this.on('click', this.onClick.bind(this));
@@ -57,6 +63,18 @@ export class DrawingShape extends createjs.Shape {
             this.width,
             this.height
         );
+    }
+
+    corners () {
+        let rect = this.rect();
+        this.cornerPoints.NORTHWEST.setValues(rect.x, rect.y);
+        this.cornerPoints.NORTHEAST.setValues(rect.x + rect.width, rect.y);
+        this.cornerPoints.SOUTHWEST.setValues(rect.x, rect.y + rect.height);
+        this.cornerPoints.SOUTHEAST.setValues(
+            rect.x + rect.width,
+            rect.y + rect.height
+        );
+        return this.cornerPoints;
     }
 
     show () {

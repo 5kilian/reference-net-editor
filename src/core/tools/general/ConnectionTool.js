@@ -16,24 +16,29 @@ export class ConnectionTool extends Tool {
     }
 
     onMouseDown (event) {
-        this.setValues(this.src, event.stageX, event.stageY);
+        this.src.setValues(event.stageX, event.stageY);
+
+        let connector = this.nearestConnector(this.src.x, this.src.y);
+        if (connector) {
+            this.src.setValues(connector.x, connector.y);
+            this.src.connector = connector;
+        }
+
         this.connection = new Connection(this.src, this.src);
     }
 
     onMouseMove (event) {
         if (this.connection) {
-            this.setValues(this.dest, event.stageX, event.stageY);
-            this.connection.setDest(this.dest);
-            this.connection.redraw();
-        }
-    }
+            this.dest.setValues(event.stageX, event.stageY);
 
-    setValues (point, x, y) {
-        let connector = this.nearestConnector(x, y);
-        point.setValues(
-            connector ? connector.x : x,
-            connector ? connector.y : y
-        );
+            let connector = this.nearestConnector(this.dest.x, this.dest.y);
+            if (connector) {
+                this.dest.setValues(connector.x, connector.y);
+                this.dest.connector = connector;
+            }
+
+            this.connection.setDest(this.dest);
+        }
     }
 
     nearestConnector (x, y) {
@@ -51,7 +56,6 @@ export class ConnectionTool extends Tool {
 
     onMouseUp (event) {
         if (this.connection) {
-            this.connection.destructor();
             this.connection = null;
         }
     }

@@ -115,7 +115,7 @@ export class Figure extends DrawingShape {
         this.updateConnections();
         this.selector.updatePosition();
         if (this.parent.activeTool instanceof SelectionTool) {
-            this.parent.activeTool.onMove();
+            this.parent.activeTool.selection.onMove();
         }
     }
 
