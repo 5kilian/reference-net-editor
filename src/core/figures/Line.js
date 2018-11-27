@@ -1,3 +1,4 @@
+import { LinePointHandle } from '../handles/line/LinePointHandle';
 import { Figure } from "./Figure";
 
 
@@ -8,17 +9,16 @@ export class Line extends Figure {
         this.type = 'line';
         this.points = [ ];
         this.handles = [ ];
+
+        this.insertPointAt(0, src);
+        this.insertPointAt(1, dest);
     }
 
     update () { }
 
-    center () {
-        // TODO
-    }
-
     move (dx, dy) {
         this.points.forEach(point => {
-            point.setPosition(point.x + dx, point.y + dy);
+            point.setValues(point.x + dx, point.y + dy);
         });
         this.redraw();
         this.updateHandles();
@@ -41,25 +41,36 @@ export class Line extends Figure {
     }
 
     setDest (point) {
-        this.setPointAt(this.points.length-1, point)
+        this.setPointAt(this.points.length-1, point);
     }
 
     setPointAt (index, point) {
-        this.pointAt(index).setPosition(point.x, point.y);
+        this.pointAt(index).setValues(point.x, point.y);
+        this.onMove();
     }
 
-    insertPointAt (index, point) {
-        this.points.splice(index, 0, new LinePoint(this, point));
+    insertPointAt (index, pointAt) {
+        let point = pointAt.clone();
+        point.handle = new LinePointHandle(this, point);
+        point.connector = pointAt.connector;
+        this.points.splice(index, 0, point);
         this.handles = this.points.map(point => point.handle);
+        this.onMove();
     }
 
     removePointAt (index) {
         this.points.splice(index, 1);
+        this.handles = this.points.map(point => point.handle);
+        this.onMove();
     }
 
     containsPoint (point) {
-        for (let p in this.points) {
-            if (p.x === point.x && p.y === point.y) {
+        return this.containsPointAt(point.x, point.y);
+    }
+
+    containsPointAt (x, y) {
+        for (let point in this.points) {
+            if (x === point.x && y === point.y) {
                 return true;
             }
         }

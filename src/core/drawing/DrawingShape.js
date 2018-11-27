@@ -43,9 +43,10 @@ export class DrawingShape extends createjs.Shape {
     }
 
     center () {
+        let rect = this.rect();
         return this.centerPoint.setValues(
-            this.x + this.width / 2,
-            this.y + this.height / 2
+            rect.x + rect.width / 2,
+            rect.y + rect.height / 2,
         );
     }
 

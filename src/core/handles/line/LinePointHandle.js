@@ -7,6 +7,7 @@ export class LinePointHandle extends Handle {
     constructor (owner, point) {
         super(owner, new PointOrientation(owner, point));
         this.point = point;
+        this.hide();
     }
 
     redraw () {
@@ -19,9 +20,8 @@ export class LinePointHandle extends Handle {
     }
 
     onPressMove (event) {
-        this.point.setPosition(event.stageX, event.stageY);
-        this.owner.redraw();
-        DrawingEvent.emit('change selection');
+        this.point.setValues(event.stageX, event.stageY);
+        this.owner.onMove();
     }
 
     onPressUp (event) {
