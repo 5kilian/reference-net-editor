@@ -46,6 +46,7 @@ export class Line extends Figure {
 
     setPointAt (index, point) {
         this.pointAt(index).setValues(point.x, point.y);
+        this.pointAt(index).connector = point.connector;
         this.onMove();
     }
 

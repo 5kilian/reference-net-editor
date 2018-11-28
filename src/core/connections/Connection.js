@@ -1,5 +1,6 @@
 import { Line } from '../figures/Line';
 
+
 export class Connection extends Line {
 
     constructor (src, dest) {
@@ -8,6 +9,7 @@ export class Connection extends Line {
 
         this.mode = Connection.CENTER;
 
+        this.line = new createjs.Point();
         this.helper = [
             new createjs.Point(),
             new createjs.Point(),
@@ -35,13 +37,22 @@ export class Connection extends Line {
                 break;
             case Connection.CENTER:
                 if (src.connector) {
-                    let collideAt = this.checkCollision(src.connector.owner, dest);
+                    let collideAt = this.checkCollision(
+                        src.connector.owner,
+                        dest,
+                        src.connector.owner.center(),
+                    );
                     this.graphics.moveTo(collideAt.x, collideAt.y);
                 } else {
                     this.graphics.moveTo(src.x, src.y);
                 }
                 if (dest.connector) {
-                    this.graphics.lineTo(dest.x, dest.y);
+                    let collideAt = this.checkCollision(
+                        dest.connector.owner,
+                        src,
+                        dest.connector.owner.center(),
+                    );
+                    this.graphics.lineTo(collideAt.x, collideAt.y);
                 } else {
                     this.graphics.lineTo(dest.x, dest.y);
                 }
@@ -55,73 +66,28 @@ export class Connection extends Line {
         }
     }
 
-    checkCollision (object, dest) {
-        const center = object.center();
-        const corners = object.corners();
+    checkCollision (object, start, end) {
+        this.line.copy(start);
 
-        if (Math.abs(dest.y - center.y) < Math.abs(dest.x - center.x)) {
-            return this.checkCollisionLow(object, dest);
-        } else {
-            return this.checkCollisionHigh(object, dest);
-        }
-    }
+        let dx = Math.abs(end.x - start.x), sx = start.x < end.x ? 1 : -1;
+        let dy = Math.abs(end.y - start.y), sy = start.y < end.y ? 1 : -1;
+        let err = (dx > dy ? dx : -dy) / 2, e2;
 
-    checkCollisionLow (object, end) {
-        let center = object.center();
-        let dx = end.x - center.x;
-        let dy = end.y - center.y;
-        let yi = 1;
-        if (dy < 0) {
-            yi = -1;
-            dy = -dy;
-        }
-        let D = 2 * dy - dx;
-        let y = center.y;
-
-        let prevX = center.x, prevY = y;
-        for (let x = center.x; x < end.x; prevX = x++) {
-            let objectLocal = object.globalToLocal(x, y);
-            if (!object.hitTest(objectLocal.x, objectLocal.y)) {
-                return new createjs.Point(prevX, prevY);
+        while (true) {
+            if (object.hitTestGlobal(this.line.x, this.line.y)) break;
+            if (this.line.x === end.x && this.line.y === end.y) break;
+            e2 = err;
+            if (e2 > -dx) {
+                err -= dy;
+                this.line.x += sx;
             }
-            if (D > 0) {
-                prevY = y;
-                y += yi;
-                D = D - 2*dx;
+            if (e2 < dy) {
+                err += dx;
+                this.line.y += sy;
             }
-            D = D + 2*dy
         }
 
-        return center;
-    }
-
-    checkCollisionHigh (object, end) {
-        let center = object.center();
-        let dx = end.x - center.x;
-        let dy = end.y - center.y;
-        let xi = 1;
-        if (dx < 0) {
-            xi = -1;
-            dx = -dx;
-        }
-        let D = 2 * dx - dy;
-        let x = center.x;
-
-        let prevX = x, prevY = center.y;
-        for (let y = center.y; y < end.y; prevY = y++) {
-            let objectLocal = object.globalToLocal(x, y);
-            if (!object.hitTest(objectLocal.x, objectLocal.y)) {
-                return new createjs.Point(prevX, prevY);
-            }
-            if (D > 0) {
-                prevX = x;
-                x += xi;
-                D = D - 2*dy;
-            }
-            D = D + 2*dx
-        }
-
-        return center;
+        return this.line;
     }
 
     static get STRAIGHT () {

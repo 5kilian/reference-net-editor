@@ -77,6 +77,11 @@ export class DrawingShape extends createjs.Shape {
         return this.cornerPoints;
     }
 
+    hitTestGlobal (x, y) {
+        let point = this.globalToLocal(x, y);
+        return this.hitTest(point.x, point.y);
+    }
+
     show () {
         this.visible = true;
         this.onShow();
