@@ -1,4 +1,5 @@
 import { Line } from '../figures/Line';
+import { Geometry2d } from '../util/Geometry2d';
 
 
 export class Connection extends Line {
@@ -10,6 +11,7 @@ export class Connection extends Line {
         this.mode = Connection.CENTER;
 
         this.line = new createjs.Point();
+        this.preious = new createjs.Point();
         this.helper = [
             new createjs.Point(),
             new createjs.Point(),
@@ -87,9 +89,17 @@ export class Connection extends Line {
 
     checkLineCollision (object, start, end) {
         this.line.copy(start);
+        this.preious.copy(this.line);
 
-        let dx = Math.abs(end.x - start.x), sx = start.x < end.x ? 1 : -1;
-        let dy = Math.abs(end.y - start.y), sy = start.y < end.y ? 1 : -1;
+        while (!object.hitTestGlobal(this.line.x, this.line.y)
+            && this.line.x !== end.x && this.line.y !== end.y) {
+            this.preious.copy(this.line);
+            Geometry2d.center(this.line, end, this.line);
+        }
+        this.line.copy(this.preious);
+
+        let dx = Math.abs(end.x - this.line.x), sx = this.line.x < end.x ? 1 : -1;
+        let dy = Math.abs(end.y - this.line.y), sy = this.line.y < end.y ? 1 : -1;
         let err = (dx > dy ? dx : -dy) / 2, e2;
 
         while (true) {

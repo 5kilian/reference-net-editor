@@ -17,8 +17,11 @@ export class Geometry2d {
         return Math.sqrt((p1.x - p2.x) * (p1.y - p2.y));
     }
 
-    static center (p1, p2) {
-        return new createjs.Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
+    static center (p1, p2, pt) {
+        return (pt || new createjs.Point()).setValues(
+            (p1.x + p2.x) / 2,
+            (p1.y + p2.y) / 2
+        );
     }
 
     static intersect (p1, p2, p3, p4) {
