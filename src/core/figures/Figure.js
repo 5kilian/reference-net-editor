@@ -64,6 +64,14 @@ export class Figure extends DrawingShape {
         this.connections.forEach((connection) => connection.redraw());
     }
 
+    addConnection (connection) {
+        this.connections.push(connection);
+    }
+
+    removeConnection (connection) {
+        this.connections.slice(this.connections.indexOf(connection), 1);
+    }
+
     updateConnectors () {
         this.connectors.forEach(connector => connector.updatePosition());
     }

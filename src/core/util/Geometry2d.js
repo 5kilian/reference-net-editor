@@ -14,7 +14,7 @@ export class Geometry2d {
     }
 
     static distance (p1, p2) {
-        return Math.sqrt((p1.x - p2.x) * (p1.y - p2.y));
+        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow((p1.y - p2.y), 2));
     }
 
     static center (p1, p2, pt) {

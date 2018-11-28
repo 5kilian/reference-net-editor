@@ -31,7 +31,7 @@ export class ConnectionTool extends Tool {
     onMouseMove (event) {
         if (this.connection) {
             this.dest.setValues(event.stageX, event.stageY);
-            this.dest.connector = null;
+            this.dest.connector = undefined;
 
             let connector = this.nearestConnector(this.dest);
             if (connector) {
@@ -41,6 +41,11 @@ export class ConnectionTool extends Tool {
 
             this.connection.setDest(this.dest);
         }
+    }
+
+    onMouseUp (event) {
+        this.connection.connectDest(this.dest.connector);
+        this.connection = null;
     }
 
     nearestConnector (point) {
@@ -58,10 +63,6 @@ export class ConnectionTool extends Tool {
             return connector;
         }
         return false;
-    }
-
-    onMouseUp (event) {
-        this.connection = null;
     }
 
     onToolEnable (event) {
