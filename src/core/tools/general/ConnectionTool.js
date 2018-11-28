@@ -19,7 +19,7 @@ export class ConnectionTool extends Tool {
         this.src.setValues(event.stageX, event.stageY);
         this.src.connector = null;
 
-        let connector = this.nearestConnector(this.src.x, this.src.y);
+        let connector = this.nearestConnector(this.src);
         if (connector) {
             this.src.copy(connector);
             this.src.connector = connector;
@@ -33,7 +33,7 @@ export class ConnectionTool extends Tool {
             this.dest.setValues(event.stageX, event.stageY);
             this.dest.connector = null;
 
-            let connector = this.nearestConnector(this.dest.x, this.dest.y);
+            let connector = this.nearestConnector(this.dest);
             if (connector) {
                 this.dest.copy(connector);
                 this.dest.connector = connector;
@@ -43,7 +43,11 @@ export class ConnectionTool extends Tool {
         }
     }
 
-    nearestConnector (x, y) {
+    nearestConnector (point) {
+        return this.nearestConnectorAt(point.x, point.y)
+    }
+
+    nearestConnectorAt (x, y) {
         let objects = this.stage.getObjectsUnderPoint(x, y);
         let connector = objects.find(object => object instanceof Connector);
 

@@ -37,7 +37,7 @@ export class Connection extends Line {
                 break;
             case Connection.CENTER:
                 if (src.connector) {
-                    let collideAt = this.checkCollision(
+                    let collideAt = this.checkLineCollision(
                         src.connector.owner,
                         dest,
                         src.connector.owner.center(),
@@ -47,7 +47,7 @@ export class Connection extends Line {
                     this.graphics.moveTo(src.x, src.y);
                 }
                 if (dest.connector) {
-                    let collideAt = this.checkCollision(
+                    let collideAt = this.checkLineCollision(
                         dest.connector.owner,
                         src,
                         dest.connector.owner.center(),
@@ -58,7 +58,26 @@ export class Connection extends Line {
                 }
                 break;
             case Connection.ANGULAR:
-                super.redraw();
+                this.graphics.moveTo(src.x, src.y);
+                if (src.y === dest.y && Math.abs(dest.x - src.x) > 30) {
+                    this.edges.push(
+                        this.helper[0].setValues(src.x, src.y + 10)
+                    );
+                    this.edges.push(
+                        this.helper[1].setValues(dest.x, dest.y + 10)
+                    );
+                } else if (src.x === dest.x && Math.abs(dest.y - src.y) > 30) {
+                    this.edges.push(
+                        this.helper[0].setValues(src.x + 10, src.y)
+                    );
+                    this.edges.push(
+                        this.helper[1].setValues(dest.x + 10, dest.y)
+                    );
+                } else if (Math.abs(dest.x - src.x) > 30)
+                    this.edges.forEach(edge => {
+                        this.graphics.lineTo(edge.x, edge.y);
+                    });
+                this.graphics.lineTo(dest.x, dest.y);
                 break;
             case Connection.CIRCULAR:
                 super.redraw();
@@ -66,7 +85,7 @@ export class Connection extends Line {
         }
     }
 
-    checkCollision (object, start, end) {
+    checkLineCollision (object, start, end) {
         this.line.copy(start);
 
         let dx = Math.abs(end.x - start.x), sx = start.x < end.x ? 1 : -1;

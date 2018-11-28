@@ -1,5 +1,5 @@
 import { LinePointHandle } from '../handles/line/LinePointHandle';
-import { Figure } from "./Figure";
+import { Figure } from './Figure';
 
 
 export class Line extends Figure {
@@ -10,8 +10,8 @@ export class Line extends Figure {
         this.points = [ ];
         this.handles = [ ];
 
-        this.insertPointAt(0, src);
-        this.insertPointAt(1, dest);
+        this.insertPoint(src);
+        this.insertPoint(dest);
     }
 
     update () { }
@@ -20,8 +20,7 @@ export class Line extends Figure {
         this.points.forEach(point => {
             point.setValues(point.x + dx, point.y + dy);
         });
-        this.redraw();
-        this.updateHandles();
+        this.onMove();
     }
 
     src () {
@@ -50,6 +49,10 @@ export class Line extends Figure {
         this.onMove();
     }
 
+    insertPoint (point) {
+        this.insertPointAt(this.points.size, point);
+    }
+
     insertPointAt (index, pointAt) {
         let point = pointAt.clone();
         point.handle = new LinePointHandle(this, point);
@@ -71,7 +74,7 @@ export class Line extends Figure {
 
     containsPointAt (x, y) {
         for (let point in this.points) {
-            if (x === point.x && y === point.y) {
+            if (point.x === x && point.y === y) {
                 return true;
             }
         }

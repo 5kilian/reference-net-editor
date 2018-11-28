@@ -1,11 +1,11 @@
 import { Handle } from '../Handle';
 import { PointOrientation } from '../../orientations/PointOrientation';
-import DrawingEvent from '../../drawing/DrawingEvent';
 
 export class LinePointHandle extends Handle {
 
     constructor (owner, point) {
         super(owner, new PointOrientation(owner, point));
+        this.hitArea = new createjs.Shape(new createjs.Graphics().clear().f('#000').drawCircle(0, 0, 5));
         this.point = point;
         this.hide();
     }

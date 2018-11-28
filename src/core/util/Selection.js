@@ -58,7 +58,6 @@ export class Selection extends DrawingShape {
 
     move (dx, dy) {
         this.objects.forEach((object) => object.move(dx, dy));
-        this.onMove();
     }
 
     remove (object) {

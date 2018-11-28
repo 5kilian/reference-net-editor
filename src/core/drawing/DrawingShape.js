@@ -8,6 +8,7 @@ export class DrawingShape extends createjs.Shape {
 
     constructor () {
         super();
+        this.gloalPoint = new createjs.Point();
         this.centerPoint = new createjs.Point();
         this.cornerPoints = {
             NORTHWEST: new createjs.Point(),
@@ -78,8 +79,8 @@ export class DrawingShape extends createjs.Shape {
     }
 
     hitTestGlobal (x, y) {
-        let point = this.globalToLocal(x, y);
-        return this.hitTest(point.x, point.y);
+        this.globalToLocal(x, y, this.gloalPoint);
+        return this.hitTest(this.gloalPoint.x, this.gloalPoint.y);
     }
 
     show () {
