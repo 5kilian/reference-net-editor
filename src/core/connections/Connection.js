@@ -9,7 +9,7 @@ export class Connection extends Line {
         this.from = [];
         this.to = [];
 
-        this.mode = Connection.STRAIGHT;
+        this.mode = Connection.CENTER;
 
         this.line = new createjs.Point();
         this.previous = new createjs.Point();

@@ -1,4 +1,5 @@
 import { Tool } from '../Tool';
+import { Text } from '../../text/Text';
 
 export class TextTool extends Tool {
 
@@ -8,7 +9,9 @@ export class TextTool extends Tool {
         this.name = 'Text Tool';
     }
 
-    onMouseDown (event) { }
+    onMouseDown (event) {
+        new Text(event.stageX, event.stageY, 'Hello world');
+    }
 
     onMouseMove (event) { }
 
