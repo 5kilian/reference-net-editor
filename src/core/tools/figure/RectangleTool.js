@@ -14,6 +14,10 @@ export class RectangleTool extends Tool {
     onMouseDown (event) {
         this.onset.setValues(event.stageX, event.stageY);
         this.rectangle = new Rectangle(this.onset.x, this.onset.y);
+        this.rectangle.x -= 21;
+        this.rectangle.y -= 14;
+        this.rectangle.width = 42;
+        this.rectangle.height = 28;
     }
 
     onMouseMove (event) {
@@ -29,6 +33,7 @@ export class RectangleTool extends Tool {
     }
 
     onMouseUp (event) {
+        this.rectangle.redraw();
         this.rectangle = null;
     }
 
