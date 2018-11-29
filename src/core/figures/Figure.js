@@ -3,6 +3,7 @@ import { DrawingShape } from '../drawing/DrawingShape';
 import { CenterConnector } from '../handles/connectors/CenterConnector';
 import { FigureConnector } from '../handles/connectors/FigureConnector';
 import { FigureSelector } from '../handles/selectors/FigureSelector';
+import { CenterText } from '../text/CenterText';
 import { SelectionTool } from '../tools/general/SelectionTool';
 
 
@@ -18,6 +19,7 @@ export class Figure extends DrawingShape {
         this.selector = new FigureSelector(this);
         this.connectors = [];
         this.connections = [];
+        this.inscription = null;
 
         this.x = 0;
         this.y = 0;
@@ -36,6 +38,9 @@ export class Figure extends DrawingShape {
         this.handles.forEach(handle => handle.destructor());
         this.connectors.forEach(handle => handle.destructor());
         this.connections.forEach(connection => connection.destructor());
+        if (this.inscription) {
+            this.inscription.destructor();
+        }
         super.destructor();
     }
 
@@ -58,6 +63,10 @@ export class Figure extends DrawingShape {
         this.height = Math.max(0, this.height + south - north);
         this.redraw();
         this.onMove();
+    }
+
+    setInscription (text) {
+        this.inscription = new CenterText(this, text);
     }
 
     updateConnections () {
@@ -124,6 +133,9 @@ export class Figure extends DrawingShape {
         this.selector.updatePosition();
         if (this.parent.activeTool instanceof SelectionTool) {
             this.parent.activeTool.selection.onMove();
+        }
+        if (this.inscription) {
+            this.inscription.updatePosition();
         }
     }
 

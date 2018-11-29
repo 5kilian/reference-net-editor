@@ -1,11 +1,12 @@
 import DrawingEvent from '../drawing/DrawingEvent';
 
 
-export class Text extends createjs.Text {
+export class AbstractText extends createjs.Text {
 
-    constructor (x, y, content) {
+    constructor (orientation, content) {
         super();
-        this.updatePosition(x, y);
+        this.orientation = orientation;
+        this.updatePosition();
 
         this.text = content;
         this.font = '20px Arial';
@@ -14,9 +15,10 @@ export class Text extends createjs.Text {
         DrawingEvent.emit('add', this);
     }
 
-    updatePosition (x, y) {
-        this.x = x;
-        this.y = y;
+    updatePosition () {
+        let position = this.orientation.position();
+        this.x = position.x;
+        this.y = position.y;
     }
 
 
