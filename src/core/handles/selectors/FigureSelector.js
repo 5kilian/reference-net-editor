@@ -9,7 +9,7 @@ export class FigureSelector extends Selector {
 
     updatePosition () {
         super.updatePosition();
-        this.redraw();
+        // this.redraw();
     }
 
     redraw () {

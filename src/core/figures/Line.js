@@ -107,4 +107,12 @@ export class Line extends Figure {
         this.rect();
     }
 
+    adjustScale (dx, dy) {
+        this.onMove();
+    }
+
+    stretch (east, south, west, north) {
+        this.onMove();
+    }
+
 }

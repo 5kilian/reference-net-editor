@@ -52,7 +52,6 @@ export class Figure extends DrawingShape {
     adjustScale (dx, dy) {
         this.width = Math.max(0, this.width + dx);
         this.height = Math.max(0, this.height + dy);
-        this.redraw();
         this.onMove();
     }
 
@@ -61,7 +60,6 @@ export class Figure extends DrawingShape {
         this.y = this.y + north;
         this.width = Math.max(0, this.width + east - west);
         this.height = Math.max(0, this.height + south - north);
-        this.redraw();
         this.onMove();
     }
 

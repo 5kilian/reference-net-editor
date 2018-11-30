@@ -26,6 +26,7 @@ export class ConnectionTool extends Tool {
         }
 
         this.connection = new Connection(this.src, this.src);
+        this.connection.strokes = true;
     }
 
     onMouseMove (event) {
@@ -44,7 +45,9 @@ export class ConnectionTool extends Tool {
     }
 
     onMouseUp (event) {
+        this.connection.strokes = false;
         this.connection.connectDest(this.dest.connector);
+        this.connection.redraw();
         this.connection = null;
     }
 

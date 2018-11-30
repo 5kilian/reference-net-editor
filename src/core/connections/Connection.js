@@ -10,6 +10,7 @@ export class Connection extends Line {
         this.to = [];
 
         this.mode = Connection.CENTER;
+        this.strokes = false;
 
         this.line = new createjs.Point();
         this.previous = new createjs.Point();
@@ -55,6 +56,9 @@ export class Connection extends Line {
         }
 
         this.graphics.clear().s(this.lineColor);
+        if (this.strokes) {
+            this.graphics.setStrokeDash([5, 5], 0);
+        }
         switch (this.mode) {
             case Connection.STRAIGHT:
                 super.redraw();
@@ -62,30 +66,25 @@ export class Connection extends Line {
             case Connection.CENTER:
                 if (src.connector) {
                     src.copy(src.connector.owner.center());
-                }
-                if (dest.connector) {
-                    dest.copy(dest.connector.owner.center());
-                }
-                if (src.connector) {
                     let collideAt = this.checkLineCollision(
                         src.connector.owner,
                         dest,
                         src,
                     );
-                    this.graphics.moveTo(collideAt.x, collideAt.y);
-                } else {
-                    this.graphics.moveTo(src.x, src.y);
+                    src.setValues(collideAt.x, collideAt.y);
                 }
+                this.graphics.moveTo(src.x, src.y);
                 if (dest.connector) {
+                    dest.copy(dest.connector.owner.center());
                     let collideAt = this.checkLineCollision(
                         dest.connector.owner,
                         src,
                         dest,
                     );
-                    this.graphics.lineTo(collideAt.x, collideAt.y);
-                } else {
-                    this.graphics.lineTo(dest.x, dest.y);
+                    dest.setValues(collideAt.x, collideAt.y);
+
                 }
+                this.graphics.lineTo(dest.x, dest.y);
                 break;
             case Connection.ANGULAR:
                 this.edges = [];
@@ -126,8 +125,8 @@ export class Connection extends Line {
         this.previous.copy(this.line);
 
         let colliding = (object, start, end) => {
-            return object.hitTestGlobal(start.x, start.y)
-            || (start.x === end.x && start.y === end.y)
+            return (object.hitTestGlobal(start.x, start.y) && object.rect().contains(start.x, start.y))
+            || (start.x >= end.x-2 && start.x <= end.x+2 && start.y >= end.y-2 && start.y <= end.y+2)
         };
 
         while (!colliding(object, this.line, end)) {
