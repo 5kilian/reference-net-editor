@@ -1,34 +1,35 @@
 {
-    "name": "reference-net-editor",
-    "version": "0.1.8",
-    "description": "Web editor for reference nets",
-    "author": {
-        "name": "Tim Kilian",
-        "email": "mail@timkilian.pl"
-    },
-    "license": "MIT",
-    "repository": "github:5kilian/reference-net-editor",
-    "dependencies": {
-        "latest-createjs": "^1.0.24",
-        "socket.io": "^2.1.1"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.1.2",
-        "@babel/preset-env": "^7.1.0",
-        "babel-loader": "^8.0.4",
-        "uglifyjs-webpack-plugin": "^2.0.1",
-        "webpack": "^4.20.2",
-        "webpack-cli": "^3.1.2",
-        "webpack-dev-server": "^3.1.10"
-    },
-    "scripts": {
-        "start": "webpack-dev-server --open --port 4001 -p",
-        "watch": "webpack --progress --watch -p",
-        "build": "webpack --mode production"
-    },
-    "babel": {
-        "presets": [
-            "@babel/preset-env"
-        ]
-    }
+  "name": "reference-net-editor",
+  "version": "0.1.8",
+  "description": "Web editor for reference nets",
+  "author": {
+    "name": "Tim Kilian",
+    "email": "mail@timkilian.pl"
+  },
+  "license": "MIT",
+  "repository": "github:5kilian/reference-net-editor",
+  "dependencies": {
+    "latest-createjs": "^1.0.24"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "rollup": "^0.67.3",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-uglify": "^6.0.0",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-serve": "^0.6.0",
+    "rollup-plugin-livereload": "^0.6.0"
+  },
+  "scripts": {
+    "build": "rollup -c --environment DEST:dist",
+    "dev": "rollup -cw --environment DEST:example",
+    "pretest": "npm run build"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  }
 }

@@ -1,4 +1,3 @@
-import { KEYCODE_ARROWS } from '../constants/KeyCodes';
 import { EllipseTool } from '../tools/figure/EllipseTool';
 import { LineTool } from '../tools/figure/LineTool';
 import { RectangleTool } from '../tools/figure/RectangleTool';
