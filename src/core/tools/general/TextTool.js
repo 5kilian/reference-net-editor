@@ -2,6 +2,8 @@ import { Figure } from '../../figures/Figure';
 import { PointOrientation } from '../../orientations/PointOrientation';
 import { Tool } from '../Tool';
 import { AbstractText } from '../../text/AbstractText';
+import { Point } from '../../util/Point';
+
 
 export class TextTool extends Tool {
 
@@ -9,17 +11,25 @@ export class TextTool extends Tool {
         super(stage);
         this.icon = '';
         this.name = 'AbstractText Tool';
-        this.position = new createjs.Point();
+        this.position = new Point();
     }
 
     onMouseDown (event) {
-        if (event.relatedTarget instanceof Figure) {
-            event.relatedTarget.setInscription('Hello world');
+        if (this.text) {
+            this.text = null;
         } else {
-            new AbstractText(
-                new PointOrientation(null, this.position.setValues(event.stageX, event.stageY)),
-                'Hello world'
-            );
+            if (event.relatedTarget instanceof Figure) {
+                this.text = event.relatedTarget.inscription;
+            } else {
+                this.text = new AbstractText(
+                    new PointOrientation(
+                        null,
+                        this.position.setValues(event.stageX, event.stageY)
+                    ),
+                    'H'
+                );
+            }
+            this.text.updatePosition();
         }
     }
 
@@ -30,5 +40,11 @@ export class TextTool extends Tool {
     onToolDisable (event) { }
 
     onToolEnable (event) { }
+
+    onKeyEvent (event) {
+        if (this.text && event.lastKey) {
+            this.text.text += String.fromCharCode(event.lastKey);
+        }
+    }
 
 }

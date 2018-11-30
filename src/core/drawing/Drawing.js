@@ -52,9 +52,10 @@ export default class Drawing {
     }
 
     onKeyDown (event) {
-        if (KEYCODE_ARROWS.indexOf(event.keyCode) > -1) {
+        // if (KEYCODE_ARROWS.indexOf(event.keyCode) > -1) {
+        if ([ 123 ].indexOf(event.keyCode) === -1) // F12
             event.preventDefault();
-        }
+        // }
         this.canvas.onKeyDown(event);
     }
 

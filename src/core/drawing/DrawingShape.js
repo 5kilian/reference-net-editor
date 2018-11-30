@@ -1,4 +1,5 @@
 import DrawingEvent from './DrawingEvent';
+import { Point } from '../util/Point';
 
 
 /**
@@ -8,13 +9,14 @@ export class DrawingShape extends createjs.Shape {
 
     constructor () {
         super();
-        this.gloalPoint = new createjs.Point();
-        this.centerPoint = new createjs.Point();
+        this.gloalPoint = new Point();
+        this.localPoint = new Point();
+        this.centerPoint = new Point();
         this.cornerPoints = {
-            NORTHWEST: new createjs.Point(),
-            NORTHEAST: new createjs.Point(),
-            SOUTHWEST: new createjs.Point(),
-            SOUTHEAST: new createjs.Point(),
+            NORTHWEST: new Point(),
+            NORTHEAST: new Point(),
+            SOUTHWEST: new Point(),
+            SOUTHEAST: new Point(),
         };
         this.boundingBox = new createjs.Rectangle();
 

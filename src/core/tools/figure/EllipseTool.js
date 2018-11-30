@@ -1,5 +1,6 @@
 import { Tool } from '../Tool';
 import { Ellipse } from '../../figures/Ellipse';
+import { Point } from '../../util/Point';
 
 
 export class EllipseTool extends Tool {
@@ -8,7 +9,7 @@ export class EllipseTool extends Tool {
         super(stage);
         this.icon = '';
         this.name = 'Circle Tool';
-        this.onset = new createjs.Point();
+        this.onset = new Point();
     }
 
     onMouseDown (event) {

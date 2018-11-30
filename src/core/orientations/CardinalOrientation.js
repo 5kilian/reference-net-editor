@@ -5,7 +5,6 @@ export class CardinalOrientation extends Orientation {
 
     constructor (owner, direction) {
         super(owner);
-        this.type = 'CardinalOrientation';
         this.direction = direction;
     }
 
@@ -25,7 +24,7 @@ export class CardinalOrientation extends Orientation {
             dx = 0;
         }
 
-        return new createjs.Point(
+        return this.point.setValues(
             rect.x + dx * rect.width,
             rect.y + dy * rect.height
         );

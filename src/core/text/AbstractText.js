@@ -8,11 +8,16 @@ export class AbstractText extends createjs.Text {
         this.orientation = orientation;
         this.updatePosition();
 
-        this.text = content;
+        this.text = content || '';
         this.font = '20px Arial';
         this.color = 'black';
 
         DrawingEvent.emit('add', this);
+    }
+
+    destructor () {
+        DrawingEvent.emit('remove', this);
+        delete this;
     }
 
     updatePosition () {

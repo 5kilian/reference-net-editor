@@ -17,18 +17,16 @@ export class Figure extends DrawingShape {
 
         this.handles = [];
         this.selector = new FigureSelector(this);
+        this.inscription = new CenterText(this);
         this.connectors = [];
         this.connections = [];
-        this.inscription = null;
 
-        this.x = 0;
-        this.y = 0;
+        this.x = x;
+        this.y = y;
         this.width = 1;
         this.height = 1;
         this.lineColor = 'black';
         this.fillColor = 'white';
-
-        this.updatePosition(x, y);
 
         DrawingEvent.on('enable connectors', this.enableConnectors.bind(this));
         DrawingEvent.on('disable connectors', this.disableConnectors.bind(this));
@@ -61,10 +59,6 @@ export class Figure extends DrawingShape {
         this.width = Math.max(0, this.width + east - west);
         this.height = Math.max(0, this.height + south - north);
         this.onMove();
-    }
-
-    setInscription (text) {
-        this.inscription = new CenterText(this, text);
     }
 
     updateConnections () {
@@ -129,11 +123,9 @@ export class Figure extends DrawingShape {
         this.updateConnectors();
         this.updateConnections();
         this.selector.updatePosition();
+        this.inscription.updatePosition();
         if (this.parent.activeTool instanceof SelectionTool) {
             this.parent.activeTool.selection.onMove();
-        }
-        if (this.inscription) {
-            this.inscription.updatePosition();
         }
     }
 

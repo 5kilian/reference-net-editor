@@ -1,42 +1,36 @@
 import { Line } from '../figures/Line';
-import { Geometry2d } from '../util/Geometry2d';
+import { Geometry } from '../util/Geometry';
+import { Point } from '../util/Point';
 
 
 export class Connection extends Line {
 
-    constructor (src, dest) {
-        super(src, dest);
+    constructor (x, y) {
+        super(x, y);
         this.from = [];
         this.to = [];
 
         this.mode = Connection.CENTER;
         this.strokes = false;
 
-        this.line = new createjs.Point();
-        this.previous = new createjs.Point();
+        this.line = new Point();
+        this.previous = new Point();
+        this.helper = [ new Point(), new Point(), new Point(), new Point(), ];
         this.edges = [];
-        this.helper = [
-            new createjs.Point(),
-            new createjs.Point(),
-            new createjs.Point(),
-            new createjs.Point(),
-        ];
 
         this.connectSrc(src.connector);
     }
 
     connectSrc (connector) {
-        if (connector) {
-            this.from.push(connector.owner);
-            connector.owner.addConnection(this);
-        }
+        this.src().connector = connector;
+        this.from.push(connector.owner);
+        connector.owner.addConnection(this);
     }
 
     connectDest (connector) {
-        if (connector) {
-            this.to.push(connector.owner);
-            connector.owner.addConnection(this);
-        }
+        this.dest().connector = connector;
+        this.to.push(connector.owner);
+        connector.owner.addConnection(this);
     }
 
     disconnect (connector) {
@@ -73,7 +67,7 @@ export class Connection extends Line {
                     );
                     src.setValues(collideAt.x, collideAt.y);
                 }
-                this.graphics.moveTo(src.x, src.y);
+                this.graphics.moveTo(0, 0);
                 if (dest.connector) {
                     dest.copy(dest.connector.owner.center());
                     let collideAt = this.checkLineCollision(
@@ -87,32 +81,7 @@ export class Connection extends Line {
                 this.graphics.lineTo(dest.x, dest.y);
                 break;
             case Connection.ANGULAR:
-                this.edges = [];
-
-                this.graphics.moveTo(src.x, src.y);
-                if (src.y === dest.y && Math.abs(dest.x - src.x) > 30) {
-                    this.edges.push(
-                        this.helper[0].setValues(src.x, src.y + 10)
-                    );
-                    this.edges.push(
-                        this.helper[1].setValues(dest.x, dest.y + 10)
-                    );
-                } else if (src.x === dest.x && Math.abs(dest.y - src.y) > 30) {
-                    this.edges.push(
-                        this.helper[0].setValues(src.x + 10, src.y)
-                    );
-                    this.edges.push(
-                        this.helper[1].setValues(dest.x + 10, dest.y)
-                    );
-                } else if (src.x !== dest.x && Math.abs(dest.y - src.y) > 30) {
-                    this.edges.push(this.helper[0].setValues(src.x, dest.y));
-                } else {
-                    this.edges.push(this.helper[0].setValues(dest.x, src.y));
-                }
-                this.edges.forEach(edge => {
-                    this.graphics.lineTo(edge.x, edge.y);
-                });
-                this.graphics.lineTo(dest.x, dest.y);
+                this.redrawAngular(src, dest);
                 break;
             case Connection.CIRCULAR:
                 super.redraw();
@@ -120,17 +89,49 @@ export class Connection extends Line {
         }
     }
 
+    redrawAngular (src, dest) {
+        this.edges = [];
+
+        this.graphics.moveTo(src.x, src.y);
+        if (src.y === dest.y && Math.abs(dest.x - src.x) > 30) {
+            this.edges.push(
+                this.helper[0].setValues(src.x, src.y + 10)
+            );
+            this.edges.push(
+                this.helper[1].setValues(dest.x, dest.y + 10)
+            );
+        } else if (src.x === dest.x && Math.abs(dest.y - src.y) > 30) {
+            this.edges.push(
+                this.helper[0].setValues(src.x + 10, src.y)
+            );
+            this.edges.push(
+                this.helper[1].setValues(dest.x + 10, dest.y)
+            );
+        } else if (src.x !== dest.x && Math.abs(dest.y - src.y) > 30) {
+            this.edges.push(this.helper[0].setValues(src.x, dest.y));
+        } else {
+            this.edges.push(this.helper[0].setValues(dest.x, src.y));
+        }
+        this.edges.forEach(edge => {
+            this.graphics.lineTo(edge.x, edge.y);
+        });
+        this.graphics.lineTo(dest.x, dest.y);
+    }
+
+    // TODO: static export to Geometry
     checkLineCollision (object, start, end) {
         this.line.copy(start);
         this.previous.copy(this.line);
 
         let colliding = (object, start, end) => {
+            // TODO: localToLocal hitTest
             return (object.hitTestGlobal(start.x, start.y) && object.rect().contains(start.x, start.y))
             || (start.x >= end.x-2 && start.x <= end.x+2 && start.y >= end.y-2 && start.y <= end.y+2)
         };
 
+        // TODO: better convergence approach / start at bounding box intersection
         while (!colliding(object, this.line, end)) {
-            Geometry2d.center(this.previous.copy(this.line), end, this.line);
+            Geometry.center(this.previous.copy(this.line), end, this.line);
         }
         this.line.copy(this.previous);
 

@@ -1,5 +1,7 @@
+import { Point } from './Point';
 
-export class Geometry2d {
+
+export class Geometry {
 
     static dot (p1, p2) {
         return p1.x * p2.x + p1.y * p2.y;
@@ -10,7 +12,7 @@ export class Geometry2d {
     }
 
     static normalize (p) {
-
+        // TODO
     }
 
     static distance (p1, p2) {
@@ -18,7 +20,7 @@ export class Geometry2d {
     }
 
     static center (p1, p2, pt) {
-        return (pt || new createjs.Point()).setValues(
+        return (pt || new Point()).setValues(
             (p1.x + p2.x) / 2,
             (p1.y + p2.y) / 2
         );
@@ -46,7 +48,7 @@ export class Geometry2d {
         let CB = Bx * y3 + By * x3;
 
         let invertedDelta = 1 / delta;
-        return new createjs.Point(
+        return new Point(
             (Bx * CA - Ax * CB) * invertedDelta,
             (Ay * CB - By * CA) * invertedDelta
         );

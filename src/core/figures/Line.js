@@ -1,27 +1,20 @@
 import { LinePointHandle } from '../handles/line/LinePointHandle';
 import { Figure } from './Figure';
+import { Point } from '../util/Point';
 
 
 export class Line extends Figure {
 
-    constructor (src, dest) {
-        super(0, 0);
-        this.type = 'line';
+    constructor (x, y) {
+        super(x, y);
         this.points = [ ];
         this.handles = [ ];
 
-        this.insertPoint(src);
-        this.insertPoint(dest);
+        this.insertPoint(new Point());
+        this.insertPoint(new Point());
     }
 
     update () { }
-
-    move (dx, dy) {
-        this.points.forEach(point => {
-            point.setValues(point.x + dx, point.y + dy);
-        });
-        this.onMove();
-    }
 
     src () {
         return this.pointAt(0);
@@ -32,20 +25,29 @@ export class Line extends Figure {
     }
 
     pointAt (index) {
-        return this.points[index];
+        return this.points[index] || null;
     }
 
-    setSrc (point) {
-        this.setPointAt(0, point)
+    setSrc (x, y) {
+        this.setPointAt(0, x, y)
     }
 
-    setDest (point) {
-        this.setPointAt(this.points.length-1, point);
+    setDest (x, y) {
+        this.setPointAt(this.points.length-1, x, y);
     }
 
-    setPointAt (index, point) {
-        this.pointAt(index).setValues(point.x, point.y);
-        this.pointAt(index).connector = point.connector;
+    setPointAt (index, x, y) {
+        this.globalToLocal(x, y, this.localPoint);
+        this.pointAt(index).setValues(this.localPoint.x, this.localPoint.y);
+        let sx = this.localPoint.x < 0 ? 1 : 0;
+        let sy = this.localPoint.y < 0 ? 1 : 0;
+        this.x += sx * this.localPoint.x;
+        this.y += sy * this.localPoint.y;
+        this.points.forEach(point => point.setValues(
+            point.x - sx * this.localPoint.x,
+            point.y - sy * this.localPoint.y)
+        );
+        this.updateWidthHeight();
         this.onMove();
     }
 
@@ -69,7 +71,8 @@ export class Line extends Figure {
     }
 
     containsPoint (point) {
-        return this.containsPointAt(point.x, point.y);
+        this.globalToLocal(point.x, point.y, this.localPoint);
+        return this.containsPointAt(this.localPoint.x, this.localPoint.y);
     }
 
     containsPointAt (x, y) {
@@ -81,7 +84,7 @@ export class Line extends Figure {
         return false;
     }
 
-    rect () {
+    updateWidthHeight () {
         let min = { x: this.src().x, y: this.src().y };
         let max = { x: 0, y: 0 };
         this.points.forEach(point => {
@@ -90,12 +93,8 @@ export class Line extends Figure {
             if (point.x > max.x) max.x = point.x;
             if (point.y > max.y) max.y = point.y;
         });
-        return this.boundingBox.setValues(
-            min.x,
-            min.y,
-            max.x - min.x,
-            max.y - min.y
-        );
+        this.width = max.x - min.x;
+        this.height = max.y - min.y;
     }
 
     redraw () {
@@ -104,7 +103,6 @@ export class Line extends Figure {
         for (let i=1; i<this.points.length; i++) {
             this.graphics.lineTo(this.points[i].x, this.points[i].y);
         }
-        this.rect();
     }
 
     adjustScale (dx, dy) {

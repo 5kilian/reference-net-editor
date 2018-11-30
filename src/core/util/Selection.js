@@ -123,16 +123,6 @@ export class Selection extends DrawingShape {
         this.handles.forEach(handle => handle.updatePosition());
     }
 
-    onKeyEvent (event) {
-        switch (event.keys[ event.keys.length - 1 ]) {
-            case KEYCODE_DEL:
-                this.objects.forEach((object) => object.destructor());
-                this.clear();
-                break;
-            default:
-        }
-    }
-
     onClick (event) { }
 
     onDoubleClick (event) { }

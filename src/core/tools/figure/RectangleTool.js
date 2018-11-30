@@ -1,5 +1,6 @@
 import { Tool } from '../Tool';
 import { Rectangle } from '../../figures/Rectangle';
+import { Point } from '../../util/Point';
 
 
 export class RectangleTool extends Tool {
@@ -8,7 +9,7 @@ export class RectangleTool extends Tool {
         super();
         this.icon = '';
         this.name = 'Rectangle Tool';
-        this.onset = new createjs.Point();
+        this.onset = new Point();
     }
 
     onMouseDown (event) {

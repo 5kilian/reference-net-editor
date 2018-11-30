@@ -5,16 +5,16 @@ export class RadialOrientation extends Orientation {
 
     constructor (owner, degree) {
         super(owner);
-        this.type = 'RadialOrientation';
         this.degree = degree;
         this.radians = degree * Math.PI / 180;
     }
 
     position () {
         let center = this.owner.center();
-        let x = center.x + this.owner.width/2 * Math.cos(this.radians);
-        let y = center.y + this.owner.height/2 * Math.sin(this.radians);
-        return new createjs.Point(x, y);
+        return this.point.setValues(
+            center.x + this.owner.width/2 * Math.cos(this.radians),
+            center.y + this.owner.height/2 * Math.sin(this.radians)
+        );
     }
 
     static get NORTH () {

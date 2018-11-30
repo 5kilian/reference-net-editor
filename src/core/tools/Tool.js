@@ -4,9 +4,6 @@ export class Tool {
 
     constructor (stage) {
         this.stage = stage;
-        this.type = 'tool';
-        this.icon = '';
-        this.name = '';
     }
 
     /**
@@ -33,5 +30,10 @@ export class Tool {
      * @abstract
      */
     onMouseUp (event) { }
+
+    /**
+     * @abstract
+     */
+    onKeyEvent (event) { }
 
 }

@@ -11,21 +11,16 @@ export class ConnectionTool extends Tool {
         super(stage);
         this.icon = '';
         this.name = 'Connection Tool';
-        this.src = new createjs.Point();
-        this.dest = new createjs.Point();
     }
 
     onMouseDown (event) {
-        this.src.setValues(event.stageX, event.stageY);
-        this.src.connector = null;
-
-        let connector = this.nearestConnector(this.src);
+        let connector = this.nearestConnector(event.stageX, event.stageY);
         if (connector) {
-            this.src.copy(connector);
-            this.src.connector = connector;
+            this.connection = new Connection(connector.x, connector.y);
+            this.connection.connectSrc(connector);
+        } else {
+            this.connection = new Connection(event.stageX, event.stageY);
         }
-
-        this.connection = new Connection(this.src, this.src);
         this.connection.strokes = true;
     }
 
@@ -41,6 +36,7 @@ export class ConnectionTool extends Tool {
             }
 
             this.connection.setDest(this.dest);
+
         }
     }
 

@@ -1,11 +1,14 @@
+import { Point } from '../util/Point';
+
+
 /**
  * @abstract
  */
 export class Orientation {
 
     constructor (owner) {
-        this.type = 'orientation';
-        this.owner = owner
+        this.owner = owner;
+        this.point = new Point();
     }
 
     /**
