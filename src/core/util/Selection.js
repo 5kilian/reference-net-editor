@@ -2,6 +2,7 @@ import { KEYCODE_DEL } from '../constants/KeyCodes';
 import { DrawingShape } from '../drawing/DrawingShape';
 import { CardinalScaleHandle } from '../handles/scalers/CardinalScaleHandle';
 import { CardinalOrientation } from '../orientations/CardinalOrientation';
+import DrawingEvent from '../drawing/DrawingEvent';
 
 
 export class Selection extends DrawingShape {
@@ -23,6 +24,9 @@ export class Selection extends DrawingShape {
         this.hitArea = new createjs.Shape();
 
         this.hide();
+
+        DrawingEvent.on('clear', this.clear.bind(this));
+        DrawingEvent.on('select', this.select.bind(this));
     }
 
     update () {

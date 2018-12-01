@@ -1,6 +1,7 @@
 import { Line } from '../figures/Line';
 import { Geometry } from '../util/Geometry';
 import { Point } from '../util/Point';
+import { Ellipse } from '../figures/Ellipse';
 
 
 export class Connection extends Line {
@@ -17,76 +18,93 @@ export class Connection extends Line {
         this.previous = new Point();
         this.helper = [ new Point(), new Point(), new Point(), new Point(), ];
         this.edges = [];
-
-        this.connectSrc(src.connector);
     }
 
-    connectSrc (connector) {
-        this.src().connector = connector;
-        this.from.push(connector.owner);
-        connector.owner.addConnection(this);
+    connectSrc (figure) {
+        this.from.push(figure);
+        figure.addConnection(this);
     }
 
-    connectDest (connector) {
-        this.dest().connector = connector;
-        this.to.push(connector.owner);
-        connector.owner.addConnection(this);
+    connectDest (figure) {
+        this.to.push(figure);
+        figure.addConnection(this);
     }
 
-    disconnect (connector) {
-        if (connector) {
-            connector.owner.removeConnection(this);
-        }
+    disconnect (figure) {
+        figure.removeConnection(this);
     }
 
     redraw () {
-        let src = this.src();
-        let dest = this.dest();
-        if (src.connector) {
-            src.copy(src.connector);
-        }
-        if (dest.connector) {
-            dest.copy(dest.connector);
-        }
-
         this.graphics.clear().s(this.lineColor);
         if (this.strokes) {
             this.graphics.setStrokeDash([5, 5], 0);
         }
+
         switch (this.mode) {
             case Connection.STRAIGHT:
-                super.redraw();
+                this.redrawStraight();
                 break;
             case Connection.CENTER:
-                if (src.connector) {
-                    src.copy(src.connector.owner.center());
-                    let collideAt = this.checkLineCollision(
-                        src.connector.owner,
-                        dest,
-                        src,
-                    );
-                    src.setValues(collideAt.x, collideAt.y);
-                }
-                this.graphics.moveTo(0, 0);
-                if (dest.connector) {
-                    dest.copy(dest.connector.owner.center());
-                    let collideAt = this.checkLineCollision(
-                        dest.connector.owner,
-                        src,
-                        dest,
-                    );
-                    dest.setValues(collideAt.x, collideAt.y);
-
-                }
-                this.graphics.lineTo(dest.x, dest.y);
+                this.redrawCenter();
                 break;
             case Connection.ANGULAR:
-                this.redrawAngular(src, dest);
+                this.redrawAngular();
                 break;
             case Connection.CIRCULAR:
-                super.redraw();
+                this.redrawCircular();
                 break;
         }
+        this.updateWidthHeight();
+    }
+
+    redrawStraight () {
+        let src = this.src();
+        let dest = this.dest();
+        if (src.connector) {
+            this.globalToLocal(src.connector.x, src.connector.y, src);
+        }
+        if (dest.connector) {
+            this.globalToLocal(src.connector.x, src.connector.y, src);
+        }
+        this.graphics.moveTo(src.x, src.y);
+        for (let i=1; i<this.points.length; i++) {
+            this.graphics.lineTo(this.points[i].x, this.points[i].y);
+        }
+    }
+
+    redrawCenter () {
+        let src = this.src();
+        let dest = this.dest();
+        if (src.connector) {
+            let center = src.connector.owner.center();
+            this.globalToLocal(center.x, center.y, src);
+            src.copy(this.checkLineCollision(src.connector.owner, dest, src));
+            let sx = src.x < 0 ? 1 : 0;
+            let sy = src.y < 0 ? 1 : 0;
+            this.x += sx * src.x;
+            this.y += sy * src.y;
+            this.points.forEach(point => point.setValues(
+                point.x - sx * src.x,
+                point.y - sy * src.y)
+            );
+            this.updateWidthHeight();
+        }
+        if (dest.connector) {
+            let center = dest.connector.owner.center();
+            this.globalToLocal(center.x, center.y, dest);
+            dest.copy(this.checkLineCollision(dest.connector.owner, src, dest));
+            let sx = dest.x < 0 ? 1 : 0;
+            let sy = dest.y < 0 ? 1 : 0;
+            this.x += sx * dest.x;
+            this.y += sy * dest.y;
+            this.points.forEach(point => point.setValues(
+                point.x - sx * dest.x,
+                point.y - sy * dest.y)
+            );
+            this.updateWidthHeight();
+        }
+        this.graphics.moveTo(src.x, src.y);
+        this.graphics.lineTo(dest.x, dest.y);
     }
 
     redrawAngular (src, dest) {
@@ -118,15 +136,20 @@ export class Connection extends Line {
         this.graphics.lineTo(dest.x, dest.y);
     }
 
+    redrawCircular () {
+
+    }
+
     // TODO: static export to Geometry
     checkLineCollision (object, start, end) {
         this.line.copy(start);
         this.previous.copy(this.line);
 
         let colliding = (object, start, end) => {
-            // TODO: localToLocal hitTest
-            return (object.hitTestGlobal(start.x, start.y) && object.rect().contains(start.x, start.y))
-            || (start.x >= end.x-2 && start.x <= end.x+2 && start.y >= end.y-2 && start.y <= end.y+2)
+            let point = this.localToLocal(start.x, start.y, object);
+            return (object.hitTest(point.x, point.y))
+                || (start.x >= end.x-2 && start.x <= end.x+2
+                    && start.y >= end.y-2 && start.y <= end.y+2)
         };
 
         // TODO: better convergence approach / start at bounding box intersection

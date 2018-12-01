@@ -26,8 +26,11 @@ export class AbstractText extends createjs.Text {
         this.y = position.y;
     }
 
-
-    update () { }
+    update () {
+        if (this.active) {
+            // this.text.visible = false;
+        }
+    }
 
     redraw () {
 

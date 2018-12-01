@@ -14,41 +14,37 @@ export class ConnectionTool extends Tool {
     }
 
     onMouseDown (event) {
-        let connector = this.nearestConnector(event.stageX, event.stageY);
+        this.connection = new Connection(event.stageX, event.stageY);
+
+        let connector = this.nearestConnectorAt(event.stageX, event.stageY);
         if (connector) {
-            this.connection = new Connection(connector.x, connector.y);
-            this.connection.connectSrc(connector);
-        } else {
-            this.connection = new Connection(event.stageX, event.stageY);
+            this.connection.updatePosition(connector.x, connector.y);
+            this.connection.connectSrc(connector.owner);
         }
+        this.connection.src().connector = connector;
+
         this.connection.strokes = true;
     }
 
     onMouseMove (event) {
         if (this.connection) {
-            this.dest.setValues(event.stageX, event.stageY);
-            this.dest.connector = undefined;
+            this.connection.setDest(event.stageX, event.stageY);
 
-            let connector = this.nearestConnector(this.dest);
+            let connector = this.nearestConnectorAt(event.stageX, event.stageY);
             if (connector) {
-                this.dest.copy(connector);
-                this.dest.connector = connector;
+                this.connection.setDest(connector.x, connector.y);
             }
-
-            this.connection.setDest(this.dest);
-
+            this.connection.dest().connector = connector;
         }
     }
 
     onMouseUp (event) {
+        if (this.connection.dest().connector) {
+            this.connection.connectDest(this.connection.dest().connector.owner);
+        }
         this.connection.strokes = false;
-        this.connection.connectDest(this.dest.connector);
         this.connection.redraw();
         this.connection = null;
-    }
-
-    nearestConnector (point) {
-        return this.nearestConnectorAt(point.x, point.y)
     }
 
     nearestConnectorAt (x, y) {
