@@ -70,32 +70,18 @@ export class Geometry {
         let p = p1.clone();
 
         if (p1.x < c.NORTHWEST.x) {
-            if (p1.y < c.NORTHWEST.y) {
-                p.copy(Geometry.intersect(p1, p2, c.NORTHWEST, c.SOUTHWEST));
-                if (p.y < c.NORTHWEST.y || p.y > c.SOUTHWEST.y) {
-                    p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.NORTHWEST));
-                }
-            } else if (p1.y > c.SOUTHWEST.y) {
-                p.copy(Geometry.intersect(p1, p2, c.NORTHWEST, c.SOUTHWEST));
-                if (p.y < c.NORTHWEST.y || p.y > c.SOUTHWEST.y) {
-                    p.copy(Geometry.intersect(p1, p2, c.SOUTHEAST, c.SOUTHWEST));
-                }
-            } else {
-                p.copy(Geometry.intersect(p1, p2, c.NORTHWEST, c.SOUTHWEST));
+            p.copy(Geometry.intersect(p1, p2, c.NORTHWEST, c.SOUTHWEST));
+            if (p1.y < c.NORTHWEST.y && (p.y < c.NORTHWEST.y || p.y > c.SOUTHWEST.y)) {
+                p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.NORTHWEST));
+            } else if (p1.y > c.SOUTHWEST.y && (p.y < c.NORTHWEST.y || p.y > c.SOUTHWEST.y)) {
+                p.copy(Geometry.intersect(p1, p2, c.SOUTHEAST, c.SOUTHWEST));
             }
         } else if (p1.x > c.NORTHEAST.x) {
-            if (p1.y < c.NORTHEAST.y) {
-                p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.SOUTHEAST));
-                if (p.y < c.NORTHEAST.y || p.y > c.SOUTHEAST.y) {
-                    p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.NORTHWEST));
-                }
-            } else if (p1.y > c.SOUTHEAST.y) {
-                p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.SOUTHEAST));
-                if (p.y < c.NORTHEAST.y || p.y > c.SOUTHEAST.y) {
-                    p.copy(Geometry.intersect(p1, p2, c.SOUTHEAST, c.SOUTHWEST));
-                }
-            } else {
-                p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.SOUTHEAST));
+            p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.SOUTHEAST));
+            if (p1.y < c.NORTHEAST.y && (p.y < c.NORTHEAST.y || p.y > c.SOUTHEAST.y)) {
+                p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.NORTHWEST));
+            } else if (p1.y > c.SOUTHEAST.y && (p.y < c.NORTHEAST.y || p.y > c.SOUTHEAST.y)) {
+                p.copy(Geometry.intersect(p1, p2, c.SOUTHEAST, c.SOUTHWEST));
             }
         } else if (p1.y < c.NORTHWEST.y) {
             p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.NORTHWEST));
