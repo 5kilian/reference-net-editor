@@ -72,12 +72,12 @@ export class Geometry {
         if (p1.x < c.NORTHWEST.x) {
             if (p1.y < c.NORTHWEST.y) {
                 p.copy(Geometry.intersect(p1, p2, c.NORTHWEST, c.SOUTHWEST));
-                if (!r.contains(p1.x, p1.y)) {
+                if (p.y < c.NORTHWEST.y || p.y > c.SOUTHWEST.y) {
                     p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.NORTHWEST));
                 }
             } else if (p1.y > c.SOUTHWEST.y) {
                 p.copy(Geometry.intersect(p1, p2, c.NORTHWEST, c.SOUTHWEST));
-                if (!r.contains(p1.x, p1.y)) {
+                if (p.y < c.NORTHWEST.y || p.y > c.SOUTHWEST.y) {
                     p.copy(Geometry.intersect(p1, p2, c.SOUTHEAST, c.SOUTHWEST));
                 }
             } else {
@@ -86,12 +86,12 @@ export class Geometry {
         } else if (p1.x > c.NORTHEAST.x) {
             if (p1.y < c.NORTHEAST.y) {
                 p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.SOUTHEAST));
-                if (!r.contains(p1.x, p1.y)) {
+                if (p.y < c.NORTHEAST.y || p.y > c.SOUTHEAST.y) {
                     p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.NORTHWEST));
                 }
             } else if (p1.y > c.SOUTHEAST.y) {
                 p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.SOUTHEAST));
-                if (!r.contains(p1.x, p1.y)) {
+                if (p.y < c.NORTHEAST.y || p.y > c.SOUTHEAST.y) {
                     p.copy(Geometry.intersect(p1, p2, c.SOUTHEAST, c.SOUTHWEST));
                 }
             } else {

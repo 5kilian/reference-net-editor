@@ -85,6 +85,10 @@ export class DrawingShape extends createjs.Shape {
         return this.cornerPoints;
     }
 
+    toLocal (point) {
+        return this.globalToLocal(point.x, point.y);
+    }
+
     hitTestGlobal (x, y) {
         this.globalToLocal(x, y, this.globalPoint);
         return this.hitTest(this.globalPoint.x, this.globalPoint.y);
