@@ -62,7 +62,10 @@ export class Figure extends DrawingShape {
     }
 
     updateConnections () {
-        this.connections.forEach((connection) => connection.redraw());
+        this.connections.forEach((connection) => {
+            connection.updatePositions();
+            connection.redraw();
+        });
     }
 
     addConnection (connection) {

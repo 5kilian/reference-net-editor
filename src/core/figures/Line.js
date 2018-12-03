@@ -9,6 +9,7 @@ export class Line extends Figure {
         super(x, y);
         this.points = [ ];
         this.handles = [ ];
+        this.strokes = false;
 
         this.insertPoint(new Point());
         this.insertPoint(new Point());
@@ -99,6 +100,11 @@ export class Line extends Figure {
 
     redraw () {
         let src = this.src();
+
+        if (this.strokes) {
+            this.graphics.setStrokeDash([5, 5], 0);
+        }
+
         this.graphics.clear().s(this.lineColor).moveTo(src.x, src.y);
         for (let i=1; i<this.points.length; i++) {
             this.graphics.lineTo(this.points[i].x, this.points[i].y);

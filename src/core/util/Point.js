@@ -4,6 +4,19 @@ export class Point {
         this.setValues(x, y);
     }
 
+    translate (dx, dy) {
+        this.setPosition(this.x + dx, this.y + dy);
+        return this;
+    }
+
+    /**
+     * Synonym to setValues
+     * @method setPosition
+     * @param {Number} [x=0] X position.
+     * @param {Number} [y=0] Y position.
+     * @return {Point} This instance. Useful for chaining method calls.
+     * @chainable
+     */
     setPosition (x, y) {
         return this.setValues(x, y);
     }

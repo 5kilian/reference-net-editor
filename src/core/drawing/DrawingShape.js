@@ -9,7 +9,9 @@ export class DrawingShape extends createjs.Shape {
 
     constructor () {
         super();
-        this.gloalPoint = new Point();
+        this.type = this.constructor.name;
+
+        this.globalPoint = new Point();
         this.localPoint = new Point();
         this.centerPoint = new Point();
         this.cornerPoints = {
@@ -42,11 +44,13 @@ export class DrawingShape extends createjs.Shape {
      */
     redraw () { }
 
+    // TODO: rename to setPosition
     updatePosition (x, y) {
         this.x = x;
         this.y = y;
     }
 
+    // TODO: use Geometry
     distanceTo (x, y) {
         return Math.sqrt(Math.pow(x - this.x, 2) + Math.pow((y - this.y), 2));
     }
@@ -59,6 +63,7 @@ export class DrawingShape extends createjs.Shape {
         );
     }
 
+    // TODO: find a better name
     rect () {
         return this.boundingBox.setValues(
             this.x,
@@ -81,8 +86,13 @@ export class DrawingShape extends createjs.Shape {
     }
 
     hitTestGlobal (x, y) {
-        this.globalToLocal(x, y, this.gloalPoint);
-        return this.hitTest(this.gloalPoint.x, this.gloalPoint.y);
+        this.globalToLocal(x, y, this.globalPoint);
+        return this.hitTest(this.globalPoint.x, this.globalPoint.y);
+    }
+
+    hitTestLocal (x, y, object) {
+        this.localToGlobal(x, y, this.globalPoint);
+        return object.hitTestGlobal(this.globalPoint.x, this.globalPoint.y);
     }
 
     show () {

@@ -1,7 +1,6 @@
 import { Line } from '../figures/Line';
 import { Geometry } from '../util/Geometry';
 import { Point } from '../util/Point';
-import { Ellipse } from '../figures/Ellipse';
 
 
 export class Connection extends Line {
@@ -12,7 +11,6 @@ export class Connection extends Line {
         this.to = [];
 
         this.mode = Connection.CENTER;
-        this.strokes = false;
 
         this.line = new Point();
         this.previous = new Point();
@@ -34,27 +32,36 @@ export class Connection extends Line {
         figure.removeConnection(this);
     }
 
-    redraw () {
-        this.graphics.clear().s(this.lineColor);
-        if (this.strokes) {
-            this.graphics.setStrokeDash([5, 5], 0);
+    /**
+     * @abstract
+     */
+    position (src, dest, output) { }
+
+    updatePositions () {
+        this.points.forEach(point => {
+            if (point.connector) {
+                this.globalToLocal(point.connector.x, point.connector.y, point);
+            }
+        });
+
+        if (this.points.length > 1) {
+            let points = [];
+            points.push(this.position(this.pointAt(1), this.pointAt(0)));
+            for (let i=1; i<this.points.length; i++) {
+                points.push(this.position(this.pointAt(i-1), this.pointAt(i)));
+            }
+
+            for (let i=0; i<points.length; i++) {
+                this.pointAt(i).copy(points[i]);
+                delete points[i];
+            }
         }
 
-        switch (this.mode) {
-            case Connection.STRAIGHT:
-                this.redrawStraight();
-                break;
-            case Connection.CENTER:
-                this.redrawCenter();
-                break;
-            case Connection.ANGULAR:
-                this.redrawAngular();
-                break;
-            case Connection.CIRCULAR:
-                this.redrawCircular();
-                break;
-        }
         this.updateWidthHeight();
+    }
+
+    redraw () {
+        super.redraw();
     }
 
     redrawStraight () {
