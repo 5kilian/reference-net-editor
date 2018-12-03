@@ -1,8 +1,8 @@
-import { KEYCODE_ARROWS } from '../constants/KeyCodes';
 import { EllipseTool } from '../tools/figure/EllipseTool';
 import { LineTool } from '../tools/figure/LineTool';
 import { RectangleTool } from '../tools/figure/RectangleTool';
 import { ConnectionTool } from '../tools/general/ConnectionTool';
+import { TextTool } from '../tools/general/TextTool';
 import { ZoomTool } from '../tools/general/ZoomTool';
 import { DrawingCanvas } from './DrawingCanvas';
 import DrawingEvent from './DrawingEvent';
@@ -17,6 +17,7 @@ export default class Drawing {
         createjs.Ticker.framerate = configuration.fps;
         this.addListeners();
 
+        this.register(TextTool);
         this.register(RectangleTool);
         this.register(EllipseTool);
         this.register(LineTool);
@@ -50,9 +51,10 @@ export default class Drawing {
     }
 
     onKeyDown (event) {
-        if (KEYCODE_ARROWS.indexOf(event.keyCode) > -1) {
+        // if (KEYCODE_ARROWS.indexOf(event.keyCode) > -1) {
+        if ([ 123 ].indexOf(event.keyCode) === -1) // F12
             event.preventDefault();
-        }
+        // }
         this.canvas.onKeyDown(event);
     }
 

@@ -1,5 +1,5 @@
+import { CollisionConnection } from '../../connections/CollisionConnection';
 import DrawingEvent from '../../drawing/DrawingEvent';
-import { Connection } from '../../connections/Connection';
 import { Connector } from '../../handles/connectors/Connector';
 import { FigureConnector } from '../../handles/connectors/FigureConnector';
 import { Tool } from '../Tool';
@@ -9,34 +9,44 @@ export class ConnectionTool extends Tool {
 
     constructor (stage) {
         super(stage);
-        this.icon = '';
-        this.name = 'Connection Tool';
-        this.src = new createjs.Point();
-        this.dest = new createjs.Point();
     }
 
     onMouseDown (event) {
-        this.setValues(this.src, event.stageX, event.stageY);
-        this.connection = new Connection(this.src, this.src);
+        this.connection = new CollisionConnection(event.stageX, event.stageY);
+
+        let connector = this.nearestConnectorAt(event.stageX, event.stageY);
+        if (connector) {
+            this.connection.updatePosition(connector.x, connector.y);
+            this.connection.connectSrc(connector.owner);
+        }
+        this.connection.src().connector = connector;
+
+        this.connection.strokes = true;
     }
 
     onMouseMove (event) {
         if (this.connection) {
-            this.setValues(this.dest, event.stageX, event.stageY);
-            this.connection.setDest(this.dest);
-            this.connection.redraw();
+            this.connection.setDest(event.stageX, event.stageY);
+
+            let connector = this.nearestConnectorAt(event.stageX, event.stageY);
+            if (connector) {
+                this.connection.setDest(connector.x, connector.y);
+            }
+            this.connection.dest().connector = connector;
+            this.connection.updatePositions();
         }
     }
 
-    setValues (point, x, y) {
-        let connector = this.nearestConnector(x, y);
-        point.setValues(
-            connector ? connector.x : x,
-            connector ? connector.y : y
-        );
+    onMouseUp (event) {
+        if (this.connection.dest().connector) {
+            this.connection.connectDest(this.connection.dest().connector.owner);
+        }
+        this.connection.strokes = false;
+        this.connection.redraw();
+        this.connection = null;
     }
 
-    nearestConnector (x, y) {
+    nearestConnectorAt (x, y) {
         let objects = this.stage.getObjectsUnderPoint(x, y);
         let connector = objects.find(object => object instanceof Connector);
 
@@ -47,13 +57,6 @@ export class ConnectionTool extends Tool {
             return connector;
         }
         return false;
-    }
-
-    onMouseUp (event) {
-        if (this.connection) {
-            this.connection.destructor();
-            this.connection = null;
-        }
     }
 
     onToolEnable (event) {

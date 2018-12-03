@@ -1,3 +1,4 @@
+import { KEYCODE_DEL } from '../../constants/KeyCodes';
 import { Selection } from '../../util/Selection';
 import { Tool } from '../Tool';
 import { RubberBand } from '../../util/RubberBand';
@@ -59,4 +60,15 @@ export class SelectionTool extends Tool {
     onToolEnable (event) {
 
     }
+
+    onKeyEvent (event) {
+        switch (event.lastKey) {
+            case KEYCODE_DEL:
+                this.selection.objects.forEach((object) => object.destructor());
+                this.selection.clear();
+                break;
+            default:
+        }
+    }
+
 }

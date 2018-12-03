@@ -1,12 +1,13 @@
-import { Handle } from './Handle';
-import { PointOrientation } from '../orientations/PointOrientation';
-import DrawingEvent from '../drawing/DrawingEvent';
+import { Handle } from '../Handle';
+import { PointOrientation } from '../../orientations/PointOrientation';
 
 export class LinePointHandle extends Handle {
 
     constructor (owner, point) {
         super(owner, new PointOrientation(owner, point));
+        this.hitArea = new createjs.Shape(new createjs.Graphics().clear().f('#000').drawCircle(0, 0, 5));
         this.point = point;
+        this.hide();
     }
 
     redraw () {
@@ -19,9 +20,8 @@ export class LinePointHandle extends Handle {
     }
 
     onPressMove (event) {
-        this.point.setPosition(event.stageX, event.stageY);
-        this.owner.redraw();
-        DrawingEvent.emit('change selection');
+        this.point.setValues(event.stageX, event.stageY);
+        this.owner.onMove();
     }
 
     onPressUp (event) {

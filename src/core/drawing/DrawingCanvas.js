@@ -109,13 +109,18 @@ export class DrawingCanvas extends createjs.Stage {
 
     onKeyEvent (event) {
         event.keys = this.activeKeys;
-        let lastKey = this.activeKeys[ this.activeKeys.length - 1 ];
+        event.lastKey = this.activeKeys[ this.activeKeys.length - 1 ];
+        event.preventToolChange = false;
 
-        this.tools.forEach(tool => {
-            if (tool.keyCode === lastKey) {
-                this.changeActiveTool(tool);
-            }
-        });
+        this.activeTool.onKeyEvent(event);
+
+        if (false && event.preventToolChange) {
+            this.tools.forEach(tool => {
+                if (tool.keyCode === event.lastKey) {
+                    this.changeActiveTool(tool);
+                }
+            });
+        }
     }
 
     onMouseDown (event) {

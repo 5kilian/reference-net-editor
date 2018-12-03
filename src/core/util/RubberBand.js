@@ -1,14 +1,14 @@
 import DrawingEvent from '../drawing/DrawingEvent';
 import { DrawingShape } from '../drawing/DrawingShape';
+import { Point } from './Point';
 
 
 export class RubberBand extends DrawingShape {
 
     constructor () {
         super();
-        this.type = 'rubberband';
-        this.src = new createjs.Point();
-        this.dest = new createjs.Point();
+        this.src = new Point();
+        this.dest = new Point();
         this.hide();
     }
 

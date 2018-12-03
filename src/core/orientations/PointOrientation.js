@@ -4,9 +4,8 @@ import { Orientation } from './Orientation';
 export class PointOrientation extends Orientation {
 
     constructor (owner, point) {
-        super(owner);
-        this.type = 'PointOrientation';
-        this.point = point;
+        super(owner)
+        this.point.copy(point);
     }
 
     updatePosition (x, y) {

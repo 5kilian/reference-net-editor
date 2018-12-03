@@ -1,5 +1,7 @@
 import { Tool } from '../Tool';
 import { Line } from '../../figures/Line';
+import { Point } from '../../util/Point';
+
 
 export class LineTool extends Tool {
 
@@ -11,19 +13,23 @@ export class LineTool extends Tool {
     }
 
     onMouseDown (event) {
-        let point = new createjs.Point(event.stageX, event.stageY);
-        this.line = new Line(point, point);
+        this.line = new Line(event.stageX, event.stageY);
     }
 
     onMouseMove (event) {
         if (this.line) {
-            this.line.setDest(new createjs.Point(event.stageX, event.stageY));
-            this.line.redraw();
+            this.line.setDest(event.stageX, event.stageY);
         }
     }
 
     onMouseUp (event) {
         this.line = null;
     }
+
+    onKeyEvent (event) { }
+
+    onToolDisable (event) { }
+
+    onToolEnable (event) { }
 
 }

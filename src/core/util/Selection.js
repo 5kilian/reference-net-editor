@@ -1,8 +1,9 @@
 import { KEYCODE_DEL } from '../constants/KeyCodes';
-import DrawingEvent from '../drawing/DrawingEvent';
 import { DrawingShape } from '../drawing/DrawingShape';
 import { CardinalScaleHandle } from '../handles/scalers/CardinalScaleHandle';
 import { CardinalOrientation } from '../orientations/CardinalOrientation';
+import DrawingEvent from '../drawing/DrawingEvent';
+
 
 export class Selection extends DrawingShape {
 
@@ -23,7 +24,9 @@ export class Selection extends DrawingShape {
         this.hitArea = new createjs.Shape();
 
         this.hide();
-        DrawingEvent.on('selection move', this.onPressMove.bind(this));
+
+        DrawingEvent.on('clear', this.clear.bind(this));
+        DrawingEvent.on('select', this.select.bind(this));
     }
 
     update () {
@@ -59,7 +62,6 @@ export class Selection extends DrawingShape {
 
     move (dx, dy) {
         this.objects.forEach((object) => object.move(dx, dy));
-        this.onMoveSelection();
     }
 
     remove (object) {
@@ -95,7 +97,7 @@ export class Selection extends DrawingShape {
 
         this.boundingBox.copy(this.objects[ 0 ].rect());
         for (let i = 1; i < this.objects.length; i++) {
-            let o = this.objects[i].rect();
+            let o = this.objects[ i ].rect();
             this.boundingBox.extend(o.x, o.y, o.width, o.height);
         }
         return this.boundingBox.pad(10, 10, 10, 10);
@@ -113,29 +115,16 @@ export class Selection extends DrawingShape {
 
     adjustScale (dx, dy) {
         this.objects.forEach(object => object.adjustScale(dx, dy));
-        this.redraw();
-        this.updateHandles();
+        this.onMove();
     }
 
     stretch (east, south, west, north) {
         this.objects.forEach(object => object.stretch(east, south, west, north));
-        this.redraw();
-        this.updateHandles();
+        this.onMove();
     }
 
     updateHandles () {
         this.handles.forEach(handle => handle.updatePosition());
-        this.objects.forEach(object => object.updateHandles());
-    }
-
-    onKeyEvent (event) {
-        switch (event.keys[ event.keys.length - 1 ]) {
-            case KEYCODE_DEL:
-                this.objects.forEach((object) => object.destructor());
-                this.clear();
-                break;
-            default:
-        }
     }
 
     onClick (event) { }
@@ -166,7 +155,7 @@ export class Selection extends DrawingShape {
         this.my = event.stageY;
     }
 
-    onMoveSelection () {
+    onMove () {
         this.redraw();
         this.updateHandles();
     }

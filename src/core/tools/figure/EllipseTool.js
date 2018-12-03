@@ -1,5 +1,6 @@
 import { Tool } from '../Tool';
 import { Ellipse } from '../../figures/Ellipse';
+import { Point } from '../../util/Point';
 
 
 export class EllipseTool extends Tool {
@@ -8,12 +9,17 @@ export class EllipseTool extends Tool {
         super(stage);
         this.icon = '';
         this.name = 'Circle Tool';
-        this.onset = new createjs.Point();
+        this.onset = new Point();
     }
 
     onMouseDown (event) {
+        this.moved = false;
         this.onset.setValues(event.stageX, event.stageY);
         this.circle = new Ellipse(this.onset.x, this.onset.y);
+        this.circle.x -= 20;
+        this.circle.y -= 20;
+        this.circle.width = 40;
+        this.circle.height = 40;
     }
 
     onMouseMove (event) {
@@ -39,6 +45,7 @@ export class EllipseTool extends Tool {
     }
 
     onMouseUp (event) {
+        this.circle.redraw();
         this.circle = null;
     }
 

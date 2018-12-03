@@ -3,6 +3,7 @@ import { DrawingShape } from '../drawing/DrawingShape';
 import { CenterConnector } from '../handles/connectors/CenterConnector';
 import { FigureConnector } from '../handles/connectors/FigureConnector';
 import { FigureSelector } from '../handles/selectors/FigureSelector';
+import { CenterText } from '../text/CenterText';
 import { SelectionTool } from '../tools/general/SelectionTool';
 
 
@@ -16,17 +17,16 @@ export class Figure extends DrawingShape {
 
         this.handles = [];
         this.selector = new FigureSelector(this);
+        this.inscription = new CenterText(this);
         this.connectors = [];
         this.connections = [];
 
-        this.x = 0;
-        this.y = 0;
+        this.x = x;
+        this.y = y;
         this.width = 1;
         this.height = 1;
         this.lineColor = 'black';
         this.fillColor = 'white';
-
-        this.updatePosition(x, y);
 
         DrawingEvent.on('enable connectors', this.enableConnectors.bind(this));
         DrawingEvent.on('disable connectors', this.disableConnectors.bind(this));
@@ -36,6 +36,9 @@ export class Figure extends DrawingShape {
         this.handles.forEach(handle => handle.destructor());
         this.connectors.forEach(handle => handle.destructor());
         this.connections.forEach(connection => connection.destructor());
+        if (this.inscription) {
+            this.inscription.destructor();
+        }
         super.destructor();
     }
 
@@ -47,7 +50,6 @@ export class Figure extends DrawingShape {
     adjustScale (dx, dy) {
         this.width = Math.max(0, this.width + dx);
         this.height = Math.max(0, this.height + dy);
-        this.redraw();
         this.onMove();
     }
 
@@ -56,12 +58,22 @@ export class Figure extends DrawingShape {
         this.y = this.y + north;
         this.width = Math.max(0, this.width + east - west);
         this.height = Math.max(0, this.height + south - north);
-        this.redraw();
         this.onMove();
     }
 
     updateConnections () {
-        this.connections.forEach((connection) => connection.redraw());
+        this.connections.forEach((connection) => {
+            connection.updatePositions();
+            connection.redraw();
+        });
+    }
+
+    addConnection (connection) {
+        this.connections.push(connection);
+    }
+
+    removeConnection (connection) {
+        this.connections.slice(this.connections.indexOf(connection), 1);
     }
 
     updateConnectors () {
@@ -109,10 +121,15 @@ export class Figure extends DrawingShape {
     }
 
     onMove () {
+        this.redraw();
         this.updateHandles();
         this.updateConnectors();
         this.updateConnections();
         this.selector.updatePosition();
+        this.inscription.updatePosition();
+        if (this.parent.activeTool instanceof SelectionTool) {
+            this.parent.activeTool.selection.onMove();
+        }
     }
 
     onDeselect () {
@@ -130,6 +147,7 @@ export class Figure extends DrawingShape {
     onMouseMove (event) { }
 
     onPressMove (event) {
+        // TODO: move to SelectionTool
         if (this.parent.activeTool instanceof SelectionTool) {
             let dx = (event.stageX - this.mx) / this.parent.scaleX;
             let dy = (event.stageY - this.my) / this.parent.scaleY;
