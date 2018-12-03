@@ -26,13 +26,17 @@ export class Geometry {
         );
     }
 
+    static corners (rect) {
+        return {
+            NORTHWEST: new Point(rect.x, rect.y),
+            NORTHEAST: new Point(rect.x + rect.width, rect.y),
+            SOUTHWEST: new Point(rect.x, rect.y + rect.height),
+            SOUTHEAST: new Point(rect.x + rect.width, rect.y + rect.height),
+        };
+    }
+
     static intersect (p1, p2, p3, p4) {
-        return this.intersectAt(
-            p1.x, p1.y,
-            p2.x, p2.y,
-            p3.x, p3.y,
-            p4.x, p4.y
-        );
+        return this.intersectAt(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
     }
 
     static intersectAt (x1, y1, x2, y2, x3, y3, x4, y4) {
@@ -56,12 +60,60 @@ export class Geometry {
 
     /**
      *
+     * @param p1 src
+     * @param p2 dest
+     * @param r rect
+     * @returns Point
+     */
+    static intersectRect (p1, p2, r) {
+        let c = Geometry.corners(r);
+        let p = p1.clone();
+
+        if (p1.x < c.NORTHWEST.x) {
+            if (p1.y < c.NORTHWEST.y) {
+                p.copy(Geometry.intersect(p1, p2, c.NORTHWEST, c.SOUTHWEST));
+                if (!r.contains(p1.x, p1.y)) {
+                    p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.NORTHWEST));
+                }
+            } else if (p1.y > c.SOUTHWEST.y) {
+                p.copy(Geometry.intersect(p1, p2, c.NORTHWEST, c.SOUTHWEST));
+                if (!r.contains(p1.x, p1.y)) {
+                    p.copy(Geometry.intersect(p1, p2, c.SOUTHEAST, c.SOUTHWEST));
+                }
+            } else {
+                p.copy(Geometry.intersect(p1, p2, c.NORTHWEST, c.SOUTHWEST));
+            }
+        } else if (p1.x > c.NORTHEAST.x) {
+            if (p1.y < c.NORTHEAST.y) {
+                p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.SOUTHEAST));
+                if (!r.contains(p1.x, p1.y)) {
+                    p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.NORTHWEST));
+                }
+            } else if (p1.y > c.SOUTHEAST.y) {
+                p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.SOUTHEAST));
+                if (!r.contains(p1.x, p1.y)) {
+                    p.copy(Geometry.intersect(p1, p2, c.SOUTHEAST, c.SOUTHWEST));
+                }
+            } else {
+                p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.SOUTHEAST));
+            }
+        } else if (p1.y < c.NORTHWEST.y) {
+            p.copy(Geometry.intersect(p1, p2, c.NORTHEAST, c.NORTHWEST));
+        } else if (p1.y > c.SOUTHEAST.y) {
+            p.copy(Geometry.intersect(p1, p2, c.SOUTHEAST, c.SOUTHWEST));
+        }
+
+        return p;
+    }
+
+    /**
+     *
      * @param start
      * @param end
      * @param object
      * @returns Point|boolean
      */
-    static bresenhamCollision (start, end, object) {
+    static intersectBresenham (start, end, object) {
         let line = new Point(start.x, start.y);
 
         let reachedEnd = (start, end) => (
