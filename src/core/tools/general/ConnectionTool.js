@@ -1,7 +1,6 @@
 import { CollisionConnection } from '../../connections/CollisionConnection';
 import DrawingEvent from '../../drawing/DrawingEvent';
 import { Connector } from '../../handles/connectors/Connector';
-import { FigureConnector } from '../../handles/connectors/FigureConnector';
 import { Tool } from '../Tool';
 
 
@@ -48,15 +47,7 @@ export class ConnectionTool extends Tool {
 
     nearestConnectorAt (x, y) {
         let objects = this.stage.getObjectsUnderPoint(x, y);
-        let connector = objects.find(object => object instanceof Connector);
-
-        if (connector) {
-            if (connector instanceof FigureConnector) {
-                return connector.owner.nearestConnector(x, y);
-            }
-            return connector;
-        }
-        return false;
+        return objects.find(object => object instanceof Connector);
     }
 
     onToolEnable (event) {

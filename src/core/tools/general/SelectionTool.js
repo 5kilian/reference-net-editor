@@ -3,6 +3,7 @@ import { Selection } from '../../util/Selection';
 import { Tool } from '../Tool';
 import { RubberBand } from '../../util/RubberBand';
 import { Figure } from '../../figures/Figure';
+import { Text } from '../../text/Text';
 
 export class SelectionTool extends Tool {
 
@@ -14,7 +15,7 @@ export class SelectionTool extends Tool {
     }
 
     onMouseDown (event) {
-        if (event.relatedTarget instanceof Figure) {
+        if (event.relatedTarget instanceof Figure || event.relatedTarget instanceof Text) {
             this.selection.select(event.relatedTarget);
         } else if (event.relatedTarget === null) {
             this.selection.clear();
@@ -71,4 +72,4 @@ export class SelectionTool extends Tool {
         }
     }
 
-}
+ }

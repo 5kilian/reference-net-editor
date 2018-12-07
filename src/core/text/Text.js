@@ -1,7 +1,6 @@
 import DrawingEvent from '../drawing/DrawingEvent';
 
-
-export class AbstractText extends createjs.Text {
+export class Text extends createjs.Text {
 
     constructor (orientation, content) {
         super();
@@ -44,4 +43,27 @@ export class AbstractText extends createjs.Text {
 
     }
 
+    onClick (event) {
+    }
+
+    onDoubleClick (event) {
+    }
+
+    onMouseDown (event) {
+    }
+
+    onMouseMove (event) {
+    }
+
+    onMouseOut (event) {
+    }
+
+    onMouseOver (event) {
+    }
+
+    onPressMove (event) {
+    }
+
+    onPressUp (event) {
+    }
 }

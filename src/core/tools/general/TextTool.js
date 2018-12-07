@@ -1,7 +1,7 @@
 import { Figure } from '../../figures/Figure';
 import { PointOrientation } from '../../orientations/PointOrientation';
 import { Tool } from '../Tool';
-import { AbstractText } from '../../text/AbstractText';
+import { Text } from '../../text/Text';
 import { Point } from '../../util/Point';
 
 
@@ -10,7 +10,7 @@ export class TextTool extends Tool {
     constructor (stage) {
         super(stage);
         this.icon = '';
-        this.name = 'AbstractText Tool';
+        this.name = 'Text Tool';
         this.position = new Point();
     }
 
@@ -21,7 +21,7 @@ export class TextTool extends Tool {
             if (event.relatedTarget instanceof Figure) {
                 this.text = event.relatedTarget.inscription;
             } else {
-                this.text = new AbstractText(
+                this.text = new Text(
                     new PointOrientation(
                         null,
                         this.position.setValues(event.stageX, event.stageY)
